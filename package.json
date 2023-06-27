@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "@transia/xrpl": "^2.7.3-alpha.3",
-    "c2wasm-cli": "^1.0.4",
+    "c2wasm-cli": "^1.0.5",
     "chai": "^4.3.7",
     "crypto-js": "^4.1.1",
     "lodash": "^4.17.21"
