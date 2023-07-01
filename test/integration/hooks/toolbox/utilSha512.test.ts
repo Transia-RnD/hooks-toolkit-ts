@@ -16,7 +16,7 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   ExecutionUtility,
   createHookPayload,
@@ -73,7 +73,7 @@ describe('utilSha512', () => {
         Amount: xrpToDrops(11),
         HookParameters: [param1.toXrpl(), param2.toXrpl()],
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: aliceWallet,
         tx: builtTx,
       })
@@ -115,7 +115,7 @@ describe('utilSha512', () => {
       Amount: xrpToDrops(10),
       HookParameters: [param1.toXrpl(), param2.toXrpl()],
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })
@@ -175,7 +175,7 @@ describe('utilSha512', () => {
         Amount: amount,
         HookParameters: [param1.toXrpl(), param2.toXrpl()],
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: aliceWallet,
         tx: builtTx,
       })
@@ -230,7 +230,7 @@ describe('utilSha512', () => {
       Amount: amount,
       HookParameters: [param1.toXrpl(), param2.toXrpl()],
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })

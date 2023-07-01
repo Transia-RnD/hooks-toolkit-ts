@@ -8,7 +8,7 @@ import {
   serverUrl,
 } from '../../../../src/libs/xrpl-helpers'
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   ExecutionUtility,
   createHookPayload,
@@ -46,7 +46,7 @@ describe('base', () => {
       Account: bobWallet.classicAddress,
       Destination: aliceWallet.classicAddress,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })

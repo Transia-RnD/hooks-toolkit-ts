@@ -15,7 +15,7 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   ExecutionUtility,
   createHookPayload,
@@ -57,7 +57,7 @@ describe('filterOnXrp', () => {
       Destination: aliceWallet.classicAddress,
       Amount: xrpToDrops(1),
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
@@ -99,7 +99,7 @@ describe('filterOnXrp', () => {
         Destination: aliceWallet.classicAddress,
         Amount: amount,
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: bobWallet,
         tx: builtTx,
       })

@@ -9,7 +9,7 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   ExecutionUtility,
   createHookPayload,
@@ -50,7 +50,7 @@ describe('filterOnIO', () => {
       Account: bobWallet.classicAddress,
       Destination: aliceWallet.classicAddress,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
@@ -83,7 +83,7 @@ describe('filterOnIO', () => {
       TransactionType: 'Invoke',
       Account: aliceWallet.classicAddress,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })

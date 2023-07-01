@@ -10,7 +10,7 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   createHookPayload,
   setHooksV3,
@@ -66,7 +66,7 @@ describe('StateAdvanced', () => {
       Account: aliceWallet.classicAddress,
       HookParameters: [param1.toXrpl()],
     }
-    await Application.testHookTx(testContext.client, {
+    await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })

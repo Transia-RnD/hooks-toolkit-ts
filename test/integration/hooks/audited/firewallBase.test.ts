@@ -15,7 +15,7 @@ import {
   teardownClient,
 } from '../../../../src/libs/xrpl-helpers'
 import {
-  Application,
+  Xrpld,
   ExecutionUtility,
   createHookPayload,
   floatToLEXfl,
@@ -77,7 +77,7 @@ describe('firewall.base - Success Group', () => {
       ],
     }
 
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })
@@ -116,7 +116,7 @@ describe('firewall.base - Success Group', () => {
       TransactionType: 'AccountSet',
       Account: aliceWallet.address,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })
@@ -159,7 +159,7 @@ describe('firewall.base - Success Group', () => {
         Destination: aliceWallet.classicAddress,
         Amount: xrpToDrops(100),
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: bobWallet,
         tx: builtTx,
       })
@@ -200,7 +200,7 @@ describe('firewall.base - Success Group', () => {
         Destination: carolWallet.classicAddress,
         Amount: xrpToDrops(100),
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: aliceWallet,
         tx: builtTx,
       })
@@ -245,7 +245,7 @@ describe('firewall.base - Success Group', () => {
         Destination: aliceWallet.classicAddress,
         Amount: xrpToDrops(99),
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: carolWallet,
         tx: builtTx,
       })
@@ -298,7 +298,7 @@ describe('firewall.base - Success Group', () => {
         Destination: aliceWallet.classicAddress,
         Amount: xrpToDrops(101),
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: carolWallet,
         tx: builtTx,
       })
@@ -352,7 +352,7 @@ describe('firewall.base - Success Group', () => {
         Destination: aliceWallet.classicAddress,
         Amount: amount,
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: carolWallet,
         tx: builtTx,
       })
@@ -407,7 +407,7 @@ describe('firewall.base - Success Group', () => {
         Destination: aliceWallet.classicAddress,
         Amount: amount,
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: carolWallet,
         tx: builtTx,
       })
@@ -461,7 +461,7 @@ describe('firewall.base - Success Group', () => {
       Destination: aliceWallet.classicAddress,
       Amount: xrpToDrops(100),
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: carolWallet,
       tx: builtTx,
     })

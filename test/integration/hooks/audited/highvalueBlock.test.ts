@@ -27,7 +27,7 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   ExecutionUtility,
   StateUtility,
@@ -87,7 +87,7 @@ describe('Application.highvalue_block', () => {
       Account: bobWallet.classicAddress,
       Destination: aliceWallet.classicAddress,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
@@ -123,7 +123,7 @@ describe('Application.highvalue_block', () => {
       Destination: aliceWallet.classicAddress,
       Amount: xrpToDrops(1),
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
@@ -159,7 +159,7 @@ describe('Application.highvalue_block', () => {
       Destination: bobWallet.classicAddress,
       Amount: xrpToDrops(1),
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })
@@ -209,7 +209,7 @@ describe('Application.highvalue_block', () => {
         Destination: bobWallet.classicAddress,
         Amount: xrpToDrops(11),
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: aliceWallet,
         tx: built2Tx1,
       })
@@ -270,7 +270,7 @@ describe('Application.highvalue_block', () => {
         tx1param3.toXrpl(),
       ],
     }
-    await Application.testHookTx(testContext.client, {
+    await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: built1Tx1,
     })
@@ -283,7 +283,7 @@ describe('Application.highvalue_block', () => {
       Amount: xrpToDrops(9),
     }
     try {
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: aliceWallet,
         tx: built2Tx1,
       })
@@ -346,7 +346,7 @@ describe('Application.highvalue_block', () => {
         tx1param3.toXrpl(),
       ],
     }
-    await Application.testHookTx(testContext.client, {
+    await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: built1Tx1,
     })
@@ -360,7 +360,7 @@ describe('Application.highvalue_block', () => {
       Destination: bobWallet.classicAddress,
       Amount: xrpToDrops(11),
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: built2Tx1,
     })
@@ -466,7 +466,7 @@ describe('Application.highvalue_block', () => {
         tx1param3.toXrpl(),
       ],
     }
-    await Application.testHookTx(testContext.client, {
+    await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: built1Tx1,
     })
@@ -486,7 +486,7 @@ describe('Application.highvalue_block', () => {
       Destination: bobWallet.classicAddress,
       Amount: amount,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: built2Tx1,
     })
@@ -582,7 +582,7 @@ describe('Application.highvalue_block', () => {
         tx1param3.toXrpl(),
       ],
     }
-    await Application.testHookTx(testContext.client, {
+    await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: built1Tx1,
     })
@@ -594,7 +594,7 @@ describe('Application.highvalue_block', () => {
       Destination: bobWallet.classicAddress,
       Amount: xrpToDrops(9),
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: built2Tx1,
     })

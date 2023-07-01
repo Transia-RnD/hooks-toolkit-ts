@@ -15,7 +15,7 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
@@ -71,7 +71,7 @@ describe('Application.directDebit - Error Group', () => {
       Destination: aliceWallet.classicAddress,
       Amount: xrpToDrops(1),
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
@@ -103,7 +103,7 @@ describe('Application.directDebit - Error Group', () => {
       TransactionType: 'Invoke',
       Account: aliceWallet.address,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })
@@ -138,7 +138,7 @@ describe('Application.directDebit - Error Group', () => {
       Account: bobWallet.address,
       Destination: aliceWallet.address,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
@@ -184,7 +184,7 @@ describe('Application.directDebit - Error Group', () => {
         Destination: aliceWallet.address,
         HookParameters: [txParam1.toXrpl()],
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: bobWallet,
         tx: builtTx,
       })
@@ -227,7 +227,7 @@ describe('Application.directDebit - Error Group', () => {
         Destination: aliceWallet.classicAddress,
         HookParameters: [txParam1.toXrpl()],
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: bobWallet,
         tx: builtTx,
       })
@@ -285,7 +285,7 @@ describe('Application.directDebit - Error Group', () => {
         Destination: aliceWallet.classicAddress,
         HookParameters: [txParam1.toXrpl()],
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: bobWallet,
         tx: builtTx,
       })
@@ -353,7 +353,7 @@ describe('Application.directDebit - Success Group', () => {
       Destination: aliceWallet.classicAddress,
       HookParameters: [txParam1.toXrpl()],
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
@@ -405,7 +405,7 @@ describe('Application.directDebit - Success Group', () => {
   //     Destination: aliceWallet.classicAddress,
   //     HookParameters: [txParam1.toXrpl()],
   //   }
-  //   const result = await Application.testHookTx(testContext.client, {
+  //   const result = await Xrpld.submit(testContext.client, {
   //     wallet: aliceWallet,
   //     tx: builtTx,
   //   })

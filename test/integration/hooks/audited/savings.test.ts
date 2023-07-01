@@ -16,7 +16,7 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   ExecutionUtility,
   createHookPayload,
@@ -77,7 +77,7 @@ import {
 //       Account: bobWallet.classicAddress,
 //       Destination: aliceWallet.classicAddress,
 //     }
-//     const result = await Application.testHookTx(testContext.client, {
+//     const result = await Xrpld.submit(testContext.client, {
 //       wallet: bobWallet,
 //       tx: builtTx,
 //     })
@@ -112,7 +112,7 @@ import {
 //       Account: bobWallet.classicAddress,
 //       Destination: aliceWallet.classicAddress,
 //     }
-//     const result = await Application.testHookTx(testContext.client, {
+//     const result = await Xrpld.submit(testContext.client, {
 //       wallet: bobWallet,
 //       tx: builtTx,
 //     })
@@ -159,7 +159,7 @@ import {
 //       Destination: aliceWallet.classicAddress,
 //       Amount: xrpToDrops(100),
 //     }
-//     const result = await Application.testHookTx(testContext.client, {
+//     const result = await Xrpld.submit(testContext.client, {
 //       wallet: bobWallet,
 //       tx: builtTx,
 //     })
@@ -205,7 +205,7 @@ import {
 //       Destination: aliceWallet.classicAddress,
 //       Amount: xrpToDrops(100),
 //     }
-//     const result = await Application.testHookTx(testContext.client, {
+//     const result = await Xrpld.submit(testContext.client, {
 //       wallet: bobWallet,
 //       tx: builtTx,
 //     })
@@ -254,7 +254,7 @@ import {
 //       Destination: aliceWallet.classicAddress,
 //       Amount: xrpToDrops('10'),
 //     }
-//     const result = await Application.testHookTx(testContext.client, {
+//     const result = await Xrpld.submit(testContext.client, {
 //       wallet: bobWallet,
 //       tx: builtTx,
 //     })
@@ -304,7 +304,7 @@ import {
 //       Destination: bobWallet.classicAddress,
 //       Amount: xrpToDrops('10'),
 //     }
-//     const result = await Application.testHookTx(testContext.client, {
+//     const result = await Xrpld.submit(testContext.client, {
 //       wallet: aliceWallet,
 //       tx: builtTx,
 //     })
@@ -361,7 +361,7 @@ describe('Application.savings - Success Group', () => {
   //     Destination: bobWallet.classicAddress,
   //     Amount: xrpToDrops(100),
   //   }
-  //   const result = await Application.testHookTx(testContext.client, {
+  //   const result = await Xrpld.submit(testContext.client, {
   //     wallet: aliceWallet,
   //     tx: builtTx,
   //   })
@@ -408,7 +408,7 @@ describe('Application.savings - Success Group', () => {
   //     Destination: aliceWallet.classicAddress,
   //     Amount: xrpToDrops(100),
   //   }
-  //   const result = await Application.testHookTx(testContext.client, {
+  //   const result = await Xrpld.submit(testContext.client, {
   //     wallet: bobWallet,
   //     tx: builtTx,
   //   })
@@ -461,7 +461,7 @@ describe('Application.savings - Success Group', () => {
   //     Destination: bobWallet.classicAddress,
   //     Amount: amount,
   //   }
-  //   const result = await Application.testHookTx(testContext.client, {
+  //   const result = await Xrpld.submit(testContext.client, {
   //     wallet: aliceWallet,
   //     tx: builtTx,
   //   })
@@ -514,7 +514,7 @@ describe('Application.savings - Success Group', () => {
       Destination: aliceWallet.classicAddress,
       Amount: amount,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })

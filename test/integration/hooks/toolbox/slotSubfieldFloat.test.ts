@@ -14,7 +14,7 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   ExecutionUtility,
   createHookPayload,
@@ -52,7 +52,7 @@ describe('slotSubfieldFloat', () => {
       Destination: bobWallet.classicAddress,
       Amount: xrpToDrops(10),
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })

@@ -9,7 +9,7 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   StateUtility,
   createHookPayload,
@@ -48,7 +48,7 @@ describe('keyletTrustline', () => {
       Account: bobWallet.classicAddress,
       Destination: aliceWallet.classicAddress,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })

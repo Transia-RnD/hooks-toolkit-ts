@@ -9,7 +9,7 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   createHookPayload,
   setHooksV3,
@@ -48,7 +48,7 @@ describe('hookOnTT', () => {
       Account: bobWallet.classicAddress,
       Destination: aliceWallet.classicAddress,
     }
-    await Application.testHookTx(testContext.client, {
+    await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })
@@ -77,7 +77,7 @@ describe('hookOnTT', () => {
         Destination: aliceWallet.classicAddress,
         Amount: xrpToDrops(1),
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: bobWallet,
         tx: builtTx,
       })

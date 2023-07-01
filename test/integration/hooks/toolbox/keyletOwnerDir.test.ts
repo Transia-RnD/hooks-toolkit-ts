@@ -1,5 +1,5 @@
 // xrpl
-import { Invoke, SetHookFlags } from '@transia/xrpl'
+import { Invoke, SetHookFlags, TransactionMetadata } from '@transia/xrpl'
 // xrpl-helpers
 import {
   XrplIntegrationTestContext,
@@ -9,11 +9,12 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   StateUtility,
   createHookPayload,
   setHooksV3,
+  ExecutionUtility,
 } from '../../../../dist/npm/src'
 
 describe('keyletOwnerDir', () => {
@@ -48,15 +49,17 @@ describe('keyletOwnerDir', () => {
       Account: bobWallet.classicAddress,
       Destination: aliceWallet.classicAddress,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
-    // const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
-    //   testContext.client,
-    //   result.meta as TransactionMetadata
-    // )
-    // console.log(hookExecutions.executions[0].HookReturnString)
+    console.log(result)
+
+    const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
+      testContext.client,
+      result.meta as TransactionMetadata
+    )
+    console.log(hookExecutions.executions[0].HookReturnString)
     const hookStateDir = await StateUtility.getHookStateDir(
       testContext.client,
       testContext.alice.classicAddress,

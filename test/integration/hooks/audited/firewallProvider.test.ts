@@ -13,7 +13,7 @@ import {
 } from '@transia/xrpl/dist/npm/models/ledger'
 
 import {
-  Application,
+  Xrpld,
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
@@ -72,7 +72,7 @@ describe('Application.firewall_provider', () => {
       Destination: aliceWallet.classicAddress,
       Amount: xrpToDrops(100),
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
@@ -107,7 +107,7 @@ describe('Application.firewall_provider', () => {
   //     Account: bobWallet.classicAddress,
   //     Destination: aliceWallet.classicAddress,
   //   }
-  //   const result = await Application.testHookTx(testContext.client, {
+  //   const result = await Xrpld.submit(testContext.client, {
   //     wallet: aliceWallet,
   //     tx: builtTx,
   //   })
@@ -141,7 +141,7 @@ describe('Application.firewall_provider', () => {
       Account: bobWallet.classicAddress,
       Destination: aliceWallet.classicAddress,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
@@ -174,7 +174,7 @@ describe('Application.firewall_provider', () => {
       Account: aliceWallet.classicAddress,
       Blob: blob,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })
@@ -228,7 +228,7 @@ describe('Application.firewall_provider', () => {
       Account: aliceWallet.classicAddress,
       Blob: blob,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })

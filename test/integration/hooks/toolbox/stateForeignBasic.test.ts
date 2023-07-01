@@ -16,7 +16,7 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   ExecutionUtility,
   createHookPayload,
@@ -110,7 +110,7 @@ describe('stateForeignBasic', () => {
         TransactionType: 'Invoke',
         Account: aliceWallet.classicAddress,
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: aliceWallet,
         tx: builtTx1,
       })
@@ -172,7 +172,7 @@ describe('stateForeignBasic', () => {
       TransactionType: 'Invoke',
       Account: aliceWallet.classicAddress,
     }
-    await Application.testHookTx(testContext.client, {
+    await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx1,
     })
@@ -183,7 +183,7 @@ describe('stateForeignBasic', () => {
         TransactionType: 'Invoke',
         Account: bobWallet.classicAddress,
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: bobWallet,
         tx: builtTx2,
       })
@@ -262,7 +262,7 @@ describe('stateForeignBasic', () => {
       TransactionType: 'Invoke',
       Account: aliceWallet.classicAddress,
     }
-    await Application.testHookTx(testContext.client, {
+    await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx1,
     })
@@ -273,7 +273,7 @@ describe('stateForeignBasic', () => {
         TransactionType: 'Invoke',
         Account: bobWallet.classicAddress,
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: bobWallet,
         tx: builtTx2,
       })
@@ -351,7 +351,7 @@ describe('stateForeignBasic', () => {
       TransactionType: 'Invoke',
       Account: aliceWallet.classicAddress,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx1,
     })
@@ -379,7 +379,7 @@ describe('stateForeignBasic', () => {
       TransactionType: 'Invoke',
       Account: bobWallet.classicAddress,
     }
-    await Application.testHookTx(testContext.client, {
+    await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx2,
     })

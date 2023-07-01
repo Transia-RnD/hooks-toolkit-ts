@@ -22,7 +22,7 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   ExecutionUtility,
   StateUtility,
@@ -74,7 +74,7 @@ describe('Application.highvaluePrepare', () => {
       Destination: aliceWallet.classicAddress,
       Amount: xrpToDrops(1),
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
@@ -109,7 +109,7 @@ describe('Application.highvaluePrepare', () => {
       Account: bobWallet.classicAddress,
       Destination: aliceWallet.classicAddress,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
@@ -143,7 +143,7 @@ describe('Application.highvaluePrepare', () => {
       Account: aliceWallet.classicAddress,
     }
     try {
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: aliceWallet,
         tx: builtTx,
       })
@@ -180,7 +180,7 @@ describe('Application.highvaluePrepare', () => {
         Account: aliceWallet.classicAddress,
         HookParameters: [txParam1.toXrpl()],
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: aliceWallet,
         tx: builtTx,
       })
@@ -224,7 +224,7 @@ describe('Application.highvaluePrepare', () => {
       Account: aliceWallet.classicAddress,
       HookParameters: [param1.toXrpl(), param2.toXrpl(), param3.toXrpl()],
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })
@@ -311,7 +311,7 @@ describe('Application.highvaluePrepare', () => {
       Account: aliceWallet.classicAddress,
       HookParameters: [param1.toXrpl(), param2.toXrpl(), param3.toXrpl()],
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })

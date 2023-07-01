@@ -9,7 +9,7 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   StateUtility,
   createHookPayload,
@@ -73,7 +73,7 @@ describe('keyletHookStateDir', () => {
       Destination: aliceWallet.classicAddress,
       HookParameters: [param1.toXrpl()],
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
