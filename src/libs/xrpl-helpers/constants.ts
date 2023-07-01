@@ -6,14 +6,10 @@ import { Wallet } from '@transia/xrpl'
 
 // wallet secret == "mastersecret"
 // rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh
-export const MASTER_ACCOUNT_WALLET = Wallet.fromSeed(
-  'snoPBrXtMeMyMHUVTgbuqAfg1SUTb'
-)
+export const MASTER_WALLET = Wallet.fromSeed('snoPBrXtMeMyMHUVTgbuqAfg1SUTb')
 // wallet secret == "gw"
 // rExKpRKXNz25UAjbckCRtQsJFcSfjL9Er3
-export const GW_ACCOUNT_WALLET = Wallet.fromSeed(
-  'safmpBLsy2paxybRMpvXqFqSrV5HG'
-)
+export const GW_WALLET = Wallet.fromSeed('safmpBLsy2paxybRMpvXqFqSrV5HG')
 // wallet secret == "notactive"
 // rMqTbPY6rzTspuBGBcS7po7FFTPwitrKHX
 export const NOT_ACTIVE_WALLET = Wallet.fromSeed(
@@ -21,26 +17,16 @@ export const NOT_ACTIVE_WALLET = Wallet.fromSeed(
 )
 // wallet secret == "alice"
 // rG1QQv2nh2gr7RCZ1P8YYcBUKCCN633jCn
-export const ALICE_ACCOUNT_WALLET = Wallet.fromSeed(
-  'ssbTMHrmEJP7QEQjWJH3a72LQipBM'
-)
+export const ALICE_WALLET = Wallet.fromSeed('ssbTMHrmEJP7QEQjWJH3a72LQipBM')
 // wallet secret == "bob"
 // rPMh7Pi9ct699iZUTWaytJUoHcJ7cgyziK
-export const BOB_ACCOUNT_WALLET = Wallet.fromSeed(
-  'spkcsko6Ag3RbCSVXV2FJ8Pd4Zac1'
-)
+export const BOB_WALLET = Wallet.fromSeed('spkcsko6Ag3RbCSVXV2FJ8Pd4Zac1')
 // wallet secret == "carol"
 // rH4KEcG9dEwGwpn6AyoWK9cZPLL4RLSmWW
-export const CAROL_ACCOUNT_WALLET = Wallet.fromSeed(
-  'snzb83cV8zpLPTE4nQamoLP9pbhB7'
-)
+export const CAROL_WALLET = Wallet.fromSeed('snzb83cV8zpLPTE4nQamoLP9pbhB7')
 // wallet secret == "dave"
 //  rGWC14yT3U8bkuAx2c8tA1ajLUJCandp59
-export const DAVE_ACCOUNT_WALLET = Wallet.fromSeed(
-  'sh2Q7wDfjdvyVaVHEE8JT3C9osGFD'
-)
+export const DAVE_WALLET = Wallet.fromSeed('sh2Q7wDfjdvyVaVHEE8JT3C9osGFD')
 // wallet secret == "elsa"
 // rEgYrSKETHuvus5ctLbn2NdX8pEiJgTmcS
-export const ELSA_ACCOUNT_WALLET = Wallet.fromSeed(
-  'sEdTeiqmPdUob32gyD6vPUskq1Z7TP3'
-)
+export const ELSA_WALLET = Wallet.fromSeed('sEdTeiqmPdUob32gyD6vPUskq1Z7TP3')

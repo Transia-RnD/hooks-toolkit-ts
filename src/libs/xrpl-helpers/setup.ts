@@ -3,11 +3,11 @@ import { Client, Wallet } from '@transia/xrpl'
 import serverUrl from './serverUrl'
 import {
   NOT_ACTIVE_WALLET,
-  MASTER_ACCOUNT_WALLET,
-  GW_ACCOUNT_WALLET,
-  ALICE_ACCOUNT_WALLET,
-  BOB_ACCOUNT_WALLET,
-  CAROL_ACCOUNT_WALLET,
+  MASTER_WALLET,
+  GW_WALLET,
+  ALICE_WALLET,
+  BOB_WALLET,
+  CAROL_WALLET,
 } from './constants'
 import { fundSystem } from '../xrpl-helpers'
 import { IC } from './tools'
@@ -54,12 +54,12 @@ export async function setupClient(
   const context: XrplIntegrationTestContext = {
     client: new Client(server, { timeout: 200000 }),
     notactive: NOT_ACTIVE_WALLET,
-    master: MASTER_ACCOUNT_WALLET,
-    gw: GW_ACCOUNT_WALLET,
-    ic: IC.gw(currency, GW_ACCOUNT_WALLET.classicAddress),
-    alice: ALICE_ACCOUNT_WALLET,
-    bob: BOB_ACCOUNT_WALLET,
-    carol: CAROL_ACCOUNT_WALLET,
+    master: MASTER_WALLET,
+    gw: GW_WALLET,
+    ic: IC.gw(currency, GW_WALLET.classicAddress),
+    alice: ALICE_WALLET,
+    bob: BOB_WALLET,
+    carol: CAROL_WALLET,
   }
   return connectWithRetry(context.client)
     .then(async () => {
