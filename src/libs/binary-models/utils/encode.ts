@@ -1,5 +1,16 @@
+import { decodeAccountID } from '@transia/xrpl'
+import { floatToLEXfl, fromCurrencyToHex } from '../../../utils'
 import { BaseModel } from '../BaseModel'
-import { UInt8, UInt32, UInt64, UInt224, VarString, XRPAddress } from './types'
+import {
+  UInt8,
+  UInt32,
+  UInt64,
+  UInt224,
+  VarString,
+  XFL,
+  Currency,
+  XRPAddress,
+} from './types'
 
 export function encodeModel<T extends BaseModel>(model: T): string {
   const metadata = model.getMetadata()
@@ -61,6 +72,12 @@ function encodeField(
         throw Error('maxStringLength is required for type varString')
       }
       return varStringToHex(fieldValue as string, maxStringLength)
+    case 'xfl':
+      return xflToHex(fieldValue as XFL)
+    case 'currency':
+      return currencyToHex(fieldValue as Currency)
+    case 'xrpAddress':
+      return xrpAddressToHex(fieldValue as XRPAddress)
     case 'xrpAddress':
       return xrpAddressToHex(fieldValue as XRPAddress)
     case 'model':
@@ -136,14 +153,16 @@ export function varStringToHex(
   return (prefixLength + paddedContent).toUpperCase()
 }
 
+export function xflToHex(value: XFL): string {
+  return floatToLEXfl(String(value))
+}
+
+export function currencyToHex(value: Currency): string {
+  const content = fromCurrencyToHex(value)
+  return content.padEnd(40, '0').toUpperCase() // 40
+}
+
 export function xrpAddressToHex(value: XRPAddress): string {
-  if (value.length > 35) {
-    throw Error(`XRP address length ${value.length} exceeds 35 characters`)
-  }
-  if (value.length < 25) {
-    throw Error(`XRP address length ${value.length} is less than 25 characters`)
-  }
-  const length = uint8ToHex(value.length)
-  const content = Buffer.from(value, 'utf8').toString('hex')
-  return (length + content.padEnd(70, '0')).toUpperCase() // 35 * 2 = 70
+  const content = decodeAccountID(value)
+  return Buffer.from(content).toString('hex').toUpperCase() // 40
 }

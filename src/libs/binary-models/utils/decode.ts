@@ -1,6 +1,17 @@
+import { convertHexToString, encodeAccountID } from '@transia/xrpl'
 import { BaseModel, Metadata, ModelClass } from '../BaseModel'
 import { lengthToHex } from './encode'
-import { UInt8, UInt32, UInt64, UInt224, VarString, XRPAddress } from './types'
+import {
+  UInt8,
+  UInt32,
+  UInt64,
+  UInt224,
+  VarString,
+  XFL,
+  Currency,
+  XRPAddress,
+} from './types'
+import { flipHex, toString } from '../../../utils'
 
 export function decodeModel<T extends BaseModel>(
   hex: string,
@@ -54,10 +65,20 @@ export function decodeModel<T extends BaseModel>(
         decodedField = decodeField(fieldHex, type, maxStringLength)
         hexIndex += length
         break
-      case 'xrpAddress':
-        fieldHex = hex.slice(hexIndex, hexIndex + 72)
+      case 'xfl':
+        fieldHex = hex.slice(hexIndex, hexIndex + 16)
         decodedField = decodeField(fieldHex, type)
-        hexIndex += 72
+        hexIndex += 16
+        break
+      case 'currency':
+        fieldHex = hex.slice(hexIndex, hexIndex + 40)
+        decodedField = decodeField(fieldHex, type)
+        hexIndex += 40
+        break
+      case 'xrpAddress':
+        fieldHex = hex.slice(hexIndex, hexIndex + 40)
+        decodedField = decodeField(fieldHex, type)
+        hexIndex += 40
         break
       case 'model':
         if (fieldModelClass === undefined) {
@@ -150,10 +171,20 @@ export function decodeMetadata(
         decodedField = decodeField(fieldHex, type, maxStringLength)
         hexIndex += length
         break
-      case 'xrpAddress':
-        fieldHex = hex.slice(hexIndex, hexIndex + 72)
+      case 'xfl':
+        fieldHex = hex.slice(hexIndex, hexIndex + 16)
         decodedField = decodeField(fieldHex, type)
-        hexIndex += 72
+        hexIndex += 16
+        break
+      case 'currency':
+        fieldHex = hex.slice(hexIndex, hexIndex + 40)
+        decodedField = decodeField(fieldHex, type)
+        hexIndex += 40
+        break
+      case 'xrpAddress':
+        fieldHex = hex.slice(hexIndex, hexIndex + 40)
+        decodedField = decodeField(fieldHex, type)
+        hexIndex += 40
         break
       case 'model':
         if (modelMetadata === undefined) {
@@ -216,6 +247,10 @@ function decodeField(
         throw Error('maxStringLength is required for type varString')
       }
       return hexToVarString(hex, maxStringLength)
+    case 'xfl':
+      return hexToXfl(hex)
+    case 'currency':
+      return hexToCurrency(hex)
     case 'xrpAddress':
       return hexToXRPAddress(hex)
     case 'model':
@@ -264,8 +299,18 @@ export function hexToVarString(
   return Buffer.from(content, 'hex').toString('utf8').slice(0, length)
 }
 
+export function hexToXfl(hex: string): XFL {
+  const value = flipHex(hex)
+  const xfl = hexToUInt64(value.slice(0, 16))
+  return parseFloat(toString(xfl))
+}
+
+export function hexToCurrency(hex: string): Currency {
+  const value = convertHexToString(hex)
+  return value.slice(0, 40).replace(/\0[\s\S]*$/g, '')
+}
+
 export function hexToXRPAddress(hex: string): XRPAddress {
-  const length = hexToUInt8(hex.slice(0, 2))
-  const value = Buffer.from(hex.slice(2), 'hex').toString('utf8')
-  return value.slice(0, length)
+  const value = encodeAccountID(Buffer.from(hex, 'hex'))
+  return value.slice(0, 40)
 }

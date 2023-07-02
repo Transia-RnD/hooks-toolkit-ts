@@ -12,6 +12,8 @@ export type MetadataElement<T extends BaseModel> = {
     | 'uint64'
     | 'uint224'
     | 'varString'
+    | 'xfl'
+    | 'currency'
     | 'xrpAddress'
     | 'model'
     | 'varModelArray'
@@ -73,8 +75,13 @@ export abstract class BaseModel {
           }
           length += maxStringLength * 2 + (maxStringLength <= 2 ** 8 ? 2 : 4)
           break
+        case 'xfl':
+          length += 16
+        case 'currency':
+          length += 40
+          break
         case 'xrpAddress':
-          length += 72
+          length += 40
           break
         case 'model':
           length += BaseModel.getHexLength(fieldModelClass)
@@ -123,8 +130,14 @@ export abstract class BaseModel {
           }
           length += maxStringLength * 2 + (maxStringLength <= 2 ** 8 ? 2 : 4)
           break
+        case 'xfl':
+          length += 16
+          break
+        case 'currency':
+          length += 40
+          break
         case 'xrpAddress':
-          length += 72
+          length += 40
           break
         case 'model':
           length += BaseModel.getHexLengthMeta(modelMetadata)
@@ -163,6 +176,12 @@ export abstract class BaseModel {
             return BigInt(0)
           case 'uint224':
             return BigInt(0)
+          case 'varString':
+            return ''
+          case 'xfl':
+            return BigInt(0)
+          case 'currency':
+            return ''
           case 'varString':
             return ''
           case 'xrpAddress':

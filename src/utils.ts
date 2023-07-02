@@ -9,6 +9,7 @@ import {
   SetHookFlagsInterface,
   SetHookFlags,
   decodeAccountID,
+  convertStringToHex,
 } from '@transia/xrpl'
 import { GlobalFlags } from '@transia/xrpl/dist/npm/models/transactions/common'
 import {
@@ -101,10 +102,9 @@ export function toString(xfl: any) {
   if (xfl == 0n) return '<zero>'
   return (
     (isNegative(xfl) ? '-' : '+') +
-    getMantissa(xfl) +
-    ' * 10^(' +
-    getExponent(xfl) +
-    ')'
+    getMantissa(xfl).toString() +
+    'E' +
+    getExponent(xfl).toString()
   )
 }
 
@@ -258,4 +258,14 @@ export function genHash(account: string, amount: Amount, tag?: number) {
 export function padHexString(input: string, targetLength = 64): string {
   const paddedString = '0'.repeat(targetLength - input.length) + input
   return paddedString
+}
+
+/**
+ * convert currency to hex
+ * @param currency currency string
+ * @returns hex string
+ */
+export const fromCurrencyToHex = (currency: string): string => {
+  const hex = convertStringToHex(currency.toUpperCase())
+  return hex.padEnd(40, '0')
 }

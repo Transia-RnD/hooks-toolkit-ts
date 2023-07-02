@@ -24,8 +24,6 @@ export class ExecutionUtility {
       throw new Error('xrpl Client is not connected')
     }
 
-    console.log(meta);
-    
     const { HookExecutions } = meta
     if (!HookExecutions) {
       throw Error('No HookExecutions found')
