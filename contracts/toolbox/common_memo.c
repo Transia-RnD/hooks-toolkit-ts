@@ -14,14 +14,14 @@
 
 int64_t hook(uint32_t reserved ) {
 
-    TRACESTR("parse_memo: called");
+    TRACESTR("common_memo: called");
 
     uint8_t memos[MAX_MEMO_SIZE];
     int64_t memos_len = otxn_field(SBUF(memos), sfMemos);
 
     if (memos_len < 0)
     {
-        accept(SBUF("parse_memo: Invalid Memo transaction"), 2);
+        accept(SBUF("common_memo: Invalid Memo transaction"), 2);
     }
 
     int64_t   memo_lookup = sto_subarray(memos, memos_len, 0);
@@ -33,7 +33,7 @@ int64_t hook(uint32_t reserved ) {
     memo_len = SUB_LENGTH(memo_lookup);
 
     if (memo_lookup < 0)
-        rollback(SBUF("parse_memo: Incoming txn had a blank sfMemos, abort."), 1);
+        rollback(SBUF("common_memo: Incoming txn had a blank sfMemos, abort."), 1);
 
     int64_t  format_lookup   = sto_subfield(memo_ptr, memo_len, sfMemoFormat);
     uint8_t* format_ptr = SUB_OFFSET(format_lookup) + memo_ptr;
@@ -42,21 +42,21 @@ int64_t hook(uint32_t reserved ) {
     int is_unsigned_payload = 0;
     BUFFER_EQUAL_STR_GUARD(is_unsigned_payload, format_ptr, format_len, MEMO_FORMAT, 1);
     if (!is_unsigned_payload)
-        accept(SBUF("parse_memo: Memo is an invalid format. Passing txn."), 50);
+        accept(SBUF("common_memo: Memo is an invalid format. Passing txn."), 50);
     
     int64_t  data_lookup = sto_subfield(memo_ptr, memo_len, sfMemoData);
     uint8_t* data_ptr = SUB_OFFSET(data_lookup) + memo_ptr;
 
     uint32_t data_len = SUB_LENGTH(data_lookup);
     if (data_len > MAX_MEMO_SIZE)
-        rollback(SBUF("parse_memo: Memo too large (4kib max)."), 4);
+        rollback(SBUF("common_memo: Memo too large (4kib max)."), 4);
 
     uint8_t data_value[data_len];
     COPY_BUFM(data_value, 0, data_ptr, 0, MEMO_DATA_LENGTH, MEMO_DATA_LENGTH);
     TRACEHEX(data_value) // <- memo data
     
-    TRACESTR("parse_memo: End.");
-    accept(SBUF("parse_memo: Finished."), __LINE__);
+    TRACESTR("common_memo: End.");
+    accept(SBUF("common_memo: Finished."), __LINE__);
     _g(1,1);
     // unreachable
     return 0;
