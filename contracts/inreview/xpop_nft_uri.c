@@ -5,13 +5,6 @@
 #define ttIMPORT 97
 #define ttURITOKEN_MINT 45
 
-#define BUFFER_EQUAL_32_(buf1, buf2)\
-    (\
-        *(((uint64_t*)(buf1)) + 0) == *(((uint64_t*)(buf2)) + 0) &&\
-        *(((uint64_t*)(buf1)) + 1) == *(((uint64_t*)(buf2)) + 1) &&\
-        *(((uint64_t*)(buf1)) + 2) == *(((uint64_t*)(buf2)) + 2) &&\
-        *(((uint64_t*)(buf1)) + 3) == *(((uint64_t*)(buf2)) + 3))
-
 int64_t hook(uint32_t r)
 {
     _g(1,1);
@@ -155,7 +148,7 @@ int64_t hook(uint32_t r)
         trace(SBUF("uri: "), uri, urilen, 1);
         trace(SBUF("tid1"), tid, 32, 1);
         trace(SBUF("tid2"), burned_tid, 32, 1);
-        found = BUFFER_EQUAL_32_(tid, burned_tid);
+        found = BUFFER_EQUAL_32(tid, burned_tid);
         if (found)
         {
             trace(SBUF("found"), 0,0,0);
