@@ -1,5 +1,9 @@
 # The Hooks Tookkit (Typescript)
 
+## Global Prerequsits
+
+`$ npm i -g c2wasm-cli xrpld-cli`
+
 ## Compile Hooks
 
 Run this command to locally compile an XRPL Hook source file (inside ./contracts) from .c to .wasm code:
@@ -31,7 +35,7 @@ Before you can run the integration tests you must have a standalone rippled serv
 
 - Full env with explorer:
 
-- - `$ yarn local-up`
+- - `$ xrpld-cli up:standalone`
 
 - Docker standalone only:
 
