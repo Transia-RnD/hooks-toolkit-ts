@@ -11,7 +11,7 @@ int64_t hook(uint32_t reserved) {
 
     // KEYLET: TrustLine
     uint8_t bal_kl[34];
-    util_keylet(SBUF(bal_kl), KEYLET_LINE, hook_accid, SFS_ACCOUNT,  (uint32_t)issuer, SFS_ACCOUNT, currency, 20);
+    util_keylet(SBUF(bal_kl), KEYLET_LINE, hook_accid, SFS_ACCOUNT, (uint32_t)issuer, SFS_ACCOUNT, currency, 20);
 
     // SLOT SET:
     if (slot_set(SBUF(bal_kl), 1) != 20)
