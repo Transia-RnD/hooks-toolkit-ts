@@ -14,7 +14,7 @@ import {
   createHookPayload,
   setHooksV3,
 } from '../../../../dist/npm/src'
-import { readWaitXpop } from '@transia/xpop-toolkit'
+import { readWaitXpopDir } from '@transia/xpop-toolkit'
 
 import path from 'path'
 const xpopDir = path.join(process.cwd(), 'test/fixtures/xpop')
@@ -46,7 +46,7 @@ describe('xpop_nft_uri', () => {
     } as SetHookParams)
 
     // IMPORT IN
-    const xpopBlob: Buffer = await readWaitXpop(
+    const xpopBlob: Buffer = await readWaitXpopDir(
       xpopDir,
       'E7EC18EA6C4DD0451064DBF81CC0D94DA25F730868DCD33F201F3C24B6760CAB',
       10
