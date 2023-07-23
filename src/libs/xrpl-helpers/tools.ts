@@ -10,6 +10,8 @@ import {
   AccountInfoRequest,
   convertStringToHex,
   Transaction,
+  OfferCreate,
+  OfferCreateFlags,
 } from '@transia/xrpl'
 import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
 import { RippleState } from '@transia/xrpl/dist/npm/models/ledger'
@@ -231,7 +233,7 @@ export async function fund(
         Destination: acct as string,
         Amount: uicx.amount as unknown as IssuedCurrencyAmount,
       }
-      
+
       await appTransaction(ctx, builtTx, wallet, {
         hardFail: true,
         count: 1,
@@ -272,6 +274,73 @@ export async function pay(
       console.log(error.data?.tx)
       throw error
     }
+  }
+}
+
+export async function sell(
+  ctx: Client,
+  uicx: IC | ICXRP,
+  signer: Wallet,
+  rate: number
+): Promise<void> {
+  try {
+    // 1, 2 = 1 *, 1 /
+    const takerGets: IssuedCurrencyAmount = {
+      value: String(uicx.value),
+      currency: uicx.currency,
+      issuer: uicx.issuer,
+    }
+    const builtTx: OfferCreate = {
+      TransactionType: 'OfferCreate',
+      Account: signer.classicAddress,
+      TakerGets: takerGets,
+      TakerPays: xrpToDrops(String(rate * uicx.value)),
+      Flags: OfferCreateFlags.tfSell,
+    }
+    await appTransaction(ctx, builtTx, signer, {
+      hardFail: true,
+      count: 1,
+      delayMs: 1000,
+    })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    console.log(error)
+    console.log(error.data?.decoded)
+    console.log(error.data?.tx)
+    throw error
+  }
+}
+
+export async function buy(
+  ctx: Client,
+  uicx: IC | ICXRP,
+  signer: Wallet,
+  rate: number
+): Promise<void> {
+  try {
+    // 1, 2 = 1 *, 1 /
+    const takerPays: IssuedCurrencyAmount = {
+      value: String(uicx.value),
+      currency: uicx.currency,
+      issuer: uicx.issuer,
+    }
+    const builtTx: OfferCreate = {
+      TransactionType: 'OfferCreate',
+      Account: signer.classicAddress,
+      TakerGets: xrpToDrops(String(rate * uicx.value)),
+      TakerPays: takerPays,
+    }
+    await appTransaction(ctx, builtTx, signer, {
+      hardFail: true,
+      count: 1,
+      delayMs: 1000,
+    })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    console.log(error)
+    console.log(error.data?.decoded)
+    console.log(error.data?.tx)
+    throw error
   }
 }
 

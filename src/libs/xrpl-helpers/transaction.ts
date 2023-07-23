@@ -1,4 +1,4 @@
-import "dotenv/config";
+import 'dotenv/config'
 import { encode } from '@transia/ripple-binary-codec'
 import { BaseResponse } from '@transia/xrpl/dist/npm/models/methods/baseMethod'
 import { getFeeEstimateXrp } from '@transia/xrpl/dist/npm/sugar'
