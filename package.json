@@ -1,6 +1,6 @@
 {
   "name": "@transia/hooks-toolkit",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A toolkit for interacting with smart contracts (hooks) on the XRP Ledger.",
   "main": "dist/npm/src/index.js",
   "files": [
@@ -21,8 +21,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@transia/xrpl": "^2.7.3-alpha.3",
-    "c2wasm-cli": "^1.0.5",
+    "@transia/xpop-toolkit": "^1.0.2",
+    "@transia/xrpl": "^2.7.3-alpha.9",
+    "c2wasm-cli": "^1.0.6",
     "chai": "^4.3.7",
     "crypto-js": "^4.1.1",
     "lodash": "^4.17.21"
