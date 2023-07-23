@@ -1,8 +1,12 @@
-import { Wallet, calculateHookOn, hexHookParameters } from '@transia/xrpl'
+import {
+  Wallet,
+  calculateHookOn,
+  hexHookParameters,
+  SetHook,
+} from '@transia/xrpl'
 import { SetHookParams, iHook } from './types'
 import { HookGrant, HookParameter } from '@transia/xrpl/dist/npm/models/common'
 import { readHookBinaryHexFromNS, hexNamespace } from './utils'
-import { SetHook } from '@transia/xrpl/dist/npm/models/transactions/setHook'
 import {
   prepareTransactionV3,
   appTransaction,
