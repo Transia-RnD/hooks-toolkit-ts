@@ -33,11 +33,6 @@ import {
   floatToLEXfl,
 } from '../../../../dist/npm/src'
 
-// Three hidden keys open three secret gates
-// Wherein the errant will be tested for worthy traits
-// And those with the skill to survive these straits
-// Will reach The End where the prize awaits
-
 // LevelThree: ACCEPT: success
 
 describe('hunt', () => {
