@@ -30,6 +30,9 @@ export async function fundSystem(
   const alice = new Account('alice')
   const bob = new Account('bob')
   const carol = new Account('carol')
+  const dave = new Account('dave')
+  const elsa = new Account('elsa')
+
   // INIT IC
   const USD = ic as IC
 
@@ -55,6 +58,12 @@ export async function fundSystem(
   if ((await balance(client, carol.wallet.classicAddress)) < 10000) {
     needsFunding.push(carol.wallet.classicAddress)
   }
+  if ((await balance(client, dave.wallet.classicAddress)) < 10000) {
+    needsFunding.push(dave.wallet.classicAddress)
+  }
+  if ((await balance(client, elsa.wallet.classicAddress)) < 10000) {
+    needsFunding.push(elsa.wallet.classicAddress)
+  }
 
   // Check Trustline
   const needsLines: Wallet[] = []
@@ -67,6 +76,13 @@ export async function fundSystem(
   if ((await limit(client, carol.wallet.classicAddress, USD)) < 100000) {
     needsLines.push(carol.wallet)
   }
+  if ((await limit(client, dave.wallet.classicAddress, USD)) < 100000) {
+    needsLines.push(dave.wallet)
+  }
+  if ((await limit(client, elsa.wallet.classicAddress, USD)) < 100000) {
+    needsLines.push(elsa.wallet)
+  }
+
   // Check IC Balance
   const needsIC: string[] = []
   if ((await balance(client, alice.wallet.classicAddress, USD)) < 10000) {
@@ -77,6 +93,12 @@ export async function fundSystem(
   }
   if ((await balance(client, carol.wallet.classicAddress, USD)) < 10000) {
     needsIC.push(carol.wallet.classicAddress)
+  }
+  if ((await balance(client, dave.wallet.classicAddress, USD)) < 10000) {
+    needsIC.push(dave.wallet.classicAddress)
+  }
+  if ((await balance(client, elsa.wallet.classicAddress, USD)) < 10000) {
+    needsIC.push(elsa.wallet.classicAddress)
   }
 
   // console.log(`FUNDING: ${needsFunding.length}`)
