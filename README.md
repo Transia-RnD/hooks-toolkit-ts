@@ -1,4 +1,4 @@
-# The Hooks Tookkit (Typescript)
+# The Hooks Toolkit (Typescript)
 
 ## Global Prerequsits
 
