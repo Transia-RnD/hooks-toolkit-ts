@@ -28,5 +28,5 @@ export const CAROL_WALLET = Wallet.fromSeed('snzb83cV8zpLPTE4nQamoLP9pbhB7')
 //  rGWC14yT3U8bkuAx2c8tA1ajLUJCandp59
 export const DAVE_WALLET = Wallet.fromSeed('sh2Q7wDfjdvyVaVHEE8JT3C9osGFD')
 // wallet secret == "elsa"
-// rEgYrSKETHuvus5ctLbn2NdX8pEiJgTmcS
-export const ELSA_WALLET = Wallet.fromSeed('sEdTeiqmPdUob32gyD6vPUskq1Z7TP3')
+// rL8xeQSGxTmKXXyLUFRuAAKsWMY1BMpQbe
+export const ELSA_WALLET = Wallet.fromSeed('sspu32LMDPU9V5NCUb584FqbdPsZ6')

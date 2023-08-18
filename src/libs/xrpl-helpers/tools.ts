@@ -59,7 +59,7 @@ export class Account {
       this.account = this.wallet.classicAddress
     }
     if (name === 'elsa') {
-      this.wallet = Wallet.fromSeed('sEdTeiqmPdUob32gyD6vPUskq1Z7TP3')
+      this.wallet = Wallet.fromSeed('sspu32LMDPU9V5NCUb584FqbdPsZ6')
       this.account = this.wallet.classicAddress
     }
   }
