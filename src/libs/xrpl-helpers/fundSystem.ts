@@ -101,19 +101,11 @@ export async function fundSystem(
     needsIC.push(elsa.wallet.classicAddress)
   }
 
-  // console.log(`FUNDING: ${needsFunding.length}`)
-  // console.log(`TRUSTING: ${needsLines.length}`)
-  // console.log(`PAYING: ${needsIC.length}`)
+  console.log(`FUNDING: ${needsFunding.length}`)
+  console.log(`TRUSTING: ${needsLines.length}`)
+  console.log(`PAYING: ${needsIC.length}`)
 
   await fund(client, wallet, new ICXRP(10000), ...needsFunding)
   await trust(client, USD.set(100000), ...needsLines)
   await pay(client, USD.set(2000), gw.wallet, ...needsIC)
-
-  // console.log(`ALICE XRP: ${await balance(client, alice.account)}`)
-  // console.log(`ALICE TRUST: ${await limit(client, alice.account, USD)}`)
-  // console.log(`ALICE USD: ${await balance(client, alice.account, USD)}`)
-
-  // console.log(`BOB XRP: ${await balance(client, bob.account)}`)
-  // console.log(`BOB TRUST: ${await limit(client, bob.account, USD)}`)
-  // console.log(`BOB USD: ${await balance(client, bob.account, USD)}`)
 }
