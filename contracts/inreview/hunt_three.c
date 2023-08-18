@@ -31,12 +31,13 @@ int64_t hook(uint32_t reserved ) {
         rollback(SBUF("hunt_three.c: HookOn field is incorrectly set."), INVALID_TXN);
     }
 
-    uint8_t saphire_key[27];
-    for (int i = 0; GUARD(7), i < 7; i++) {
-        saphire_key[i] = SAPHIRE_HEX[i];
+    uint8_t saphire_key[32];
+    saphire_key[0] =  0x07;
+    for (int i = 0; GUARD(11), i < 11; i++) {
+        saphire_key[i+1] = SAPHIRE_HEX[i];
     }
     for (int i = 0; GUARD(20), i < 20; i++) {
-        saphire_key[i + 7] = otx_acc[i];
+        saphire_key[i + 8] = otx_acc[i];
     }
     TRACEHEX(saphire_key);
 
@@ -58,13 +59,15 @@ int64_t hook(uint32_t reserved ) {
     if (state_foreign(SBUF(_saphire), SBUF(saphire_key), SBUF(l1_n), SBUF(l1_a)) < 0)
         DONE("hunt_three.c: User does not have saphire gem");
 
-    uint8_t amber_key[25];
+    uint8_t amber_key[32];
+    amber_key[0] =  0x05;
     for (int i = 0; GUARD(5), i < 5; i++) {
-        amber_key[i] = AMBER_HEX[i];
+        amber_key[i+1] = AMBER_HEX[i];
     }
     for (int i = 0; GUARD(20), i < 20; i++) {
-        amber_key[i + 5] = otx_acc[i];
+        amber_key[i + 12] = otx_acc[i];
     }
+    TRACEHEX(amber_key);
 
     uint8_t l2_n[32];
     uint8_t l2n_key[3] = {'L', '2', 'N'};

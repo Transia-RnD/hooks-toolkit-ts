@@ -39,27 +39,29 @@ int64_t hook(uint32_t reserved ) {
     uint8_t l2_skey[3] = {'L', '2', 'A'};
     hook_param(l2_s, 70, SBUF(l2_skey));
 
-    uint8_t state_key[25];
+    uint8_t state_key[32];
+    state_key[0] =  0x05;
     for (int i = 0; GUARD(5), i < 5; i++) {
-        state_key[i] = AMBER_HEX[i];
+        state_key[i+1] = AMBER_HEX[i];
     }
     for (int i = 0; GUARD(20), i < 20; i++) {
-        state_key[i + 5] = otx_acc[i];
+        state_key[i + 12] = otx_acc[i];
     }
     TRACEHEX(state_key);
 
     uint8_t _amber[70];
-    if (state(SBUF(_amber), state_key, 25) == 70)
+    if (state(SBUF(_amber), state_key, 32) == 70)
     {
         accept(SBUF("hunt_two.c: User has amber gem."), __LINE__);
     }
 
-    uint8_t saphire_key[27];
+    uint8_t saphire_key[32];
+    saphire_key[0] =  0x07;
     for (int i = 0; GUARD(7), i < 7; i++) {
-        saphire_key[i] = SAPHIRE_HEX[i];
+        saphire_key[i+1] = SAPHIRE_HEX[i];
     }
     for (int i = 0; GUARD(20), i < 20; i++) {
-        saphire_key[i + 7] = otx_acc[i];
+        saphire_key[i + 12] = otx_acc[i];
     }
     TRACEHEX(saphire_key);
 
@@ -83,7 +85,7 @@ int64_t hook(uint32_t reserved ) {
 
     TRACEHEX(l2_s);
 
-    if (state_set(SBUF(l2_s), state_key, 25) != 70)
+    if (state_set(SBUF(l2_s), state_key, 32) != 70)
     {
         rollback(SBUF("hunt_two.c: Could not set state"), __LINE__);
     }

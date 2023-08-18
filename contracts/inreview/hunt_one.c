@@ -31,11 +31,18 @@ int64_t hook(uint32_t reserved ) {
 
     uint8_t l1_pk[33];
     uint8_t l1_pkkey[4] = {'L', '1', 'P', 'K'};
-    hook_param(l1_pk, 33, SBUF(l1_pkkey));
+    int64_t l1_len = hook_param(l1_pk, 33, SBUF(l1_pkkey));
+    if (hook_param(l1_pk, 33, SBUF(l1_pkkey)) != 33)
+    {
+        DONE("hunt_one.c: invalid hook parameter`.");
+    }
 
     uint8_t l1_s[70];
     uint8_t l1_skey[3] = {'L', '1', 'S'};
-    otxn_param(l1_s, 70, SBUF(l1_skey));
+    if (otxn_param(l1_s, 70, SBUF(l1_skey)) != 70)
+    {
+        DONE("hunt_one.c: invalid hook otxn parameter`.");
+    }
 
     uint8_t saphire[33] =
     {
@@ -45,26 +52,27 @@ int64_t hook(uint32_t reserved ) {
         0x1E, 0x8A, 0xD5
     };
 
-    uint8_t state_key[27];
+    uint8_t state_key[32];
+    state_key[0] =  0x07;
     for (int i = 0; GUARD(7), i < 7; i++) {
-        state_key[i] = SAPHIRE_HEX[i];
+        state_key[i+1] = SAPHIRE_HEX[i];
     }
     for (int i = 0; GUARD(20), i < 20; i++) {
-        state_key[i + 7] = otx_acc[i];
+        state_key[i + 12] = otx_acc[i];
     }
 
     uint8_t _saphire[33];
-    if (state(SBUF(_saphire), state_key, 27) == 33)
+    if (state(SBUF(_saphire), state_key, 32) == 33)
     {
         accept(SBUF("hunt_one.c: State exists."), __LINE__);
     }
 
-    if (util_verify(SBUF(hook_acc), SBUF(l1_s), SBUF(l1_pk)) == 0)
+    if (util_verify(SBUF(otx_acc), SBUF(l1_s), SBUF(l1_pk)) == 0)
     {
          accept(SBUF("hunt_one.c: Invalid signature."), __LINE__);
     }
 
-    state_set(SBUF(saphire), state_key, 27);
+    state_set(SBUF(saphire), state_key, 32);
 
     accept(SBUF("hunt_one.c: Saphire gem received."), __LINE__);
     // unreachable
