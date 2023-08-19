@@ -38,7 +38,7 @@ uint8_t txn[283] =
 
 // ACCOUNTS
 #define HOOK_ACC (txn + 125U)
-#define OTX_ACC (txn + 147U)
+#define OTXN_ACC (txn + 147U)
 
 // TXS
 #define FLS_OUT (txn + 20U)
@@ -58,15 +58,13 @@ int64_t hook(uint32_t r)
     _g(1, 1);
 
     // ACCOUNT: Hook
-    uint8_t hook_acc[20];
-    hook_account(SBUF(hook_acc));
+    hook_account(HOOK_ACC, 20);
 
     // ACCOUNT: Origin
-    uint8_t otxn_acc[20];
-    otxn_field(SBUF(otxn_acc), sfAccount);
+    otxn_field(OTXN_ACC, 20, sfAccount);
 
     // outgoing
-    if (BUFFER_EQUAL_20(hook_acc, otxn_acc))
+    if (BUFFER_EQUAL_20(HOOK_ACC, OTXN_ACC))
         accept(SBUF("xpop_iou_iou.c: Passing outgoing txn."), __LINE__);
 
     // TT: Import
@@ -82,7 +80,7 @@ int64_t hook(uint32_t r)
 
     // KEYLET: TrustLine
     uint8_t bal_kl[34];
-    if (util_keylet(SBUF(bal_kl), KEYLET_LINE, otxn_acc, SFS_ACCOUNT, (uint32_t)hook_acc, SFS_ACCOUNT, currency, 20) != 34)
+    if (util_keylet(SBUF(bal_kl), KEYLET_LINE, OTXN_ACC, SFS_ACCOUNT, (uint32_t)HOOK_ACC, SFS_ACCOUNT, currency, 20) != 34)
     {
         NOPE("xpop_iou_iou.c: Missing trustline");
     }
@@ -183,22 +181,18 @@ int64_t hook(uint32_t r)
 
     uint8_t high_limit[48];
     uint8_t low_limit[48];
-    int64_t is_low = otxn_acc < hook_acc;
     if (slot_subfield(10, sfHighLimit, 13) != 13 || slot_subfield(10, sfLowLimit, 14) != 14)
         NOPE("xpop_iou_iou.c: Could not slot sfHighLimit/sfLowLimit");
 
     if (slot(SVAR(high_limit), 13) != 48 || slot(SVAR(low_limit), 14) != 48)
         NOPE("xpop_iou_iou.c: Could not dump sfHighLimit/sfLowLimit");
 
-    if (!is_low)
+    int is_high = BUFFER_EQUAL_20(HOOK_ACC, low_limit + 28);
+    int is_low = BUFFER_EQUAL_20(OTXN_ACC, high_limit + 28);
+
+    if (!is_high && !is_low)
     {
-        if (!BUFFER_EQUAL_20(hook_acc, high_limit + 28) || !BUFFER_EQUAL_20(otxn_acc, low_limit + 28))
-            NOPE("xpop_iou_iou.c: Issuer does not match hook account");
-    }
-    else
-    {
-        if (!BUFFER_EQUAL_20(otxn_acc, high_limit + 28) || !BUFFER_EQUAL_20(hook_acc, low_limit + 28))
-            NOPE("xpop_iou_iou.c: Issuer does not match hook account");
+        NOPE("xpop_iou_iou.c: Issuer does not match hook account");
     }
 
     if (!BUFFER_EQUAL_20(currency, high_limit + 8) || !BUFFER_EQUAL_20(currency, low_limit + 8))
@@ -206,16 +200,6 @@ int64_t hook(uint32_t r)
 
     // TXN: PREPARE: Init
     etxn_reserve(1);
-
-    // DA: CREATE MACRO
-    for (int i = 0; GUARD(20), i < 20; i++) {
-        txn[147 + i] = otxn_acc[i];
-    }
-
-    // DA: CREATE MACRO
-    for (int i = 0; GUARD(20), i < 20; i++) {
-        txn[125 + i] = hook_acc[i];
-    }
 
     // TXN PREPARE: FirstLedgerSequence
     uint32_t fls = (uint32_t)ledger_seq() + 1;
