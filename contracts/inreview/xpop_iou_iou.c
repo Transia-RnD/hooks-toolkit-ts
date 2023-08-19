@@ -201,12 +201,6 @@ int64_t hook(uint32_t r)
             NOPE("xpop_iou_iou.c: Issuer does not match hook account");
     }
 
-    uint8_t balance_xfl[8];
-    for (int i = 0; GUARD(8), i < 8; ++i)
-    {
-        balance_xfl[i] = high_limit[i];
-    }
-
     if (!BUFFER_EQUAL_20(currency, high_limit + 8) || !BUFFER_EQUAL_20(currency, low_limit + 8))
         NOPE("xpop_iou_iou.c: Currency does not match static currency USD");
 
