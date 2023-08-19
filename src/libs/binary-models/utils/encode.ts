@@ -1,5 +1,5 @@
-import { decodeAccountID } from '@transia/xrpl'
-import { floatToLEXfl, fromCurrencyToHex } from '../../../utils'
+import { convertStringToHex, decodeAccountID } from '@transia/xrpl'
+import { floatToLEXfl } from '../../../utils'
 import { BaseModel } from '../BaseModel'
 import {
   UInt8,
@@ -57,8 +57,6 @@ function encodeField(
   maxStringLength?: number
 ): string {
   switch (type) {
-    case 'bool':
-      return uint8ToHex(fieldValue as UInt8)
     case 'uint8':
       return uint8ToHex(fieldValue as UInt8)
     case 'uint32':
@@ -158,8 +156,8 @@ export function xflToHex(value: XFL): string {
 }
 
 export function currencyToHex(value: Currency): string {
-  const content = fromCurrencyToHex(value)
-  return content.padEnd(40, '0').toUpperCase() // 40
+  const content = convertStringToHex(value.toUpperCase())
+  return content.padEnd(16, '0').padStart(40, '0').toUpperCase() // 40
 }
 
 export function xrpAddressToHex(value: XRPAddress): string {
