@@ -7,7 +7,7 @@
 
 /**
  * 
- * These functions should be moved into the MACRO.c file
+ * These functions should be moved into the macro.c file
 */
 
 #define UINT256_TO_BUF(buf_raw, i)\
@@ -21,28 +21,28 @@
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
 uint8_t txn[295] =
-    {
-        /* size,upto */
-        /*   3,  0  */ 0x12U, 0x00U, 0x30U,                                                             /* tt = URITokenCreateSellOffer */
-        /*   5,  3  */ 0x22U, 0x80U, 0x00U, 0x00U, 0x00U,                                               /* flags = tfCanonical */
-        /*   5,  8  */ 0x24U, 0x00U, 0x00U, 0x00U, 0x00U,                                               /* sequence = 0 */
-        /*   5, 13  */ 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                                               /* dtag, flipped */
-        /*   6, 18  */ 0x20U, 0x1AU, 0x00U, 0x00U, 0x00U, 0x00U,                                        /* first ledger seq */
-        /*   6, 24  */ 0x20U, 0x1BU, 0x00U, 0x00U, 0x00U, 0x00U,                                        /* last ledger seq */
-        /*  49, 30  */ 0x64U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                          /* amount field 9 or 49 bytes */
-                       0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                          /* cont...  */
-                       0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                          /* cont...  */
-                       0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                          /* cont...  */
-                       0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                          /* cont...  */
-                       0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                          /* cont...  */
-                       0x99,                                                                            /* cont...  */
-        /*  34, 79  */ 0x50U, 0x24U, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   /* hash256 = URITokenID  */
-        /*   9, 113 */ 0x68U, 0x40U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U,                          /* fee      */
-                       0x00U,                                                                           /* cont...  */
-        /*  35, 122 */ 0x73U, 0x21U, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, /* pubkey   */
-        /*  22, 157 */ 0x81U, 0x14U, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,                           /* src acc  */
-        /* 116, 179 */                                                                                  /* emit details */
-        /*   0, 295 */
+{
+    /* size,upto */
+    /*   3,  0  */ 0x12U, 0x00U, 0x30U,                                                             /* tt = URITokenCreateSellOffer */
+    /*   5,  3  */ 0x22U, 0x80U, 0x00U, 0x00U, 0x00U,                                               /* flags = tfCanonical */
+    /*   5,  8  */ 0x24U, 0x00U, 0x00U, 0x00U, 0x00U,                                               /* sequence = 0 */
+    /*   5, 13  */ 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                                               /* dtag, flipped */
+    /*   6, 18  */ 0x20U, 0x1AU, 0x00U, 0x00U, 0x00U, 0x00U,                                        /* first ledger seq */
+    /*   6, 24  */ 0x20U, 0x1BU, 0x00U, 0x00U, 0x00U, 0x00U,                                        /* last ledger seq */
+    /*  49, 30  */ 0x61U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                          /* amount field 9 or 49 bytes */
+                    0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                          /* cont...  */
+                    0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                          /* cont...  */
+                    0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                          /* cont...  */
+                    0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                          /* cont...  */
+                    0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                          /* cont...  */
+                    0x99,                                                                            /* cont...  */
+    /*  34, 79  */ 0x50U, 0x24U, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   /* hash256 = URITokenID  */
+    /*   9, 113 */ 0x68U, 0x40U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U,                          /* fee      */
+                    0x00U,                                                                           /* cont...  */
+    /*  35, 122 */ 0x73U, 0x21U, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, /* pubkey   */
+    /*  22, 157 */ 0x81U, 0x14U, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,                           /* src acc  */
+    /* 116, 179 */                                                                                  /* emit details */
+    /*   0, 295 */
 };
 
 // TX BUILDER
@@ -131,11 +131,8 @@ int64_t hook(uint32_t reserved) {
         *b++ = (fee >> 0) & 0xFFU;
     }
 
-    TRACEHEX(txn);
+    TRACEHEX(txn);  // <- final tx blob
 
-    if (DEBUG)
-        trace(SBUF("txnraw"), SBUF(txn), 1);
-    
     // TXN: Emit/Send Txn
     uint8_t emithash[32];
     int64_t emit_result = emit(SBUF(emithash), SBUF(txn));
