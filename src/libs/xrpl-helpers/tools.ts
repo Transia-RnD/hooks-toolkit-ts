@@ -370,13 +370,36 @@ export async function trust(
   }
 }
 
-export async function accountSet(ctx: Client, account: Wallet): Promise<void> {
+export async function accountSet(
+  ctx: Client,
+  account: Wallet,
+  flag: AccountSetAsfFlags
+): Promise<void> {
   const builtTx: AccountSet = {
     TransactionType: 'AccountSet',
     Account: account.classicAddress as string,
     TransferRate: 0,
     Domain: convertStringToHex('https://usd.transia.io'),
-    SetFlag: AccountSetAsfFlags.asfDefaultRipple,
+    SetFlag: flag,
+  }
+  await appTransaction(ctx, builtTx, account, {
+    hardFail: true,
+    count: 1,
+    delayMs: 1000,
+  })
+}
+
+export async function accountClear(
+  ctx: Client,
+  account: Wallet,
+  flag: AccountSetAsfFlags
+): Promise<void> {
+  const builtTx: AccountSet = {
+    TransactionType: 'AccountSet',
+    Account: account.classicAddress as string,
+    TransferRate: 0,
+    Domain: convertStringToHex('https://usd.transia.io'),
+    ClearFlag: flag,
   }
   await appTransaction(ctx, builtTx, account, {
     hardFail: true,
