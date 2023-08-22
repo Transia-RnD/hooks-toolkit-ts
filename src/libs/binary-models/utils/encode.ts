@@ -6,6 +6,7 @@ import {
   UInt32,
   UInt64,
   UInt224,
+  Hash256,
   VarString,
   XFL,
   Currency,
@@ -65,6 +66,8 @@ function encodeField(
       return uint64ToHex(fieldValue as UInt64)
     case 'uint224':
       return uint224ToHex(fieldValue as UInt224)
+    case 'hash256':
+      return fieldValue as Hash256
     case 'varString':
       if (maxStringLength === undefined) {
         throw Error('maxStringLength is required for type varString')
