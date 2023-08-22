@@ -68,14 +68,46 @@ int64_t hook(uint32_t r)
 
     uint8_t* end = ptr + len;
 
-    // execution to here means it's a valid modification instruction
-    while (ptr < end)
+    uint8_t param_name[1] = {'M'};
+    uint8_t mode_buf[8];
+    if (otxn_param(SBUF(mode_buf), SBUF(param_name)) != 8)
     {
-        GUARD(32);
-        uint8_t* dptr = *ptr == 0 ? txn_id : 0;
-        uint64_t dlen = *ptr == 0 ? 32 : 0;
-        ASSERT(state_set(dptr, dlen, ptr+1, 20) == dlen);
-        ptr += 21;
+        DONEEMPTY();
+    }
+    TRACEHEX(mode_buf);
+
+    uint64_t mode = float_int(*((int64_t*)mode_buf), 0, 1);
+    TRACEVAR(mode);
+    if (mode == 1)
+    {
+        // ACCOUNT
+        TRACESTR("ACCOUNT PROVIDER SET");
+        while (ptr < end)
+        {
+            GUARD(32);
+            uint8_t* dptr = *ptr == 0 ? txn_id : 0;
+            uint64_t dlen = *ptr == 0 ? 32 : 0;
+            ASSERT(state_set(dptr, dlen, ptr+1, 20) == dlen);
+            ptr += 21;
+        }
+    }
+    else
+    {
+        // ISSUED CURRENCY
+        TRACESTR("ISSUED CURRENCY PROVIDER SET");
+        while (ptr < end)
+        {
+            GUARD(40);
+            uint8_t* dptr = *ptr == 0 ? txn_id : 0;
+            uint64_t dlen = *ptr == 0 ? 40 : 0;
+
+            uint8_t hash[32];
+            util_sha512h(SBUF(hash), ptr+1, 40);
+            TRACEHEX(hash);
+
+            ASSERT(state_set(dptr, 32, hash, 32) == 32);
+            ptr += 41;
+        }
     }
 
     DONEEMPTY();
