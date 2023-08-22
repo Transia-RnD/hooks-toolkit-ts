@@ -13,6 +13,7 @@ import {
 import { GlobalFlags } from '@transia/xrpl/dist/npm/models/transactions/common'
 import {
   AccountID,
+  Currency,
   Amount,
   UInt32,
 } from '@transia/ripple-binary-codec/dist/types'
@@ -212,7 +213,7 @@ export function hexNamespace(hookNamespaceSeed: string): string {
   return SHA256(hookNamespaceSeed).toString().toUpperCase()
 }
 
-export function formatBlob(
+export function formatAccountBlob(
   addAccts: string[] = [],
   removeAccts: string[] = []
 ) {
@@ -227,6 +228,28 @@ export function formatBlob(
     const entry = removeAccts[i]
     blob += '01'
     blob += AccountID.from(entry).toHex()
+  }
+  return blob
+}
+
+export function formatAccountCurrencyBlob(
+  currency: string,
+  addAccts: string[] = [],
+  removeAccts: string[] = []
+) {
+  // encode blob
+  let blob = ''
+  for (let i = 0; i < addAccts.length; ++i) {
+    const entry = addAccts[i]
+    blob += '00'
+    blob += AccountID.from(entry).toHex()
+    blob += Currency.from(currency).toHex()
+  }
+  for (let i = 0; i < removeAccts.length; ++i) {
+    const entry = removeAccts[i]
+    blob += '01'
+    blob += AccountID.from(entry).toHex()
+    blob += Currency.from(currency).toHex()
   }
   return blob
 }
