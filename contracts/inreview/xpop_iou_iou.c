@@ -24,18 +24,6 @@ uint8_t txn[283] =
         /*   0,283 */
 };
 
-/**
- *
-    Direct Debit Hook
-        All integer values are marked for size and endianness
-
-        Parameter Name: <20 byte account ID of receiver>
-        Parameter Value: 8 or 48 bytes
-            <8 byte xfl LE allowance per month>
-            [20 byte currency code, not present if xrp]
-            [20 byte issuer code not present is xrp]
-**/
-
 // ACCOUNTS
 #define HOOK_ACC (txn + 125U)
 #define OTXN_ACC (txn + 147U)
@@ -70,20 +58,6 @@ int64_t hook(uint32_t r)
     // TT: Import
     if (otxn_type() != ttIMPORT)
         accept(SBUF("xpop_iou_iou.c: Passing non ttIMPORT txn."), otxn_type());
-
-    // HOOK PARAM: Currency
-    uint8_t currency[20];
-    if (otxn_param(SBUF(currency), SBUF(CUR_N)) != 20)
-    {
-        NOPE("xpop_iou_iou.c: Invalid tx param.");
-    }
-
-    // KEYLET: TrustLine
-    uint8_t bal_kl[34];
-    if (util_keylet(SBUF(bal_kl), KEYLET_LINE, OTXN_ACC, SFS_ACCOUNT, (uint32_t)HOOK_ACC, SFS_ACCOUNT, currency, 20) != 34)
-    {
-        NOPE("xpop_iou_iou.c: Missing trustline");
-    }
 
     // UTIL: XPOP
     int64_t retval = xpop_slot(1, 2);
@@ -189,14 +163,19 @@ int64_t hook(uint32_t r)
 
     int is_high = BUFFER_EQUAL_20(HOOK_ACC, low_limit + 28);
     int is_low = BUFFER_EQUAL_20(OTXN_ACC, high_limit + 28);
+    uint8_t limit_buf = is_high ? low_limit : high_limit;
 
     if (!is_high && !is_low)
     {
         NOPE("xpop_iou_iou.c: Issuer does not match hook account");
     }
 
-    if (!BUFFER_EQUAL_20(currency, high_limit + 8) || !BUFFER_EQUAL_20(currency, low_limit + 8))
-        NOPE("xpop_iou_iou.c: Currency does not match static currency USD");
+    // KEYLET: TrustLine
+    uint8_t bal_kl[34];
+    if (util_keylet(SBUF(bal_kl), KEYLET_LINE, OTXN_ACC, SFS_ACCOUNT, limit_buf + 28, SFS_ACCOUNT, limit_buf + 8, 20) != 34)
+    {
+        NOPE("xpop_iou_iou.c: Missing trustline");
+    }
 
     // TXN: PREPARE: Init
     etxn_reserve(1);
@@ -211,15 +190,7 @@ int64_t hook(uint32_t r)
 
     // TXN PREPARE: Amount
     int64_t amount_token = slot_float(13);
-    TRACEVAR(amount_token);
-    if (!is_low)
-    {
-        float_sto(AMOUNT_OUT, 49, high_limit + 8, 20, high_limit + 28, 20, amount_token, sfAmount);
-    }
-    else
-    {
-        float_sto(AMOUNT_OUT, 49, low_limit + 8, 20, low_limit + 28, 20, amount_token, sfAmount);
-    }
+    float_sto(AMOUNT_OUT, 49, limit_buf + 8, 20, limit_buf + 28, 20, amount_token, sfAmount);
 
     // TXN PREPARE: Dest Tag <- Source Tag
     if (otxn_field(DTAG_OUT, 4, sfSourceTag) == 4)
