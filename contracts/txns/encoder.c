@@ -1,6 +1,6 @@
 /**
  * Encoder Playground
- * You want to use this to check and make "Field Type Encodings". Also known as Serialized Objects.
+ * You want to use this to check and make Serialized Objects.
  * There is an STO that does this but sometimes you also may want to use an _ENCODE macro.
  * 
  */
