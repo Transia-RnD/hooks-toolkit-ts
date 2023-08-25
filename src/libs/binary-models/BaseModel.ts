@@ -6,12 +6,14 @@ export type ModelClass<T extends BaseModel> = new (...args: any[]) => T
 export type MetadataElement<T extends BaseModel> = {
   field: string
   type:
-    | 'bool'
     | 'uint8'
     | 'uint32'
     | 'uint64'
     | 'uint224'
+    | 'hash256'
     | 'varString'
+    | 'xfl'
+    | 'currency'
     | 'xrpAddress'
     | 'model'
     | 'varModelArray'
@@ -52,9 +54,6 @@ export abstract class BaseModel {
       modelClass: fieldModelClass,
     } of metadata) {
       switch (type) {
-        case 'bool':
-          length += 2
-          break
         case 'uint8':
           length += 2
           break
@@ -67,14 +66,22 @@ export abstract class BaseModel {
         case 'uint224':
           length += 56
           break
+        case 'hash256':
+          length += 64
+          break
         case 'varString':
           if (maxStringLength === undefined) {
             throw Error('maxStringLength is required for type varString')
           }
           length += maxStringLength * 2 + (maxStringLength <= 2 ** 8 ? 2 : 4)
           break
+        case 'xfl':
+          length += 16
+        case 'currency':
+          length += 40
+          break
         case 'xrpAddress':
-          length += 72
+          length += 40
           break
         case 'model':
           length += BaseModel.getHexLength(fieldModelClass)
@@ -102,9 +109,6 @@ export abstract class BaseModel {
 
     for (const { type, maxStringLength, metadata: modelMetadata } of metadata) {
       switch (type) {
-        case 'bool':
-          length += 2
-          break
         case 'uint8':
           length += 2
           break
@@ -117,14 +121,23 @@ export abstract class BaseModel {
         case 'uint224':
           length += 56
           break
+        case 'hash256':
+          length += 64
+          break
         case 'varString':
           if (maxStringLength === undefined) {
             throw Error('maxStringLength is required for type varString')
           }
           length += maxStringLength * 2 + (maxStringLength <= 2 ** 8 ? 2 : 4)
           break
+        case 'xfl':
+          length += 16
+          break
+        case 'currency':
+          length += 40
+          break
         case 'xrpAddress':
-          length += 72
+          length += 40
           break
         case 'model':
           length += BaseModel.getHexLengthMeta(modelMetadata)
@@ -153,8 +166,6 @@ export abstract class BaseModel {
       .getMetadata()
       .map((metadata: MetadataElement<T>) => {
         switch (metadata.type) {
-          case 'bool':
-            return 0
           case 'uint8':
             return 0
           case 'uint32':
@@ -163,6 +174,14 @@ export abstract class BaseModel {
             return BigInt(0)
           case 'uint224':
             return BigInt(0)
+          case 'hash256':
+            return ''
+          case 'varString':
+            return ''
+          case 'xfl':
+            return BigInt(0)
+          case 'currency':
+            return ''
           case 'varString':
             return ''
           case 'xrpAddress':

@@ -26,8 +26,6 @@ export type SetHookParams = {
   seed: string
   hooks: Hook[]
   flags: number | SetHookFlagsInterface
-  noop?: boolean | false
-  override?: boolean | true
 }
 
 export interface SmartContractParams {

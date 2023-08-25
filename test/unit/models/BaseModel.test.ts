@@ -43,7 +43,7 @@ describe('BaseModel', () => {
       }
 
       const hexLength = BaseModel.getHexLength(SampleModel)
-      expect(hexLength).toBe(72)
+      expect(hexLength).toBe(40)
     })
   })
 })

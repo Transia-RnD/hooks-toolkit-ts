@@ -1,6 +1,6 @@
 {
   "name": "@transia/hooks-toolkit",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "A toolkit for interacting with smart contracts (hooks) on the XRP Ledger.",
   "main": "dist/npm/src/index.js",
   "files": [
@@ -11,7 +11,7 @@
     "build:hooks": "c2wasm-cli contracts build",
     "build:hook": "c2wasm-cli",
     "test:unit": "jest --config=jest.config.unit.js",
-    "test:integration": "jest --config=jest.config.integration.js",
+    "test:integration": "jest --config=jest.config.integration.js --runInBand",
     "lint": "eslint ./src/**/* --ext .ts",
     "format": "npx prettier --write ./src"
   },
@@ -19,16 +19,16 @@
     "name": "Denis Angell",
     "url": "https://github.com/dangell7"
   },
-  "license": "MIT",
+  "license": "GNU",
   "dependencies": {
-    "@transia/xrpl": "^2.7.3-alpha.3",
-    "c2wasm-cli": "^1.0.5",
+    "@transia/xpop-toolkit": "^1.0.2",
+    "@transia/xrpl": "^2.7.3-alpha.10",
+    "c2wasm-cli": "^1.0.6",
     "chai": "^4.3.7",
-    "crypto-js": "^4.1.1",
-    "lodash": "^4.17.21"
+    "crypto-js": "^4.1.1"
   },
   "devDependencies": {
-    "@tsconfig/node16": "^1.0.3",
+    "@tsconfig/node16": "^16.1.0",
     "@types/chai": "^4.3.4",
     "@types/crypto-js": "^4.1.1",
     "@types/jest": "^29.5.0",
@@ -36,10 +36,10 @@
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
     "eslint": "^8.36.0",
-    "eslint-config-prettier": "^8.7.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^4.2.1",
     "jest": "^29.5.0",
-    "prettier": "^2.8.4",
+    "prettier": "^3.0.2",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"

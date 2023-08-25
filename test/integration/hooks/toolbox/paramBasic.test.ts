@@ -14,11 +14,12 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
@@ -32,10 +33,6 @@ describe('paramBasic', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-
-  it('tx param basic - success', async () => {
     const hook = createHookPayload(
       0,
       'param_basic',
@@ -48,7 +45,16 @@ describe('paramBasic', () => {
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('tx param basic - success', async () => {
     // PAYMENT IN
     const param1 = new iHookParamEntry(
       new iHookParamName('TEST'),
@@ -63,7 +69,7 @@ describe('paramBasic', () => {
       Amount: xrpToDrops(10),
       HookParameters: [param1.toXrpl()],
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })

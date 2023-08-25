@@ -1,5 +1,17 @@
+import { convertStringToHex, decodeAccountID } from '@transia/xrpl'
+import { floatToLEXfl } from '../../../utils'
 import { BaseModel } from '../BaseModel'
-import { UInt8, UInt32, UInt64, UInt224, VarString, XRPAddress } from './types'
+import {
+  UInt8,
+  UInt32,
+  UInt64,
+  UInt224,
+  Hash256,
+  VarString,
+  XFL,
+  Currency,
+  XRPAddress,
+} from './types'
 
 export function encodeModel<T extends BaseModel>(model: T): string {
   const metadata = model.getMetadata()
@@ -46,8 +58,6 @@ function encodeField(
   maxStringLength?: number
 ): string {
   switch (type) {
-    case 'bool':
-      return uint8ToHex(fieldValue as UInt8)
     case 'uint8':
       return uint8ToHex(fieldValue as UInt8)
     case 'uint32':
@@ -56,11 +66,19 @@ function encodeField(
       return uint64ToHex(fieldValue as UInt64)
     case 'uint224':
       return uint224ToHex(fieldValue as UInt224)
+    case 'hash256':
+      return fieldValue as Hash256
     case 'varString':
       if (maxStringLength === undefined) {
         throw Error('maxStringLength is required for type varString')
       }
       return varStringToHex(fieldValue as string, maxStringLength)
+    case 'xfl':
+      return xflToHex(fieldValue as XFL)
+    case 'currency':
+      return currencyToHex(fieldValue as Currency)
+    case 'xrpAddress':
+      return xrpAddressToHex(fieldValue as XRPAddress)
     case 'xrpAddress':
       return xrpAddressToHex(fieldValue as XRPAddress)
     case 'model':
@@ -136,14 +154,16 @@ export function varStringToHex(
   return (prefixLength + paddedContent).toUpperCase()
 }
 
+export function xflToHex(value: XFL): string {
+  return floatToLEXfl(String(value))
+}
+
+export function currencyToHex(value: Currency): string {
+  const content = convertStringToHex(value.toUpperCase())
+  return content.padEnd(16, '0').padStart(40, '0').toUpperCase() // 40
+}
+
 export function xrpAddressToHex(value: XRPAddress): string {
-  if (value.length > 35) {
-    throw Error(`XRP address length ${value.length} exceeds 35 characters`)
-  }
-  if (value.length < 25) {
-    throw Error(`XRP address length ${value.length} is less than 25 characters`)
-  }
-  const length = uint8ToHex(value.length)
-  const content = Buffer.from(value, 'utf8').toString('hex')
-  return (length + content.padEnd(70, '0')).toUpperCase() // 35 * 2 = 70
+  const content = decodeAccountID(value)
+  return Buffer.from(content).toString('hex').toUpperCase() // 40
 }

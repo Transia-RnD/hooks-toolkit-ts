@@ -6,25 +6,18 @@ import {
   setupClient,
   teardownClient,
   serverUrl,
+  close,
 } from '../../../../src/libs/xrpl-helpers'
-// src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
-  StateUtility,
+  ExecutionUtility,
   createHookPayload,
   setHooksV3,
-  iHookParamEntry,
-  iHookParamName,
-  iHookParamValue,
-  ExecutionUtility,
+  clearAllHooksV3,
 } from '../../../../dist/npm/src'
-import {
-  TestModel,
-  decodeModel,
-} from '../../../../dist/npm/src/libs/binary-models'
 
-describe('keyletHookStateDir', () => {
+describe('offerCreate', () => {
   let testContext: XrplIntegrationTestContext
 
   beforeAll(async () => {
@@ -33,15 +26,14 @@ describe('keyletHookStateDir', () => {
   afterAll(async () => teardownClient(testContext))
   // beforeEach(async () => {})
 
-  it('invoke on io - incoming', async () => {
+  it('txn offer create hook', async () => {
     const hook = createHookPayload(
       0,
-      'keylet_hook_state_dir',
-      'keylet_hook_state_dir',
+      'txn_offer_create',
+      'txn_offer_create',
       SetHookFlags.hsfOverride,
       ['Invoke']
     )
-
     await setHooksV3({
       client: testContext.client,
       seed: testContext.alice.seed,
@@ -51,29 +43,12 @@ describe('keyletHookStateDir', () => {
     // INVOKE IN
     const aliceWallet = testContext.alice
     const bobWallet = testContext.bob
-
-    const testModel = new TestModel(BigInt(1685216402734), 'hello1')
-
-    const param1 = new iHookParamEntry(
-      new iHookParamName('TEST'),
-      new iHookParamValue(testModel.encode(), true)
-    )
-    console.log(testModel.encode())
-
-    console.log(
-      decodeModel(
-        '000001885EB99D590668656C6C6F310000000000000000000000000000',
-        TestModel
-      )
-    )
-
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
       Account: bobWallet.classicAddress,
       Destination: aliceWallet.classicAddress,
-      HookParameters: [param1.toXrpl()],
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
@@ -81,12 +56,9 @@ describe('keyletHookStateDir', () => {
       testContext.client,
       result.meta as TransactionMetadata
     )
-    console.log(hookExecutions.executions[0].HookReturnString)
-    const hookStateDir = await StateUtility.getHookStateDir(
-      testContext.client,
-      testContext.alice.classicAddress,
-      'keylet_hook_state_dir'
+    expect(hookExecutions.executions[0].HookReturnString).toMatch(
+      'txn_offer_create.c: Tx emitted success.'
     )
-    console.log(hookStateDir)
+    await close(testContext.client)
   })
 })

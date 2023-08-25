@@ -7,12 +7,16 @@ import {
   uint64ToHex,
   uint224ToHex,
   varStringToHex,
+  xflToHex,
+  currencyToHex,
   xrpAddressToHex,
   lengthToHex,
   UInt64,
   UInt8,
   // VarModelArray,
   VarString,
+  XFL,
+  Currency,
   XRPAddress,
 } from '../../../src/libs/binary-models'
 
@@ -199,33 +203,35 @@ describe('encode', () => {
     })
   })
 
+  describe('xflToHex', () => {
+    test('float', () => {
+      const testXfl = 10
+      const expectedResult = '0080C6A47E8DC354'
+      expect(xflToHex(testXfl)).toBe(expectedResult)
+    })
+  })
+
+  describe('currencyToHex', () => {
+    test('3 character currency', () => {
+      const testCurrency = 'APL'
+      const expectedResult = '41504C0000000000000000000000000000000000'
+
+      expect(currencyToHex(testCurrency)).toBe(expectedResult)
+    })
+
+    test('4 character currency', () => {
+      const testCurrency = 'APPL'
+      const expectedResult = '4150504C00000000000000000000000000000000'
+
+      expect(currencyToHex(testCurrency)).toBe(expectedResult)
+    })
+  })
+
   describe('xrpAddressToHex', () => {
-    test('25 character address', () => {
-      const testAddress = 'r4JkU6FyU6eR4d7rN5r5K5gD6'
-      const expectedResult =
-        '1972344A6B5536467955366552346437724E3572354B3567443600000000000000000000'
-
-      expect(xrpAddressToHex(testAddress)).toBe(expectedResult)
-    })
-
     test('35 character address', () => {
-      const testAddress = 'r9XzR5JHpe5BvKJ6UgKjQZWSfmq3q3UQjKU'
-      const expectedResult =
-        '237239587A52354A4870653542764B4A3655674B6A515A5753666D7133713355516A4B55'
-
+      const testAddress = 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh'
+      const expectedResult = 'B5F762798A53D543A014CAF8B297CFF8F2F937E8'
       expect(xrpAddressToHex(testAddress)).toBe(expectedResult)
-    })
-
-    test('exceeds 35 character limit', () => {
-      const testAddress = 'r9XzR5JHpe5BvKJ6UgKjQZWSfmq3q3UQjKU1'
-      const errorMessage = 'XRP address length 36 exceeds 35 characters'
-      expect(() => xrpAddressToHex(testAddress)).toThrow(errorMessage)
-    })
-
-    test('less than 25 character limit', () => {
-      const testAddress = 'r9XzR5JHpe5BvKJ6UgKjQZWS'
-      const errorMessage = 'XRP address length 24 is less than 25 characters'
-      expect(() => xrpAddressToHex(testAddress)).toThrow(errorMessage)
     })
   })
 
@@ -274,6 +280,48 @@ describe('encode', () => {
       expect(hex).toBe('01')
     })
 
+    test('single xfl field', () => {
+      const SampleModel = class extends BaseModel {
+        value: XFL
+
+        constructor(value: XFL) {
+          super()
+          this.value = value
+        }
+
+        getMetadata(): Metadata {
+          return [{ field: 'value', type: 'xfl' }]
+        }
+      }
+
+      const value = 10
+      const sample = new SampleModel(value)
+
+      const hex = encodeModel(sample)
+      expect(hex).toBe('0080C6A47E8DC354')
+    })
+
+    test('single currency field', () => {
+      const SampleModel = class extends BaseModel {
+        currency: Currency
+
+        constructor(currency: Currency) {
+          super()
+          this.currency = currency
+        }
+
+        getMetadata(): Metadata {
+          return [{ field: 'currency', type: 'currency' }]
+        }
+      }
+
+      const currency = 'APPL'
+      const sample = new SampleModel(currency)
+
+      const hex = encodeModel(sample)
+      expect(hex).toBe('4150504C00000000000000000000000000000000')
+    })
+
     test('single xrpAddress field', () => {
       const SampleModel = class extends BaseModel {
         owner: XRPAddress
@@ -292,9 +340,7 @@ describe('encode', () => {
       const sample = new SampleModel(owner)
 
       const hex = encodeModel(sample)
-      expect(hex).toBe(
-        '2272486239434A4157794234726A39315652576E3936446B756B47346277647479546800'
-      )
+      expect(hex).toBe('B5F762798A53D543A014CAF8B297CFF8F2F937E8')
     })
 
     test('multiple fields', () => {
@@ -340,7 +386,7 @@ describe('encode', () => {
       )
       const hex = encodeModel(sample)
       expect(hex).toBe(
-        '012272486239434A4157794234726A39315652576E3936446B756B4734627764747954680004746573740000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003B9ACA00'
+        '01B5F762798A53D543A014CAF8B297CFF8F2F937E804746573740000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003B9ACA00'
       )
     })
   })
@@ -399,7 +445,7 @@ describe('encode', () => {
       const sample = new SampleModel(nestedModel)
       const hex = encodeModel(sample)
       expect(hex).toBe(
-        '012272486239434A4157794234726A39315652576E3936446B756B4734627764747954680004746573740000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003B9ACA00'
+        '01B5F762798A53D543A014CAF8B297CFF8F2F937E804746573740000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003B9ACA00'
       )
     })
 
@@ -471,7 +517,7 @@ describe('encode', () => {
       const sample = new SampleModel(nestedModels)
       const hex = encodeModel(sample)
       expect(hex).toBe(
-        '02012272486239434A4157794234726A39315652576E3936446B756B473462776474795468000E6E6573746564206D6F64656C203100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003B9ACA00022272486239434A4157794234726A39315652576E3936446B756B473462776474795468000E6E6573746564206D6F64656C203200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000293DF0B'
+        '0201B5F762798A53D543A014CAF8B297CFF8F2F937E80E6E6573746564206D6F64656C203100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003B9ACA0002B5F762798A53D543A014CAF8B297CFF8F2F937E80E6E6573746564206D6F64656C203200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000293DF0B'
       )
     })
   })

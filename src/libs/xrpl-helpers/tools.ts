@@ -10,6 +10,8 @@ import {
   AccountInfoRequest,
   convertStringToHex,
   Transaction,
+  OfferCreate,
+  OfferCreateFlags,
 } from '@transia/xrpl'
 import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
 import { RippleState } from '@transia/xrpl/dist/npm/models/ledger'
@@ -57,7 +59,7 @@ export class Account {
       this.account = this.wallet.classicAddress
     }
     if (name === 'elsa') {
-      this.wallet = Wallet.fromSeed('sEdTeiqmPdUob32gyD6vPUskq1Z7TP3')
+      this.wallet = Wallet.fromSeed('sspu32LMDPU9V5NCUb584FqbdPsZ6')
       this.account = this.wallet.classicAddress
     }
   }
@@ -231,7 +233,7 @@ export async function fund(
         Destination: acct as string,
         Amount: uicx.amount as unknown as IssuedCurrencyAmount,
       }
-      
+
       await appTransaction(ctx, builtTx, wallet, {
         hardFail: true,
         count: 1,
@@ -275,6 +277,73 @@ export async function pay(
   }
 }
 
+export async function sell(
+  ctx: Client,
+  uicx: IC | ICXRP,
+  signer: Wallet,
+  rate: number
+): Promise<void> {
+  try {
+    // 1, 2 = 1 *, 1 /
+    const takerGets: IssuedCurrencyAmount = {
+      value: String(uicx.value),
+      currency: uicx.currency,
+      issuer: uicx.issuer,
+    }
+    const builtTx: OfferCreate = {
+      TransactionType: 'OfferCreate',
+      Account: signer.classicAddress,
+      TakerGets: takerGets,
+      TakerPays: xrpToDrops(String(rate * uicx.value)),
+      Flags: OfferCreateFlags.tfSell,
+    }
+    await appTransaction(ctx, builtTx, signer, {
+      hardFail: true,
+      count: 1,
+      delayMs: 1000,
+    })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    console.log(error)
+    console.log(error.data?.decoded)
+    console.log(error.data?.tx)
+    throw error
+  }
+}
+
+export async function buy(
+  ctx: Client,
+  uicx: IC | ICXRP,
+  signer: Wallet,
+  rate: number
+): Promise<void> {
+  try {
+    // 1, 2 = 1 *, 1 /
+    const takerPays: IssuedCurrencyAmount = {
+      value: String(uicx.value),
+      currency: uicx.currency,
+      issuer: uicx.issuer,
+    }
+    const builtTx: OfferCreate = {
+      TransactionType: 'OfferCreate',
+      Account: signer.classicAddress,
+      TakerGets: xrpToDrops(String(rate * uicx.value)),
+      TakerPays: takerPays,
+    }
+    await appTransaction(ctx, builtTx, signer, {
+      hardFail: true,
+      count: 1,
+      delayMs: 1000,
+    })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    console.log(error)
+    console.log(error.data?.decoded)
+    console.log(error.data?.tx)
+    throw error
+  }
+}
+
 export async function trust(
   ctx: Client,
   uicx: IC | ICXRP,
@@ -301,13 +370,36 @@ export async function trust(
   }
 }
 
-export async function accountSet(ctx: Client, account: Wallet): Promise<void> {
+export async function accountSet(
+  ctx: Client,
+  account: Wallet,
+  flag: AccountSetAsfFlags
+): Promise<void> {
   const builtTx: AccountSet = {
     TransactionType: 'AccountSet',
     Account: account.classicAddress as string,
     TransferRate: 0,
     Domain: convertStringToHex('https://usd.transia.io'),
-    SetFlag: AccountSetAsfFlags.asfDefaultRipple,
+    SetFlag: flag,
+  }
+  await appTransaction(ctx, builtTx, account, {
+    hardFail: true,
+    count: 1,
+    delayMs: 1000,
+  })
+}
+
+export async function accountClear(
+  ctx: Client,
+  account: Wallet,
+  flag: AccountSetAsfFlags
+): Promise<void> {
+  const builtTx: AccountSet = {
+    TransactionType: 'AccountSet',
+    Account: account.classicAddress as string,
+    TransferRate: 0,
+    Domain: convertStringToHex('https://usd.transia.io'),
+    ClearFlag: flag,
   }
   await appTransaction(ctx, builtTx, account, {
     hardFail: true,

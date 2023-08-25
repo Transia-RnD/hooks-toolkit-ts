@@ -11,7 +11,7 @@ int64_t hook(uint32_t reserved) {
     unsigned char amount_buffer[SFS_AMOUNT_IOU];
     int64_t amount_len = otxn_field(SBUF(amount_buffer), sfAmount);
     if (amount_len != 8) {
-        DONE("filter_on_xrp: Ignoring non XRP Transaction");
+        rollback(SBUF("filter_on_xrp: Ignoring non XRP Transaction"), __LINE__);
     }
 
     int64_t amount_drops = AMOUNT_TO_DROPS(amount_buffer);

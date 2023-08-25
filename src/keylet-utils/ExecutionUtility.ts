@@ -24,8 +24,6 @@ export class ExecutionUtility {
       throw new Error('xrpl Client is not connected')
     }
 
-    console.log(meta);
-    
     const { HookExecutions } = meta
     if (!HookExecutions) {
       throw Error('No HookExecutions found')
@@ -80,7 +78,6 @@ export class ExecutionUtility {
 
     if (!emittedCreatedNodes || emittedCreatedNodes.length === 0) {
       // throw Error('No `CreatedNodes` found')
-      console.log(AffectedNodes)
       console.log('No `CreatedNodes` found')
       return new iHookEmittedTxs([])
     }

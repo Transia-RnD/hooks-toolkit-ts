@@ -10,10 +10,11 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
   padHexString,
   StateUtility,
   flipHex,
@@ -26,10 +27,6 @@ describe('stateBasic', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-
-  it('state basic - success', async () => {
     const hook = createHookPayload(
       0,
       'state_basic',
@@ -43,7 +40,16 @@ describe('stateBasic', () => {
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('state basic - success', async () => {
     // INVOKE OUT
     const aliceWallet = testContext.alice
     const aliceAccHex = AccountID.from(aliceWallet.classicAddress).toHex()
@@ -51,7 +57,7 @@ describe('stateBasic', () => {
       TransactionType: 'Invoke',
       Account: aliceWallet.classicAddress,
     }
-    await Application.testHookTx(testContext.client, {
+    await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })

@@ -26,6 +26,5 @@ export class iHookExecutions {
         ).replace(/\0[\s\S]*$/g, ''),
       } as iHookExecution
     })
-    console.log(this.executions)
   }
 }

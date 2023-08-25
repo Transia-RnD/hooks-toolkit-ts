@@ -16,20 +16,16 @@ import {
 
 export async function main(): Promise<void> {
   const serverUrl = 'wss://hooks-testnet-v3.xrpl-labs.com'
-  const client = new Client(serverUrl);
+  const client = new Client(serverUrl)
   await client.connect()
   client.networkID = await client.getNetworkID()
-  
+
   const aliceWallet = Wallet.fromSeed('ss3DnbW3uTbebBLpp42ayuarNfuY4')
   const bobWallet = Wallet.fromSeed('shQERpGMonKeyxZoRExeEonandMgL')
 
-  const hook = createHookPayload(
-    0,
-    'base',
-    'base',
-    SetHookFlags.hsfOverride,
-    ['Payment']
-  )
+  const hook = createHookPayload(0, 'base', 'base', SetHookFlags.hsfOverride, [
+    'Payment',
+  ])
 
   await setHooksV3({
     client: client,

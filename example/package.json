@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build:hook": "c2wasm-cli contracts/base.c build/",
+    "build:hook:xpop": "c2wasm-cli contracts/xpop_nft_uri.c build/",
     "standalone": "yarn run build:hook && ts-node src/standalone.ts",
     "minicluster": "yarn run build:hook && ts-node src/minicluster.ts",
     "testnet": "yarn run build:hook && ts-node src/testnet.ts",
+    "testnet:xpop": "yarn run build:hook:xpop && ts-node src/testnet-xpop.ts",
     "lint": "eslint ./src/**/* --ext .ts",
     "format": "npx prettier --write ./src"
   },
@@ -17,10 +19,8 @@
   },
   "license": "ISC",
   "dependencies": {
-    "@transia/hooks-toolkit": "/Users/denisangell/projects/xrpl-labs/hooks-toolkit-ts",
-    "c2wasm-cli": "^1.0.5",
-    "dotenv": "^16.3.1",
-    "xrpld-cli": "^1.0.4"
+    "@transia/hooks-toolkit": "^1.0.4",
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",

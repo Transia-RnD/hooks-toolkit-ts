@@ -1,5 +1,5 @@
 // xrpl
-import { Invoke, SetHookFlags } from '@transia/xrpl'
+import { Invoke, SetHookFlags, TransactionMetadata } from '@transia/xrpl'
 // xrpl-helpers
 import {
   XrplIntegrationTestContext,
@@ -7,61 +7,69 @@ import {
   teardownClient,
   serverUrl,
 } from '../../../../src/libs/xrpl-helpers'
-// src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
-  StateUtility,
+  ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
-describe('keyletTrustline', () => {
+describe('common_memo', () => {
   let testContext: XrplIntegrationTestContext
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-  // beforeEach(async () => {})
-
-  it('invoke on io - incoming', async () => {
     const hook = createHookPayload(
       0,
-      'keylet_trustline',
-      'keylet_trustline',
+      'common_memo',
+      'common_memo',
       SetHookFlags.hsfOverride,
       ['Invoke']
     )
-
     await setHooksV3({
       client: testContext.client,
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('common memo hook', async () => {
     // INVOKE IN
     const aliceWallet = testContext.alice
     const bobWallet = testContext.bob
+    const Memos = [
+      {
+        Memo: {
+          MemoData: '746573746D656D6F',
+          MemoFormat: '756E7369676E65642F7369676E6174757265',
+        },
+      },
+    ]
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
       Account: bobWallet.classicAddress,
       Destination: aliceWallet.classicAddress,
+      Memos: Memos,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
-    // const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
-    //   testContext.client,
-    //   result.meta as TransactionMetadata
-    // )
-    // console.log(hookExecutions.executions[0].HookReturnString)
-    const hookStateDir = await StateUtility.getHookStateDir(
+    const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
       testContext.client,
-      testContext.alice.classicAddress,
-      'keylet_owner_dir'
+      result.meta as TransactionMetadata
     )
-    console.log(hookStateDir)
+    expect(hookExecutions.executions[0].HookReturnString).toMatch(
+      'common_memo: Finished.'
+    )
   })
 })

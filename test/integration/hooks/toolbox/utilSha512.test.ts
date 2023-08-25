@@ -16,11 +16,12 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
@@ -36,10 +37,6 @@ describe('utilSha512', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-
-  it('util sha512 - xrp hashes dont match', async () => {
     const hook = createHookPayload(
       0,
       'util_sha512',
@@ -52,7 +49,16 @@ describe('utilSha512', () => {
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('util sha512 - xrp hashes dont match', async () => {
     try {
       // PAYMENT OUT
       const bobAcct = AccountID.from(testContext.bob.classicAddress)
@@ -73,7 +79,7 @@ describe('utilSha512', () => {
         Amount: xrpToDrops(11),
         HookParameters: [param1.toXrpl(), param2.toXrpl()],
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: aliceWallet,
         tx: builtTx,
       })
@@ -83,19 +89,6 @@ describe('utilSha512', () => {
   })
 
   it('util sha512 - xrp hashes match', async () => {
-    const hook = createHookPayload(
-      0,
-      'util_sha512',
-      'util_sha512',
-      SetHookFlags.hsfOverride,
-      ['Payment']
-    )
-    await setHooksV3({
-      client: testContext.client,
-      seed: testContext.alice.seed,
-      hooks: [{ Hook: hook }],
-    } as SetHookParams)
-
     // PAYMENT OUT
     const bobAcct = AccountID.from(testContext.bob.classicAddress)
     const param1 = new iHookParamEntry(
@@ -115,7 +108,7 @@ describe('utilSha512', () => {
       Amount: xrpToDrops(10),
       HookParameters: [param1.toXrpl(), param2.toXrpl()],
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })
@@ -130,19 +123,6 @@ describe('utilSha512', () => {
   })
 
   it('util sha512 - token hashes dont match', async () => {
-    const hook = createHookPayload(
-      0,
-      'util_sha512',
-      'util_sha512',
-      SetHookFlags.hsfOverride,
-      ['Payment']
-    )
-    await setHooksV3({
-      client: testContext.client,
-      seed: testContext.alice.seed,
-      hooks: [{ Hook: hook }],
-    } as SetHookParams)
-
     try {
       // PAYMENT OUT
       const bobAcct = AccountID.from(testContext.bob.classicAddress)
@@ -175,7 +155,7 @@ describe('utilSha512', () => {
         Amount: amount,
         HookParameters: [param1.toXrpl(), param2.toXrpl()],
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: aliceWallet,
         tx: builtTx,
       })
@@ -185,19 +165,6 @@ describe('utilSha512', () => {
   })
 
   it('util sha512 - token hashes match', async () => {
-    const hook = createHookPayload(
-      0,
-      'util_sha512',
-      'util_sha512',
-      SetHookFlags.hsfOverride,
-      ['Payment']
-    )
-    await setHooksV3({
-      client: testContext.client,
-      seed: testContext.alice.seed,
-      hooks: [{ Hook: hook }],
-    } as SetHookParams)
-
     // PAYMENT OUT
     const bobAcct = AccountID.from(testContext.bob.classicAddress)
     const param1 = new iHookParamEntry(
@@ -230,7 +197,7 @@ describe('utilSha512', () => {
       Amount: amount,
       HookParameters: [param1.toXrpl(), param2.toXrpl()],
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })

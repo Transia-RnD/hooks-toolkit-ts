@@ -1,4 +1,8 @@
-# The Hooks Tookkit (Typescript)
+# The Hooks Toolkit (Typescript)
+
+## Global Prerequsits
+
+`$ npm i -g c2wasm-cli xrpld-cli`
 
 ## Compile Hooks
 
@@ -19,7 +23,7 @@ You can also build a single hook with;
 
 ## Debug the test env
 
-`tail -f debug.log | grep HookTrace`
+`tail -f xrpld/debug.log | grep HookTrace`
 
 ## Test the Hook Library
 
@@ -31,7 +35,7 @@ Before you can run the integration tests you must have a standalone rippled serv
 
 - Full env with explorer:
 
-- - `$ yarn local-up`
+- - `$ xrpld-cli up:standalone`
 
 - Docker standalone only:
 

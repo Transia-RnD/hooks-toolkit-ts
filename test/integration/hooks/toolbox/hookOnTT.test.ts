@@ -9,10 +9,11 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
 // HookOnTT: ACCEPT: success
@@ -24,7 +25,13 @@ describe('hookOnTT', () => {
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
   })
-  afterAll(async () => teardownClient(testContext))
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
   it('invoke on tt - success', async () => {
     const hook = createHookPayload(
@@ -48,8 +55,8 @@ describe('hookOnTT', () => {
       Account: bobWallet.classicAddress,
       Destination: aliceWallet.classicAddress,
     }
-    await Application.testHookTx(testContext.client, {
-      wallet: aliceWallet,
+    await Xrpld.submit(testContext.client, {
+      wallet: bobWallet,
       tx: builtTx,
     })
   })
@@ -77,10 +84,11 @@ describe('hookOnTT', () => {
         Destination: aliceWallet.classicAddress,
         Amount: xrpToDrops(1),
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: bobWallet,
         tx: builtTx,
       })
+      throw Error('invalid')
     } catch (error: unknown) {
       if (error instanceof Error) {
         expect(error.message).toEqual(
