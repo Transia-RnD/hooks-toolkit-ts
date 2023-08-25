@@ -1,7 +1,7 @@
 // xrpl
 import {
   Invoke,
-  LedgerEntryRequest,
+  // LedgerEntryRequest,
   SetHookFlags,
   TransactionMetadata,
   URITokenCreateSellOffer,
@@ -31,7 +31,7 @@ import {
 } from '../../../../dist/npm/src'
 import { hashURIToken } from '@transia/xrpl/dist/npm/utils/hashes'
 import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
-import { URIToken as LeURIToken } from '@transia/xrpl/dist/npm/models/ledger'
+// import { URIToken as LeURIToken } from '@transia/xrpl/dist/npm/models/ledger'
 
 describe('offerCreate', () => {
   let testContext: XrplIntegrationTestContext
