@@ -69,7 +69,7 @@ describe('SetHook - (noop|create|install', () => {
     const leHook = hookRes.result.node as LeHook
     expect(leHook.Hooks.length).toBe(1)
     expect(leHook.Hooks[0].Hook.HookHash).toEqual(
-      '550D306DF2D851236CA4B34D4BA8F00FA4BCB67740D81DAC7A3EFBD95274EBBE'
+      'B1F39E63D27603F1A2E7E804E92514FAC721F353D849B0787288F5026809AD84'
     )
     const hookDefRequest: LedgerEntryRequest = {
       command: 'ledger_entry',

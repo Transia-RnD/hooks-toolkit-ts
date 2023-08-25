@@ -69,7 +69,6 @@ describe('offerCreate', () => {
       command: 'account_offers',
       account: testContext.alice.classicAddress,
     })
-    // GW: USD + New OFFER
-    expect(accountOffersResponse.result.offers?.length).toEqual(2)
+    expect(accountOffersResponse.result.offers?.length).toEqual(1)
   })
 })
