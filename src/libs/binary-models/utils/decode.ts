@@ -124,7 +124,9 @@ export function decodeModel<T extends BaseModel>(
 export function decodeMetadata(
   hex: string,
   metadata: Metadata
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Record<string, any> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const model: Record<string, any> = {}
   let hexIndex = 0
   let decodedField = null

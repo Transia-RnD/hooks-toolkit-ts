@@ -121,6 +121,7 @@ export async function accountSeq(
   try {
     const response = await ctx.request(request)
     return response.result.account_data.Sequence
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.log(error.message)
     return 0

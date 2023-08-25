@@ -196,6 +196,7 @@ export async function submitTransaction({
       // eslint-disable-next-line no-await-in-loop -- We are retrying in a loop on purpose
       response = await client.submit(transaction, { wallet })
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.log(error)
     console.log(JSON.stringify(error.data.decoded))

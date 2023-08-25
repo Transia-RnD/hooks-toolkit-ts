@@ -1,6 +1,7 @@
 import { encodeModel } from './utils/encode'
 import { decodeModel } from './utils/decode'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ModelClass<T extends BaseModel> = new (...args: any[]) => T
 
 export type MetadataElement<T extends BaseModel> = {
