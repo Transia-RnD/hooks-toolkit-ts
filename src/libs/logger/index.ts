@@ -2,6 +2,6 @@ import winston, { createLogger } from 'winston'
 
 export const appLogger = createLogger({
   level: process.env.LOG_LEVEL || 'info',
-  format: winston.format.json(),
+  format: winston.format.simple(),
   transports: [new winston.transports.Console()],
 })

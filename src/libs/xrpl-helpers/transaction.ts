@@ -309,18 +309,15 @@ export async function testTransaction(
   // check that the transaction was successful
   assert.equal(response.type, 'response')
 
-  if (
-    response.result.engine_result !== 'tesSUCCESS' &&
-    response.result.engine_result !== 'tecHOOK_REJECTED'
-  ) {
+  if (response.result.engine_result !== 'tesSUCCESS') {
     // eslint-disable-next-line no-console -- See output
-    appLogger.error(
+    appLogger.debug(
       `Transaction was not successful. Expected response.result.engine_result to be tesSUCCESS but got ${response.result.engine_result}`
     )
     // eslint-disable-next-line no-console -- See output
-    appLogger.error('The transaction was: ', transaction)
+    appLogger.debug('The transaction was: ', transaction)
     // eslint-disable-next-line no-console -- See output
-    appLogger.error('The response was: ', JSON.stringify(response))
+    appLogger.debug('The response was: ', JSON.stringify(response))
   }
 
   if (retry?.hardFail && response.result.engine_result !== 'tecHOOK_REJECTED') {
@@ -363,15 +360,15 @@ export async function prodTransactionAndWait(
 
   const meta = response.result.meta as TransactionMetadata
   const txResult = meta.TransactionResult
-  if (txResult !== 'tesSUCCESS' && txResult !== 'tecHOOK_REJECTED') {
+  if (txResult !== 'tesSUCCESS') {
     // eslint-disable-next-line no-console -- See output
-    appLogger.error(
+    appLogger.debug(
       `Transaction was not successful. Expected response.result.engine_result to be tesSUCCESS but got ${txResult}`
     )
     // eslint-disable-next-line no-console -- See output
-    appLogger.error('The transaction was: ', transaction)
+    appLogger.debug('The transaction was: ', transaction)
     // eslint-disable-next-line no-console -- See output
-    appLogger.error('The response was: ', JSON.stringify(response))
+    appLogger.debug('The response was: ', JSON.stringify(response))
   }
 
   if (retry?.hardFail && txResult !== 'tecHOOK_REJECTED') {
