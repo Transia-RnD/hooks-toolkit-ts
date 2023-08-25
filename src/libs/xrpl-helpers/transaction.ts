@@ -198,9 +198,9 @@ export async function submitTransaction({
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.log(error)
-    console.log(JSON.stringify(error.data.decoded))
-    console.log(JSON.stringify(error.data.tx))
+    // console.log(error)
+    // console.log(JSON.stringify(error.data.decoded))
+    // console.log(JSON.stringify(error.data.tx))
 
     if (error instanceof TimeoutError || error instanceof NotConnectedError) {
       // retry

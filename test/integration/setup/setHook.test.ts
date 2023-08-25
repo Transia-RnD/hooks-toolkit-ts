@@ -67,7 +67,6 @@ describe('SetHook - (noop|create|install', () => {
     }
     const hookRes = await testContext.client.request(hookReq)
     const leHook = hookRes.result.node as LeHook
-    console.log(leHook.Hooks[0])
     expect(leHook.Hooks.length).toBe(1)
     expect(leHook.Hooks[0].Hook.HookHash).toEqual(
       '550D306DF2D851236CA4B34D4BA8F00FA4BCB67740D81DAC7A3EFBD95274EBBE'
@@ -156,7 +155,6 @@ describe('SetHook - (noop|create|install', () => {
     }
     const hookRes = await testContext.client.request(hookReq)
     const leHook = hookRes.result.node as LeHook
-    console.log(leHook.Hooks[0])
     expect(leHook.Hooks.length).toBe(1)
     expect(leHook.Hooks[0].Hook.HookHash).toEqual(
       '3E081C0CE176CFDEFC2F3DCB7A899B420C0878216B1B91B8105A6573DBA3EFCC'
@@ -166,7 +164,6 @@ describe('SetHook - (noop|create|install', () => {
       hook_definition: leHook.Hooks[0].Hook.HookHash,
     }
     const hookDefRes = await testContext.client.request(hookDefRequest)
-    console.log(hookDefRes)
     expect((hookDefRes.result.node as LeHookDefinition).HookNamespace).toEqual(
       '326178559E63837BA3B83BC05E5DC323A7B52C782AC4D5B3B182B2E050565581'
     )
@@ -200,7 +197,6 @@ describe('SetHook - (noop|create|install', () => {
     }
     const hook1Res = await testContext.client.request(hook1Req)
     const leHook1 = hook1Res.result.node as LeHook
-    console.log(leHook1.Hooks[0])
     expect(leHook1.Hooks.length).toBe(1)
     expect(leHook1.Hooks[0].Hook.HookHash).toEqual(
       '3E081C0CE176CFDEFC2F3DCB7A899B420C0878216B1B91B8105A6573DBA3EFCC'
@@ -286,8 +282,7 @@ describe('SetHook - (noop|create|install', () => {
       hook_definition: leHook1.Hooks[0].Hook.HookHash,
     }
     const hookDefRes1 = await testContext.client.request(hookDefRequest1)
-    console.log((hookDefRes1.result.node as LeHookDefinition).HookNamespace)
-    console.log(
+    expect((hookDefRes1.result.node as LeHookDefinition).HookNamespace).toBe(
       '326178559E63837BA3B83BC05E5DC323A7B52C782AC4D5B3B182B2E050565581'
     )
   })
@@ -382,18 +377,15 @@ describe('SetHook - (noop|create|install', () => {
     } as SetHookParams)
 
     try {
-      const state = await StateUtility.getHookState(
+      await StateUtility.getHookState(
         testContext.client,
         testContext.alice.classicAddress,
         padHexString(aliceAccHex),
         'state_basic'
       )
-      console.log(state)
-
       throw Error('invalidError')
     } catch (error: unknown) {
       if (error instanceof Error) {
-        console.log(error.message)
         expect(error.message).toEqual('entryNotFound')
       }
     }

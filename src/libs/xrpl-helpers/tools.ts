@@ -123,7 +123,7 @@ export async function accountSeq(
     return response.result.account_data.Sequence
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.log(error.message)
+    // console.log(error.message)
     return 0
   }
 }
@@ -178,7 +178,7 @@ export async function balance(
     return await icBalance(ctx, account, ic)
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.log(error.message)
+      // console.log(error.message)
       return 0
     }
     return 0
@@ -213,7 +213,7 @@ export async function limit(
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.log(error.message)
+      // console.log(error.message)
       return 0
     }
     return 0

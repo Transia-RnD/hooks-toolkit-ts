@@ -70,7 +70,6 @@ describe('offerCreate', () => {
       tx: builtTx1,
     })
     const uriTokenID = hashURIToken(aliceWallet.classicAddress, 'ipfs://')
-    console.log(uriTokenID)
 
     // INVOKE IN
     const tx2param1 = new iHookParamEntry(

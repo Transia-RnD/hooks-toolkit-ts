@@ -372,7 +372,6 @@ describe('stateForeignBasic', () => {
       result.meta as TransactionMetadata
     )
     console.log(hookExecutions.executions[0].HookReturnString)
-
     // expect(hookExecutions.executions[0].HookReturnString).toEqual('')
 
     const hook2State = await StateUtility.getHookState(
