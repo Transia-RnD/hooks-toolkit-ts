@@ -306,8 +306,9 @@ export function hexToXfl(hex: string): XFL {
 }
 
 export function hexToCurrency(hex: string): Currency {
-  const value = convertHexToString(hex)
-  return value.slice(0, 40).replace(/\0[\s\S]*$/g, '')
+  const cleanHex = hex.replace(/0/g, ' ').trim().replace(/ /g, '0')
+  const value = convertHexToString(cleanHex)
+  return value.replace(/\0[\s\S]*$/g, '')
 }
 
 export function hexToXRPAddress(hex: string): XRPAddress {

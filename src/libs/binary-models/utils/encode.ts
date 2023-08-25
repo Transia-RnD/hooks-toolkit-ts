@@ -159,8 +159,8 @@ export function xflToHex(value: XFL): string {
 }
 
 export function currencyToHex(value: Currency): string {
-  const content = convertStringToHex(value.toUpperCase())
-  return content.padEnd(16, '0').padStart(40, '0').toUpperCase() // 40
+  const content = convertStringToHex(value)
+  return content.padEnd(16, '0').padStart(40, '0') // 40
 }
 
 export function xrpAddressToHex(value: XRPAddress): string {
