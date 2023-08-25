@@ -78,7 +78,6 @@ export class ExecutionUtility {
 
     if (!emittedCreatedNodes || emittedCreatedNodes.length === 0) {
       // throw Error('No `CreatedNodes` found')
-      console.log(AffectedNodes)
       console.log('No `CreatedNodes` found')
       return new iHookEmittedTxs([])
     }

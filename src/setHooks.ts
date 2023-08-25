@@ -58,9 +58,9 @@ export async function setHooksV3({ client, seed, hooks }: SetHookParams) {
 
   await prepareTransactionV3(client, tx)
 
-  console.log(`1. Transaction to submit (before autofill):`)
-  console.log(JSON.stringify(tx, null, 2))
-  console.log(`\n2. Submitting transaction...`)
+  // console.log(`1. Transaction to submit (before autofill):`)
+  // console.log(JSON.stringify(tx, null, 2))
+  // console.log(`\n2. Submitting transaction...`)
 
   await appTransaction(client, tx, HOOK_ACCOUNT, {
     hardFail: true,
@@ -68,7 +68,7 @@ export async function setHooksV3({ client, seed, hooks }: SetHookParams) {
     delayMs: 1000,
   })
 
-  console.log(`\n3. SetHook Success...`)
+  // console.log(`\n3. SetHook Success...`)
 }
 
 export async function clearAllHooksV3({ client, seed }: SetHookParams) {
@@ -96,9 +96,9 @@ export async function clearAllHooksV3({ client, seed }: SetHookParams) {
 
   await prepareTransactionV3(client, tx)
 
-  console.log(`1. Transaction to submit (before autofill):`)
-  console.log(JSON.stringify(tx, null, 2))
-  console.log(`\n2. Submitting transaction...`)
+  // console.log(`1. Transaction to submit (before autofill):`)
+  // console.log(JSON.stringify(tx, null, 2))
+  // console.log(`\n2. Submitting transaction...`)
 
   await appTransaction(client, tx, HOOK_ACCOUNT, {
     hardFail: true,
@@ -106,7 +106,7 @@ export async function clearAllHooksV3({ client, seed }: SetHookParams) {
     delayMs: 1000,
   })
 
-  console.log(`\n3. SetHook Success...`)
+  // console.log(`\n3. SetHook Success...`)
 }
 
 export async function clearHookStateV3({ client, seed, hooks }: SetHookParams) {
@@ -119,9 +119,9 @@ export async function clearHookStateV3({ client, seed, hooks }: SetHookParams) {
 
   await prepareTransactionV3(client, tx)
 
-  console.log(`1. Transaction to submit (before autofill):`)
-  console.log(JSON.stringify(tx, null, 2))
-  console.log(`\n2. Submitting transaction...`)
+  // console.log(`1. Transaction to submit (before autofill):`)
+  // console.log(JSON.stringify(tx, null, 2))
+  // console.log(`\n2. Submitting transaction...`)
 
   await appTransaction(client, tx, HOOK_ACCOUNT, {
     hardFail: true,
@@ -129,5 +129,5 @@ export async function clearHookStateV3({ client, seed, hooks }: SetHookParams) {
     delayMs: 1000,
   })
 
-  console.log(`\n3. SetHook Success...`)
+  // console.log(`\n3. SetHook Success...`)
 }
