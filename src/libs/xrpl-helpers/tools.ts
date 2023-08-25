@@ -17,6 +17,7 @@ import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
 import { RippleState } from '@transia/xrpl/dist/npm/models/ledger'
 import { BaseRequest } from '@transia/xrpl/dist/npm/models/methods/baseMethod'
 import { appTransaction } from './transaction'
+import { appLogger } from '../logger'
 
 const LEDGER_ACCEPT_REQUEST = { command: 'ledger_accept' } as BaseRequest
 
@@ -123,7 +124,7 @@ export async function accountSeq(
     return response.result.account_data.Sequence
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    // console.log(error.message)
+    // appLogger.debug(error.message)
     return 0
   }
 }
@@ -178,7 +179,7 @@ export async function balance(
     return await icBalance(ctx, account, ic)
   } catch (error: unknown) {
     if (error instanceof Error) {
-      // console.log(error.message)
+      // appLogger.debug(error.message)
       return 0
     }
     return 0
@@ -213,7 +214,7 @@ export async function limit(
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
-      // console.log(error.message)
+      // appLogger.debug(error.message)
       return 0
     }
     return 0
@@ -242,9 +243,9 @@ export async function fund(
       })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.log(error)
-      console.log(error.data?.decoded)
-      console.log(error.data?.tx)
+      appLogger.debug(error)
+      appLogger.debug(error.data?.decoded)
+      appLogger.debug(error.data?.tx)
     }
   }
 }
@@ -270,9 +271,9 @@ export async function pay(
       })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.log(error)
-      console.log(error.data?.decoded)
-      console.log(error.data?.tx)
+      appLogger.debug(error)
+      appLogger.debug(error.data?.decoded)
+      appLogger.debug(error.data?.tx)
       throw error
     }
   }
@@ -305,9 +306,9 @@ export async function sell(
     })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.log(error)
-    console.log(error.data?.decoded)
-    console.log(error.data?.tx)
+    appLogger.debug(error)
+    appLogger.debug(error.data?.decoded)
+    appLogger.debug(error.data?.tx)
     throw error
   }
 }
@@ -338,9 +339,9 @@ export async function buy(
     })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.log(error)
-    console.log(error.data?.decoded)
-    console.log(error.data?.tx)
+    appLogger.debug(error)
+    appLogger.debug(error.data?.decoded)
+    appLogger.debug(error.data?.tx)
     throw error
   }
 }
@@ -364,8 +365,8 @@ export async function trust(
       })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.log(error.data?.decoded)
-      console.log(error.data?.tx)
+      appLogger.debug(error.data?.decoded)
+      appLogger.debug(error.data?.tx)
       throw error
     }
   }

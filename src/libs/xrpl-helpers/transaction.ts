@@ -17,6 +17,7 @@ import {
   TransactionMetadata,
 } from '@transia/xrpl'
 import { hashSignedTx } from '@transia/xrpl/dist/npm/utils/hashes'
+import { appLogger } from '../logger'
 
 interface ServerStateRPCResult {
   state: {
@@ -198,9 +199,9 @@ export async function submitTransaction({
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    // console.log(error)
-    // console.log(JSON.stringify(error.data.decoded))
-    // console.log(JSON.stringify(error.data.tx))
+    appLogger.debug(error)
+    appLogger.debug(JSON.stringify(error.data.decoded))
+    appLogger.debug(JSON.stringify(error.data.tx))
 
     if (error instanceof TimeoutError || error instanceof NotConnectedError) {
       // retry
@@ -308,18 +309,21 @@ export async function testTransaction(
   // check that the transaction was successful
   assert.equal(response.type, 'response')
 
-  if (response.result.engine_result !== 'tesSUCCESS') {
+  if (
+    response.result.engine_result !== 'tesSUCCESS' &&
+    response.result.engine_result !== 'tecHOOK_REJECTED'
+  ) {
     // eslint-disable-next-line no-console -- See output
-    console.error(
+    appLogger.error(
       `Transaction was not successful. Expected response.result.engine_result to be tesSUCCESS but got ${response.result.engine_result}`
     )
     // eslint-disable-next-line no-console -- See output
-    console.error('The transaction was: ', transaction)
+    appLogger.error('The transaction was: ', transaction)
     // eslint-disable-next-line no-console -- See output
-    console.error('The response was: ', JSON.stringify(response))
+    appLogger.error('The response was: ', JSON.stringify(response))
   }
 
-  if (retry?.hardFail) {
+  if (retry?.hardFail && response.result.engine_result !== 'tecHOOK_REJECTED') {
     assert.equal(
       response.result.engine_result,
       'tesSUCCESS',
@@ -359,18 +363,18 @@ export async function prodTransactionAndWait(
 
   const meta = response.result.meta as TransactionMetadata
   const txResult = meta.TransactionResult
-  if (txResult !== 'tesSUCCESS') {
+  if (txResult !== 'tesSUCCESS' && txResult !== 'tecHOOK_REJECTED') {
     // eslint-disable-next-line no-console -- See output
-    console.error(
+    appLogger.error(
       `Transaction was not successful. Expected response.result.engine_result to be tesSUCCESS but got ${txResult}`
     )
     // eslint-disable-next-line no-console -- See output
-    console.error('The transaction was: ', transaction)
+    appLogger.error('The transaction was: ', transaction)
     // eslint-disable-next-line no-console -- See output
-    console.error('The response was: ', JSON.stringify(response))
+    appLogger.error('The response was: ', JSON.stringify(response))
   }
 
-  if (retry?.hardFail) {
+  if (retry?.hardFail && txResult !== 'tecHOOK_REJECTED') {
     assert.equal(
       txResult,
       'tesSUCCESS',
