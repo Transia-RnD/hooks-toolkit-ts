@@ -182,8 +182,6 @@ export async function submitTransaction({
   try {
     response = await client.submit(transaction, { wallet })
 
-    console.log(response)
-
     // Retry if another transaction finished before this one
     while (
       ['tefPAST_SEQ', 'tefMAX_LEDGER'].includes(
@@ -265,9 +263,9 @@ export async function appTransaction(
   }
 ): Promise<TxResponse> {
   if (process.env.RIPPLED_ENV === 'standalone') {
-    return testTransaction(client, transaction, wallet, retry)
+    return await testTransaction(client, transaction, wallet, retry)
   } else {
-    return prodTransactionAndWait(client, transaction, wallet, retry)
+    return await prodTransactionAndWait(client, transaction, wallet, retry)
   }
 }
 
@@ -351,8 +349,6 @@ export async function prodTransactionAndWait(
     autofill: true,
     wallet: wallet,
   })
-
-  console.log(response.result.meta as TransactionMetadata)
 
   // check that the transaction was successful
   assert.equal(response.type, 'response')
