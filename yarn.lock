@@ -703,7 +703,22 @@
     crypto-js "^4.1.1"
     dotenv "^16.3.1"
 
-"@transia/xrpl@^2.7.3-alpha.3", "@transia/xrpl@^2.7.3-alpha.9":
+"@transia/xrpl@^2.7.3-alpha.10":
+  version "2.7.3-alpha.10"
+  resolved "https://registry.yarnpkg.com/@transia/xrpl/-/xrpl-2.7.3-alpha.10.tgz#670e08d850337ced78b95d14650ff54d501890e7"
+  integrity sha512-WLKlwXgziYl3VNcoqEko1zAPsuy/0pqL/555IATPPkTOFOGNaZDb86v8Ncpz/u1O85UCBYe5Qyc7g61n1mp0qA==
+  dependencies:
+    "@transia/ripple-address-codec" "^4.2.8-alpha.0"
+    "@transia/ripple-binary-codec" "^1.4.6-alpha.2"
+    "@transia/ripple-keypairs" "^1.1.8-alpha.0"
+    bignumber.js "^9.0.0"
+    bip32 "^2.0.6"
+    bip39 "^3.0.4"
+    https-proxy-agent "^5.0.0"
+    lodash "^4.17.4"
+    ws "^8.2.2"
+
+"@transia/xrpl@^2.7.3-alpha.3":
   version "2.7.3-alpha.9"
   resolved "https://registry.yarnpkg.com/@transia/xrpl/-/xrpl-2.7.3-alpha.9.tgz#c4bafe25df0d77ca4c1aa802a412cdb2f2f9bbca"
   integrity sha512-BTwBCIyC0pUjszCfHOefb56ToA7P26eNoGXQCIMSaZldbD00YNXIBnUuNC5DukStmj8EPTf7yudG7B5iCS0ZEA==

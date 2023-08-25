@@ -47,7 +47,7 @@ export async function fundSystem(
 
   // Check Funded
   const needsFunding: string[] = []
-  if ((await balance(client, gw.wallet.classicAddress)) < 10000) {
+  if ((await balance(client, gw.wallet.classicAddress)) < 10000000000) {
     console.log(
       `${gw.wallet.classicAddress} NEEDS FUNDING: ${await balance(
         client,
@@ -56,7 +56,8 @@ export async function fundSystem(
     )
     needsFunding.push(gw.wallet.classicAddress)
   }
-  if ((await balance(client, alice.wallet.classicAddress)) < 10000) {
+
+  if ((await balance(client, alice.wallet.classicAddress)) < 10000000000) {
     console.log(
       `${alice.wallet.classicAddress} NEEDS FUNDING: ${await balance(
         client,
@@ -65,7 +66,7 @@ export async function fundSystem(
     )
     needsFunding.push(alice.wallet.classicAddress)
   }
-  if ((await balance(client, bob.wallet.classicAddress)) < 10000) {
+  if ((await balance(client, bob.wallet.classicAddress)) < 10000000000) {
     console.log(
       `${bob.wallet.classicAddress} NEEDS FUNDING: ${await balance(
         client,
@@ -74,7 +75,7 @@ export async function fundSystem(
     )
     needsFunding.push(bob.wallet.classicAddress)
   }
-  if ((await balance(client, carol.wallet.classicAddress)) < 10000) {
+  if ((await balance(client, carol.wallet.classicAddress)) < 10000000000) {
     console.log(
       `${carol.wallet.classicAddress} NEEDS FUNDING: ${await balance(
         client,
@@ -83,7 +84,7 @@ export async function fundSystem(
     )
     needsFunding.push(carol.wallet.classicAddress)
   }
-  if ((await balance(client, dave.wallet.classicAddress)) < 10000) {
+  if ((await balance(client, dave.wallet.classicAddress)) < 10000000000) {
     console.log(
       `${dave.wallet.classicAddress} NEEDS FUNDING: ${await balance(
         client,
@@ -92,7 +93,7 @@ export async function fundSystem(
     )
     needsFunding.push(dave.wallet.classicAddress)
   }
-  if ((await balance(client, elsa.wallet.classicAddress)) < 10000) {
+  if ((await balance(client, elsa.wallet.classicAddress)) < 10000000000) {
     console.log(
       `${elsa.wallet.classicAddress} NEEDS FUNDING: ${await balance(
         client,
@@ -202,7 +203,7 @@ export async function fundSystem(
   console.log(`TRUSTING: ${needsLines.length}`)
   console.log(`PAYING: ${needsIC.length}`)
 
-  await fund(client, wallet, new ICXRP(10000), ...needsFunding)
+  await fund(client, wallet, new ICXRP(20000), ...needsFunding)
   await trust(client, USD.set(100000), ...needsLines)
   await pay(client, USD.set(50000), gw.wallet, ...needsIC)
 }

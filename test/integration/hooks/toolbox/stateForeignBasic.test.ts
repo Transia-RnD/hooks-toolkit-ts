@@ -12,6 +12,7 @@ import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
+  teardownHook,
   serverUrl,
 } from '../../../../src/libs/xrpl-helpers'
 // src
@@ -57,6 +58,10 @@ describe('stateForeignBasic', () => {
     testContext = await setupClient(serverUrl)
   })
   afterAll(async () => teardownClient(testContext))
+  afterEach(
+    async () =>
+      await teardownHook(testContext, [testContext.alice, testContext.bob])
+  )
 
   it('state foreign basic - invalid account', async () => {
     const aliceWallet = testContext.alice

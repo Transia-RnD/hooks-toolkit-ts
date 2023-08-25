@@ -13,6 +13,8 @@ import {
 } from './constants'
 import { fundSystem } from '../xrpl-helpers'
 import { IC } from './tools'
+import { clearAllHooksV3 } from '../../setHooks'
+import { SetHookParams } from '../../types'
 
 export interface XrplIntegrationTestContext {
   client: Client
@@ -49,6 +51,19 @@ async function connectWithRetry(client: Client, tries = 0): Promise<void> {
 
     throw error
   })
+}
+
+export async function teardownHook(
+  context: XrplIntegrationTestContext,
+  accounts?: Wallet[] | []
+): Promise<void> {
+  const promises = accounts.map(async (acct: Wallet) => {
+    await clearAllHooksV3({
+      client: context.client,
+      seed: acct.seed,
+    } as SetHookParams)
+  })
+  await Promise.all(promises)
 }
 
 export async function setupClient(

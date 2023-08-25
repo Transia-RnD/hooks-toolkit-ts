@@ -13,6 +13,7 @@ import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
+  teardownHook,
   serverUrl,
   IC,
 } from '../../../../src/libs/xrpl-helpers'
@@ -34,7 +35,10 @@ describe('tshWeak', () => {
     testContext = await setupClient(serverUrl)
   })
   afterAll(async () => teardownClient(testContext))
-  // beforeEach(async () => {})
+  afterEach(
+    async () =>
+      await teardownHook(testContext, [testContext.alice, testContext.bob])
+  )
 
   it('invoke on io - incoming', async () => {
     const USD = IC.gw('USD', testContext.gw.classicAddress)

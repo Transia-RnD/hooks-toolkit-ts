@@ -10,6 +10,7 @@ import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
+  teardownHook,
   serverUrl,
 } from '../../../../src/libs/xrpl-helpers'
 // src
@@ -34,6 +35,10 @@ describe('paramBasic', () => {
     testContext = await setupClient(serverUrl)
   })
   afterAll(async () => teardownClient(testContext))
+  afterEach(
+    async () =>
+      await teardownHook(testContext, [testContext.alice, testContext.bob])
+  )
 
   it('tx param basic - success', async () => {
     const hook = createHookPayload(

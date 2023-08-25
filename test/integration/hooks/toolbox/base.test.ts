@@ -6,6 +6,7 @@ import {
   setupClient,
   teardownClient,
   serverUrl,
+  teardownHook,
 } from '../../../../src/libs/xrpl-helpers'
 import {
   Xrpld,
@@ -22,7 +23,10 @@ describe('base', () => {
     testContext = await setupClient(serverUrl)
   })
   afterAll(async () => teardownClient(testContext))
-  // beforeEach(async () => {})
+  afterEach(
+    async () =>
+      await teardownHook(testContext, [testContext.alice, testContext.bob])
+  )
 
   it('basic hook', async () => {
     const hook = createHookPayload(

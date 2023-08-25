@@ -7,6 +7,7 @@ import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
+  teardownHook,
   serverUrl,
 } from '../../../../src/libs/xrpl-helpers'
 // src
@@ -31,6 +32,10 @@ describe('utilVerify', () => {
     testContext = await setupClient(serverUrl)
   })
   afterAll(async () => teardownClient(testContext))
+  afterEach(
+    async () =>
+      await teardownHook(testContext, [testContext.alice, testContext.bob])
+  )
 
   it('util verify - invalid signature', async () => {
     const aliceWallet = testContext.alice

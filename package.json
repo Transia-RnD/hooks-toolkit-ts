@@ -19,10 +19,10 @@
     "name": "Denis Angell",
     "url": "https://github.com/dangell7"
   },
-  "license": "MIT",
+  "license": "GNU",
   "dependencies": {
     "@transia/xpop-toolkit": "^1.0.2",
-    "@transia/xrpl": "^2.7.3-alpha.9",
+    "@transia/xrpl": "^2.7.3-alpha.10",
     "c2wasm-cli": "^1.0.6",
     "chai": "^4.3.7",
     "crypto-js": "^4.1.1"

@@ -10,6 +10,7 @@ import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
+  teardownHook,
   serverUrl,
 } from '../../../../src/libs/xrpl-helpers'
 // src
@@ -28,6 +29,10 @@ describe('slotSubfieldFloat', () => {
     testContext = await setupClient(serverUrl)
   })
   afterAll(async () => teardownClient(testContext))
+  afterEach(
+    async () =>
+      await teardownHook(testContext, [testContext.alice, testContext.bob])
+  )
 
   it('slot subfield float - success', async () => {
     const hook = createHookPayload(

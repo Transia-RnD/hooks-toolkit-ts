@@ -11,6 +11,7 @@ import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
+  teardownHook,
   serverUrl,
 } from '../../../../src/libs/xrpl-helpers'
 // src
@@ -30,9 +31,12 @@ describe('filterOnXrp', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-    console.log(testContext.client.isConnected())
   })
   afterAll(async () => teardownClient(testContext))
+  afterEach(
+    async () =>
+      await teardownHook(testContext, [testContext.alice, testContext.bob])
+  )
 
   it('filter on xrp - success', async () => {
     const hook = createHookPayload(
@@ -103,6 +107,7 @@ describe('filterOnXrp', () => {
         wallet: bobWallet,
         tx: builtTx,
       })
+      throw Error('invalidError')
     } catch (error: unknown) {
       if (error instanceof Error) {
         expect(error.message).toEqual(

@@ -14,6 +14,7 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
 describe('offerCreate', () => {
@@ -56,7 +57,7 @@ describe('offerCreate', () => {
       result.meta as TransactionMetadata
     )
     expect(hookExecutions.executions[0].HookReturnString).toMatch(
-      'txn_offer.c: Tx emitted success.'
+      'txn_offer_create.c: Tx emitted success.'
     )
     await close(testContext.client)
   })
