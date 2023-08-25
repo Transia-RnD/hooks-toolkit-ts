@@ -10,7 +10,6 @@ import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
-  teardownHook,
   serverUrl,
 } from '../../../../src/libs/xrpl-helpers'
 // src
@@ -20,6 +19,7 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
@@ -33,14 +33,6 @@ describe('paramBasic', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-  afterEach(
-    async () =>
-      await teardownHook(testContext, [testContext.alice, testContext.bob])
-  )
-
-  it('tx param basic - success', async () => {
     const hook = createHookPayload(
       0,
       'param_basic',
@@ -53,7 +45,16 @@ describe('paramBasic', () => {
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('tx param basic - success', async () => {
     // PAYMENT IN
     const param1 = new iHookParamEntry(
       new iHookParamName('TEST'),

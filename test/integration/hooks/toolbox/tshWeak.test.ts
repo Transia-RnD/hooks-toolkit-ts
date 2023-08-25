@@ -13,7 +13,6 @@ import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
-  teardownHook,
   serverUrl,
   IC,
 } from '../../../../src/libs/xrpl-helpers'
@@ -23,7 +22,7 @@ import {
   SetHookParams,
   createHookPayload,
   setHooksV3,
-  // clearHooksV3,
+  clearAllHooksV3,
   // ExecutionUtility,
 } from '../../../../dist/npm/src'
 import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
@@ -34,11 +33,17 @@ describe('tshWeak', () => {
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
   })
-  afterAll(async () => teardownClient(testContext))
-  afterEach(
-    async () =>
-      await teardownHook(testContext, [testContext.alice, testContext.bob])
-  )
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.gw.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
   it('invoke on io - incoming', async () => {
     const USD = IC.gw('USD', testContext.gw.classicAddress)
@@ -70,16 +75,6 @@ describe('tshWeak', () => {
       wallet: testContext.gw,
       tx: asTx,
     })
-
-    // await clearHooksV3({
-    //   client: testContext.client,
-    //   seed: testContext.gw.seed,
-    // } as SetHookParams)
-
-    // await clearHooksV3({
-    //   client: testContext.client,
-    //   seed: testContext.alice.seed,
-    // } as SetHookParams)
 
     const hook = createHookPayload(
       0,

@@ -5,7 +5,6 @@ import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
-  teardownHook,
   serverUrl,
 } from '../../../../src/libs/xrpl-helpers'
 // src
@@ -15,6 +14,7 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
 // FilterOnIO: ACCEPT: incoming
@@ -25,15 +25,6 @@ describe('filterOnIO', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-
-  afterEach(
-    async () =>
-      await teardownHook(testContext, [testContext.alice, testContext.bob])
-  )
-
-  it('invoke on io - incoming', async () => {
     const hook = createHookPayload(
       0,
       'filter_on_io',
@@ -46,7 +37,16 @@ describe('filterOnIO', () => {
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('invoke on io - incoming', async () => {
     // INVOKE IN
     const aliceWallet = testContext.alice
     const bobWallet = testContext.bob
@@ -69,19 +69,6 @@ describe('filterOnIO', () => {
   })
 
   it('invoke on io - outgoing', async () => {
-    const hook = createHookPayload(
-      0,
-      'filter_on_io',
-      'filter_on_io',
-      SetHookFlags.hsfOverride,
-      ['Invoke']
-    )
-    await setHooksV3({
-      client: testContext.client,
-      seed: testContext.alice.seed,
-      hooks: [{ Hook: hook }],
-    } as SetHookParams)
-
     // INVOKE OUT
     const aliceWallet = testContext.alice
     const builtTx: Invoke = {

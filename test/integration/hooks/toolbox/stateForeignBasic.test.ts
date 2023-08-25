@@ -12,7 +12,6 @@ import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
-  teardownHook,
   serverUrl,
 } from '../../../../src/libs/xrpl-helpers'
 // src
@@ -22,6 +21,7 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
@@ -57,11 +57,17 @@ describe('stateForeignBasic', () => {
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
   })
-  afterAll(async () => teardownClient(testContext))
-  afterEach(
-    async () =>
-      await teardownHook(testContext, [testContext.alice, testContext.bob])
-  )
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.bob.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
   it('state foreign basic - invalid account', async () => {
     const aliceWallet = testContext.alice

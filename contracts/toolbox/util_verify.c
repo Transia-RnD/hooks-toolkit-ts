@@ -22,8 +22,8 @@ int64_t hook(uint32_t reserved) {
     TRACEHEX(msg_value); // <- msg value
 
     // TX PARAM: Signature - VS
-    uint8_t sig_value[64];
-    int64_t sig_value_size = otxn_param(sig_value, 64, SBUF(sig_key));
+    uint8_t sig_value[70];
+    int64_t sig_value_size = otxn_param(sig_value, 70, SBUF(sig_key));
 
     if (util_verify(SBUF(msg_value), SBUF(sig_value), SBUF(pk_value)) == 0)
     {

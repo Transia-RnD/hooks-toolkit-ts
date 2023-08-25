@@ -6,7 +6,6 @@ import {
   setupClient,
   teardownClient,
   serverUrl,
-  teardownHook,
 } from '../../../../src/libs/xrpl-helpers'
 import {
   Xrpld,
@@ -14,6 +13,7 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
 describe('base', () => {
@@ -21,14 +21,6 @@ describe('base', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-  afterEach(
-    async () =>
-      await teardownHook(testContext, [testContext.alice, testContext.bob])
-  )
-
-  it('basic hook', async () => {
     const hook = createHookPayload(
       0,
       'base',
@@ -41,7 +33,16 @@ describe('base', () => {
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('basic hook', async () => {
     // INVOKE IN
     const aliceWallet = testContext.alice
     const bobWallet = testContext.bob

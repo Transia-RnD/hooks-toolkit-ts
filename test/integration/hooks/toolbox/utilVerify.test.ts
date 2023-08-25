@@ -7,7 +7,6 @@ import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
-  teardownHook,
   serverUrl,
 } from '../../../../src/libs/xrpl-helpers'
 // src
@@ -17,6 +16,7 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
@@ -31,11 +31,13 @@ describe('utilVerify', () => {
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
   })
-  afterAll(async () => teardownClient(testContext))
-  afterEach(
-    async () =>
-      await teardownHook(testContext, [testContext.alice, testContext.bob])
-  )
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
   it('util verify - invalid signature', async () => {
     const aliceWallet = testContext.alice
@@ -119,6 +121,7 @@ describe('utilVerify', () => {
 
     // INVOKE IN
     const signature = sign(bobAccHex, aliceWallet.privateKey)
+
     const txParam1 = new iHookParamEntry(
       new iHookParamName('VS'),
       new iHookParamValue(signature, true)

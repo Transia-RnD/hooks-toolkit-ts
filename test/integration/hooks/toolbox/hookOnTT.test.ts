@@ -5,7 +5,6 @@ import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
-  teardownHook,
   serverUrl,
 } from '../../../../src/libs/xrpl-helpers'
 // src
@@ -14,6 +13,7 @@ import {
   SetHookParams,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
 // HookOnTT: ACCEPT: success
@@ -25,11 +25,13 @@ describe('hookOnTT', () => {
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
   })
-  afterAll(async () => teardownClient(testContext))
-  afterEach(
-    async () =>
-      await teardownHook(testContext, [testContext.alice, testContext.bob])
-  )
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
   it('invoke on tt - success', async () => {
     const hook = createHookPayload(
@@ -54,7 +56,7 @@ describe('hookOnTT', () => {
       Destination: aliceWallet.classicAddress,
     }
     await Xrpld.submit(testContext.client, {
-      wallet: aliceWallet,
+      wallet: bobWallet,
       tx: builtTx,
     })
   })
