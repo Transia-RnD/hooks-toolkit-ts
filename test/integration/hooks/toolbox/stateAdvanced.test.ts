@@ -10,10 +10,11 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
@@ -32,10 +33,6 @@ describe('StateAdvanced', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-
-  it('state advanced - success', async () => {
     const hook = createHookPayload(
       0,
       'state_advanced',
@@ -49,11 +46,19 @@ describe('StateAdvanced', () => {
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('state advanced - success', async () => {
     // INVOKE OUT
     const aliceWallet = testContext.alice
     const aliceAccHex = AccountID.from(aliceWallet.classicAddress).toHex()
-    console.log(aliceAccHex)
 
     const testModel = new TestModel(BigInt(1685216402734), 'hello')
 
@@ -66,7 +71,7 @@ describe('StateAdvanced', () => {
       Account: aliceWallet.classicAddress,
       HookParameters: [param1.toXrpl()],
     }
-    await Application.testHookTx(testContext.client, {
+    await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
       tx: builtTx,
     })

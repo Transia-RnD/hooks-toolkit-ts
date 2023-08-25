@@ -1,6 +1,5 @@
 import {
   Client,
-  Wallet,
   Payment,
   SetHookFlags,
   TransactionMetadata,
@@ -14,42 +13,36 @@ import {
   ExecutionUtility,
 } from '@transia/hooks-toolkit'
 import {
-  balance,
   fund,
   ICXRP,
 } from '@transia/hooks-toolkit/dist/npm/src/libs/xrpl-helpers'
 import {
-  MASTER_ACCOUNT_WALLET,
-  ALICE_ACCOUNT_WALLET,
-  BOB_ACCOUNT_WALLET,
+  MASTER_WALLET,
+  ALICE_WALLET,
+  BOB_WALLET,
 } from '@transia/hooks-toolkit/dist/npm/src/libs/xrpl-helpers/constants'
 
 export async function main(): Promise<void> {
   const serverUrl = 'ws://localhost:6006'
-  const client = new Client(serverUrl);
+  const client = new Client(serverUrl)
   await client.connect()
   client.networkID = await client.getNetworkID()
-  
-  const wallet = MASTER_ACCOUNT_WALLET
-  
-  const aliceWallet = ALICE_ACCOUNT_WALLET
-  const bobWallet = BOB_ACCOUNT_WALLET
+
+  const wallet = MASTER_WALLET
+
+  const aliceWallet = ALICE_WALLET
+  const bobWallet = BOB_WALLET
 
   await fund(
     client,
     wallet,
-    new ICXRP(2000), ...[
-    aliceWallet.classicAddress,
-    bobWallet.classicAddress,
-  ])
-
-  const hook = createHookPayload(
-    0,
-    'base',
-    'base',
-    SetHookFlags.hsfOverride,
-    ['Payment']
+    new ICXRP(2000),
+    ...[aliceWallet.classicAddress, bobWallet.classicAddress]
   )
+
+  const hook = createHookPayload(0, 'base', 'base', SetHookFlags.hsfOverride, [
+    'Payment',
+  ])
 
   await setHooksV3({
     client: client,

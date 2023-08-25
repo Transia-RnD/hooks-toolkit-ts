@@ -15,11 +15,12 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
 // FilterOnToken: ACCEPT: success
@@ -30,10 +31,6 @@ describe('filterOnToken', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-
-  it('filter on token - success', async () => {
     const hook = createHookPayload(
       0,
       'filter_on_token',
@@ -46,7 +43,16 @@ describe('filterOnToken', () => {
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('filter on token - success', async () => {
     // PAYMENT IN
     const amount: IssuedCurrencyAmount = {
       value: '1',
@@ -61,7 +67,7 @@ describe('filterOnToken', () => {
       Destination: aliceWallet.classicAddress,
       Amount: amount,
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
@@ -75,18 +81,6 @@ describe('filterOnToken', () => {
   })
 
   it('filter on token - failure', async () => {
-    const hook = createHookPayload(
-      0,
-      'filter_on_token',
-      'filter_on_token',
-      SetHookFlags.hsfOverride,
-      ['Payment']
-    )
-    await setHooksV3({
-      client: testContext.client,
-      seed: testContext.alice.seed,
-      hooks: [{ Hook: hook }],
-    } as SetHookParams)
     try {
       // PAYMENT IN
       const aliceWallet = testContext.alice
@@ -97,7 +91,7 @@ describe('filterOnToken', () => {
         Destination: aliceWallet.classicAddress,
         Amount: xrpToDrops(1),
       }
-      await Application.testHookTx(testContext.client, {
+      await Xrpld.submit(testContext.client, {
         wallet: bobWallet,
         tx: builtTx,
       })

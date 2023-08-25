@@ -24,13 +24,9 @@ export async function main(): Promise<void> {
     serverUrl
   )) as XrplIntegrationTestContext
 
-  const hook = createHookPayload(
-    0,
-    'base',
-    'base',
-    SetHookFlags.hsfOverride,
-    ['Payment']
-  )
+  const hook = createHookPayload(0, 'base', 'base', SetHookFlags.hsfOverride, [
+    'Payment',
+  ])
 
   await setHooksV3({
     client: testContext.client,
@@ -48,7 +44,7 @@ export async function main(): Promise<void> {
     Destination: aliceWallet.classicAddress,
     Amount: xrpToDrops(10),
   }
-  
+
   const result = await Xrpld.submit(testContext.client, {
     wallet: bobWallet,
     tx: builtTx,

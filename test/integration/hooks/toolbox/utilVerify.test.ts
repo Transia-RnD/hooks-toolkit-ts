@@ -11,11 +11,12 @@ import {
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
-  Application,
+  Xrpld,
   SetHookParams,
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
@@ -30,7 +31,13 @@ describe('utilVerify', () => {
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
   })
-  afterAll(async () => teardownClient(testContext))
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
   it('util verify - invalid signature', async () => {
     const aliceWallet = testContext.alice
@@ -72,7 +79,7 @@ describe('utilVerify', () => {
       Destination: aliceWallet.classicAddress,
       HookParameters: [txParam1.toXrpl()],
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })
@@ -114,6 +121,7 @@ describe('utilVerify', () => {
 
     // INVOKE IN
     const signature = sign(bobAccHex, aliceWallet.privateKey)
+
     const txParam1 = new iHookParamEntry(
       new iHookParamName('VS'),
       new iHookParamValue(signature, true)
@@ -124,7 +132,7 @@ describe('utilVerify', () => {
       Destination: aliceWallet.classicAddress,
       HookParameters: [txParam1.toXrpl()],
     }
-    const result = await Application.testHookTx(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx,
     })

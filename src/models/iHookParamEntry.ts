@@ -22,9 +22,6 @@ export class iHookParamEntry {
   }
 
   toXrpl(): HookParameter {
-    console.log(this.name)
-    console.log(this.value)
-
     return {
       HookParameter: {
         HookParameterName: !this.name.isHex

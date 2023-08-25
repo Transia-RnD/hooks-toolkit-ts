@@ -27,6 +27,11 @@
         rollback(0,0,__LINE__);\
 }
 
+#define NOPE(x)\
+{\
+    return rollback((x), sizeof(x), __LINE__);\
+}
+
 #define FLIP_ENDIAN(n) ((uint32_t) (((n & 0xFFU) << 24U) | \
                                    ((n & 0xFF00U) << 8U) | \
                                  ((n & 0xFF0000U) >> 8U) | \
@@ -159,11 +164,19 @@ int out_len = 0;\
         *(((uint64_t*)(buf1)) + 0) == *(((uint64_t*)(buf2)) + 0) &&\
         *(((uint64_t*)(buf1)) + 1) == *(((uint64_t*)(buf2)) + 1) &&\
         *(((uint64_t*)(buf1)) + 2) == *(((uint64_t*)(buf2)) + 2) &&\
-        *(((uint64_t*)(buf1)) + 3) == *(((uint64_t*)(buf2)) + 3) &&\
-        *(((uint64_t*)(buf1)) + 4) == *(((uint64_t*)(buf2)) + 4) &&\
-        *(((uint64_t*)(buf1)) + 5) == *(((uint64_t*)(buf2)) + 5) &&\
-        *(((uint64_t*)(buf1)) + 6) == *(((uint64_t*)(buf2)) + 6) &&\
-        *(((uint64_t*)(buf1)) + 7) == *(((uint64_t*)(buf2)) + 7))
+        *(((uint64_t*)(buf1)) + 3) == *(((uint64_t*)(buf2)) + 3))
+
+#define BUFFER_EQUAL_64(buf1, buf2) \
+    ( \
+        (*((uint64_t*)(buf1) + 0) == *((uint64_t*)(buf2) + 0)) && \
+        (*((uint64_t*)(buf1) + 1) == *((uint64_t*)(buf2) + 1)) && \
+        (*((uint64_t*)(buf1) + 2) == *((uint64_t*)(buf2) + 2)) && \
+        (*((uint64_t*)(buf1) + 3) == *((uint64_t*)(buf2) + 3)) && \
+        (*((uint64_t*)(buf1) + 4) == *((uint64_t*)(buf2) + 4)) && \
+        (*((uint64_t*)(buf1) + 5) == *((uint64_t*)(buf2) + 5)) && \
+        (*((uint64_t*)(buf1) + 6) == *((uint64_t*)(buf2) + 6)) && \
+        (*((uint64_t*)(buf1) + 7) == *((uint64_t*)(buf2) + 7)) \
+    )
 
 
 // when using this macro buf1len may be dynamic but buf2len must be static
@@ -307,7 +320,7 @@ int out_len = 0;\
 #define ttDEPOSIT_PREAUTH 19
 #define ttTRUST_SET 20
 #define ttACCOUNT_DELETE 21
-#define ttHOOK_SET 22
+#define ttSET_HOOK 22
 #define ttNFTOKEN_MINT 25
 #define ttNFTOKEN_BURN 26
 #define ttNFTOKEN_CREATE_OFFER 27
@@ -318,6 +331,7 @@ int out_len = 0;\
 #define ttURITOKEN_BUY 47
 #define ttURITOKEN_CREATE_SELL_OFFER 48
 #define ttURITOKEN_CANCEL_SELL_OFFER 49
+#define ttIMPORT 97
 #define ttCLAIM_REWARD 98
 #define ttINVOKE 99
 #define ttAMENDMENT 100

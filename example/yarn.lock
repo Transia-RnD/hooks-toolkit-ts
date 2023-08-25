@@ -660,22 +660,14 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
-"@transia/hooks-toolkit@/Users/denisangell/projects/xrpl-labs/hooks-toolkit-ts":
-  version "1.0.1"
+"@transia/hooks-toolkit@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@transia/hooks-toolkit/-/hooks-toolkit-1.0.4.tgz#2ab5c0d7302c8043ab25b9a96009a7b9317579d7"
+  integrity sha512-+Mrh23VR48UiHSBhgJ3PSRbHm8UOudXuVc/oV9KyLhl8IFBu9w/ew9oJD/JjGxM1doB7aIuRvEpT+qCLpK2dBQ==
   dependencies:
-    "@transia/xrpl" "^2.7.3-alpha.3"
-    c2wasm-cli "^1.0.5"
-    chai "^4.3.7"
-    crypto-js "^4.1.1"
-    lodash "^4.17.21"
-
-"@transia/hooks-toolkit@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@transia/hooks-toolkit/-/hooks-toolkit-1.0.1.tgz#5c84c7ad543d4d0c35ac8addf607092119804989"
-  integrity sha512-zDYnBPER5zLAaLZcTYDICMs9rfsk0q6qiSvT3xejYHbSMfcsQxOHQkVrmuXhWJhdRBkX47dPp/cwhbMJ9C9gJQ==
-  dependencies:
-    "@transia/xrpl" "^2.7.3-alpha.3"
-    c2wasm-cli "^1.0.5"
+    "@transia/xpop-toolkit" "^1.0.2"
+    "@transia/xrpl" "^2.7.3-alpha.9"
+    c2wasm-cli "^1.0.6"
     chai "^4.3.7"
     crypto-js "^4.1.1"
     lodash "^4.17.21"
@@ -711,10 +703,35 @@
     elliptic "^6.5.4"
     hash.js "^1.0.3"
 
+"@transia/xpop-toolkit@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@transia/xpop-toolkit/-/xpop-toolkit-1.0.2.tgz#11f4034ff092c685c791313afdc99dc02b66d83e"
+  integrity sha512-ShP0+UrBtlQ1TYui+2Wll11FjxuPeW3AcC5Wjr5pQIk9BGeJ2Fpm6V+Wng0csQcDd5cd6i2P400p9lLP6bsr3w==
+  dependencies:
+    "@transia/xrpl" "^2.7.3-alpha.3"
+    axios "^1.4.0"
+    crypto-js "^4.1.1"
+    dotenv "^16.3.1"
+
 "@transia/xrpl@^2.7.3-alpha.3":
-  version "2.7.3-alpha.3"
-  resolved "https://registry.yarnpkg.com/@transia/xrpl/-/xrpl-2.7.3-alpha.3.tgz#24271a5d27c7fed9e6839f5587c963a1c383e901"
-  integrity sha512-KmGTvTzzf2Z8lx8t0K4My/6Ru2O7+jJOVYGLnhnRfRtmAWVi2kO3XGQUqbzw9ze4wtqo6ryRlnzhxQkIuJv7qg==
+  version "2.7.3-alpha.7"
+  resolved "https://registry.yarnpkg.com/@transia/xrpl/-/xrpl-2.7.3-alpha.7.tgz#49804b345177aae29f6056557af2cbb2baa619ab"
+  integrity sha512-S+Z/YLZhx/0IZ6i8xA0uyRDVuUAJ2KbiFrZvuugvp2zuEJqT2yyGHiB6Es/rr34gA6GAGd4p4kcaK44K/mi4CA==
+  dependencies:
+    "@transia/ripple-address-codec" "^4.2.8-alpha.0"
+    "@transia/ripple-binary-codec" "^1.4.6-alpha.2"
+    "@transia/ripple-keypairs" "^1.1.8-alpha.0"
+    bignumber.js "^9.0.0"
+    bip32 "^2.0.6"
+    bip39 "^3.0.4"
+    https-proxy-agent "^5.0.0"
+    lodash "^4.17.4"
+    ws "^8.2.2"
+
+"@transia/xrpl@^2.7.3-alpha.9":
+  version "2.7.3-alpha.9"
+  resolved "https://registry.yarnpkg.com/@transia/xrpl/-/xrpl-2.7.3-alpha.9.tgz#c4bafe25df0d77ca4c1aa802a412cdb2f2f9bbca"
+  integrity sha512-BTwBCIyC0pUjszCfHOefb56ToA7P26eNoGXQCIMSaZldbD00YNXIBnUuNC5DukStmj8EPTf7yudG7B5iCS0ZEA==
   dependencies:
     "@transia/ripple-address-codec" "^4.2.8-alpha.0"
     "@transia/ripple-binary-codec" "^1.4.6-alpha.2"
@@ -1067,9 +1084,9 @@ available-typed-arrays@^1.0.5:
   resolved "https://registry.yarnpkg.com/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz#92f95616501069d07d10edb2fc37d3e1c65123b7"
   integrity sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==
 
-axios@^1.3.4:
+axios@^1.3.4, axios@^1.4.0:
   version "1.4.0"
-  resolved "https://registry.npmjs.org/axios/-/axios-1.4.0.tgz"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.4.0.tgz#38a7bf1224cd308de271146038b551d725f0be1f"
   integrity sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==
   dependencies:
     follow-redirects "^1.15.0"
@@ -1273,10 +1290,10 @@ buffer@5.6.0:
     base64-js "^1.0.2"
     ieee754 "^1.1.4"
 
-c2wasm-cli@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/c2wasm-cli/-/c2wasm-cli-1.0.5.tgz"
-  integrity sha512-huK/r/D/tetv7SSvWmGvt+4uCAYJr7OjK9++57K7KRhskMHQHC+t94LU/lu88nMBXcS2WbhKoiLLPhlrbFC9QA==
+c2wasm-cli@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/c2wasm-cli/-/c2wasm-cli-1.0.6.tgz#0bb8652cc1872ecd7ddb5e4fcb99d306563801ed"
+  integrity sha512-blEhUrqbhwxGjq+gghB8jc/c8hZgVrB6u8mgE0wxPQy8MEI4eE1bVwQZRarMxRkXokIFrMjZGTmVmlXhuDeISA==
   dependencies:
     axios "^1.3.4"
     base64-js "^1.5.1"
@@ -3530,17 +3547,6 @@ ws@^8.2.2:
   version "8.13.0"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.13.0.tgz#9a9fb92f93cf41512a0735c8f4dd09b8a1211cd0"
   integrity sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==
-
-xrpld-cli@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/xrpld-cli/-/xrpld-cli-1.0.4.tgz#65b561b7f01d2cfc446ba32d394627217fe59496"
-  integrity sha512-WGqYDGdLN87MLsLxOTqseq1NNXORufslv6MnK5wgBGZsXmHXvlrzgkPhbT4UhVAhOsfenEgzZY7lhTMVUuLi5A==
-  dependencies:
-    axios "^1.3.4"
-    base64-js "^1.5.1"
-    commander "^10.0.1"
-    dotenv "^16.1.4"
-    pako "^2.1.0"
 
 y18n@^5.0.5:
   version "5.0.8"
