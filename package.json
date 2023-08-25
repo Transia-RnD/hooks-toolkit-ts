@@ -11,7 +11,7 @@
     "build:hooks": "c2wasm-cli contracts build",
     "build:hook": "c2wasm-cli",
     "test:unit": "jest --config=jest.config.unit.js",
-    "test:integration": "jest --config=jest.config.integration.js",
+    "test:integration": "jest --config=jest.config.integration.js --runInBand",
     "lint": "eslint ./src/**/* --ext .ts",
     "format": "npx prettier --write ./src"
   },
