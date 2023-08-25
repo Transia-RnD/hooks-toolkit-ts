@@ -22,11 +22,6 @@ describe('offerCreate', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-  // beforeEach(async () => {})
-
-  it('txn offer create hook', async () => {
     const hook = createHookPayload(
       0,
       'txn_offer_create',
@@ -39,7 +34,16 @@ describe('offerCreate', () => {
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('txn offer create hook', async () => {
     // INVOKE IN
     const aliceWallet = testContext.alice
     const bobWallet = testContext.bob
@@ -60,5 +64,12 @@ describe('offerCreate', () => {
       'txn_offer_create.c: Tx emitted success.'
     )
     await close(testContext.client)
+    // confirm that the offer actually went through
+    const accountOffersResponse = await testContext.client.request({
+      command: 'account_offers',
+      account: testContext.alice.classicAddress,
+    })
+    // GW: USD + New OFFER
+    expect(accountOffersResponse.result.offers?.length).toEqual(2)
   })
 })

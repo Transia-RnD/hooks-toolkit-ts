@@ -1,6 +1,7 @@
 // xrpl
 import {
   Invoke,
+  LedgerEntryRequest,
   SetHookFlags,
   TransactionMetadata,
   URITokenCreateSellOffer,
@@ -22,6 +23,7 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
@@ -29,17 +31,13 @@ import {
 } from '../../../../dist/npm/src'
 import { hashURIToken } from '@transia/xrpl/dist/npm/utils/hashes'
 import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
+import { URIToken as LeURIToken } from '@transia/xrpl/dist/npm/models/ledger'
 
 describe('offerCreate', () => {
   let testContext: XrplIntegrationTestContext
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-  // beforeEach(async () => {})
-
-  it('txn uritoken create sell offer hook', async () => {
     const hook = createHookPayload(
       0,
       'txn_uritoken_buy',
@@ -52,22 +50,32 @@ describe('offerCreate', () => {
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('txn uritoken buy', async () => {
     const aliceWallet = testContext.alice
     const bobWallet = testContext.bob
+    const carolWallet = testContext.carol
 
-    // URITOKEN_MINT && URITOKEN_CREATE_SELL_OFFER IN
+    // Bob: Mint and Sell
     const builtTx1: URITokenMint = {
       TransactionType: 'URITokenMint',
       Account: bobWallet.classicAddress,
-      URI: convertStringToHex('ipfs://'),
+      URI: convertStringToHex('ipfs://2'),
     }
     await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
       tx: builtTx1,
     })
     await close(testContext.client)
-    const uriTokenID = hashURIToken(bobWallet.classicAddress, 'ipfs://')
+    const uriTokenID = hashURIToken(bobWallet.classicAddress, 'ipfs://2')
     const tx2Amount: IssuedCurrencyAmount = {
       value: '10',
       currency: 'USD',
@@ -100,12 +108,12 @@ describe('offerCreate', () => {
     )
     const builtTx3: Invoke = {
       TransactionType: 'Invoke',
-      Account: bobWallet.classicAddress,
+      Account: carolWallet.classicAddress,
       Destination: aliceWallet.classicAddress,
       HookParameters: [tx3param1.toXrpl(), tx3param2.toXrpl()],
     }
     const result3 = await Xrpld.submit(testContext.client, {
-      wallet: bobWallet,
+      wallet: carolWallet,
       tx: builtTx3,
     })
     const hook3Executions = await ExecutionUtility.getHookExecutionsFromMeta(
@@ -116,5 +124,16 @@ describe('offerCreate', () => {
       'txn_uritoken_buy.c: Tx emitted success.'
     )
     await close(testContext.client)
+    // const leReq: LedgerEntryRequest = {
+    //   command: 'ledger_entry',
+    //   uri_token: {
+    //     issuer: testContext.alice.classicAddress,
+    //     uri: 'ipfs://2',
+    //   },
+    // }
+    // const leRes = await testContext.client.request(leReq)
+    // // @ts-expect-error -- unknown
+    // const leURIToken = leRes.result.node as LeURIToken
+    // console.log(leURIToken)
   })
 })

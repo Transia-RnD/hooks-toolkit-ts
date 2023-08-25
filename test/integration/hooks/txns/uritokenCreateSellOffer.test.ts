@@ -21,6 +21,7 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
@@ -33,11 +34,6 @@ describe('offerCreate', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-  // beforeEach(async () => {})
-
-  it('txn uritoken create sell offer hook', async () => {
     const hook = createHookPayload(
       0,
       'txn_uritoken_create_sell_offer',
@@ -50,7 +46,16 @@ describe('offerCreate', () => {
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('txn uritoken create sell offer hook', async () => {
     const aliceWallet = testContext.alice
     const bobWallet = testContext.bob
 
