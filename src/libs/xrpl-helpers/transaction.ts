@@ -181,7 +181,9 @@ export async function submitTransaction({
 }): Promise<SubmitResponse> {
   let response: SubmitResponse
   try {
-    response = await client.submit(transaction, { wallet })
+    const preparedTx = await client.autofill(transaction)
+
+    response = await client.submit(preparedTx, { wallet })
 
     // Retry if another transaction finished before this one
     while (
