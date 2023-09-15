@@ -35,7 +35,7 @@ import {
 // The hook parameters on the hook definition are not always the hook parameters.
 // They are the delta default variables.
 
-describe('SetHook - (noop|create|install', () => {
+describe('SetHook - End to End', () => {
   let testContext: XrplIntegrationTestContext
 
   beforeAll(async () => {
