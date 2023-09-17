@@ -27,7 +27,7 @@ import {
 } from '../../../../dist/npm/src'
 import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
 
-describe('tshWeak', () => {
+describe('tsh', () => {
   let testContext: XrplIntegrationTestContext
 
   beforeAll(async () => {
@@ -78,8 +78,8 @@ describe('tshWeak', () => {
 
     const hook = createHookPayload(
       0,
-      'tsh_weak',
-      'tsh_weak',
+      'tsh',
+      'tsh',
       SetHookFlags.hsfCollect + SetHookFlags.hsfOverride,
       ['Invoke', 'OfferCreate']
     )
