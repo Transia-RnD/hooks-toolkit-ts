@@ -1,5 +1,5 @@
 /**
- * OfferCreate Txn
+ * Payment Txn
  */
 #include "hookapi.h"
 
