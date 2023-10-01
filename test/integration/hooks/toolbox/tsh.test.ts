@@ -1,12 +1,12 @@
 // xrpl
 import {
-  OfferCreate,
+  Invoke,
   AccountSet,
   SetHookFlags,
-  xrpToDrops,
   AccountSetAsfFlags,
-  OfferCreateFlags,
-  // TransactionMetadata,
+  TransactionMetadata,
+  OfferCreate,
+  xrpToDrops,
 } from '@transia/xrpl'
 // xrpl-helpers
 import {
@@ -14,6 +14,7 @@ import {
   setupClient,
   teardownClient,
   serverUrl,
+  close,
   IC,
 } from '../../../../src/libs/xrpl-helpers'
 // src
@@ -23,8 +24,13 @@ import {
   createHookPayload,
   setHooksV3,
   clearAllHooksV3,
-  // ExecutionUtility,
+  ExecutionUtility,
+  iHookParamEntry,
+  iHookParamName,
+  iHookParamValue,
+  floatToLEXfl,
 } from '../../../../dist/npm/src'
+import { AccountID, Currency } from '@transia/ripple-binary-codec/dist/types'
 import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
 
 describe('tsh', () => {
@@ -34,37 +40,101 @@ describe('tsh', () => {
     testContext = await setupClient(serverUrl)
   })
   afterAll(async () => {
-    await clearAllHooksV3({
+    await teardownClient(testContext)
+  })
+
+  it('tsh emitted txn', async () => {
+    // TSH Issuer
+    const asTx: AccountSet = {
+      TransactionType: 'AccountSet',
+      Account: testContext.gw.classicAddress,
+      SetFlag: AccountSetAsfFlags.asfTshCollect,
+    }
+    await Xrpld.submit(testContext.client, {
+      wallet: testContext.gw,
+      tx: asTx,
+    })
+
+    const hook = createHookPayload(
+      0,
+      'tsh',
+      'tsh',
+      SetHookFlags.hsfCollect + SetHookFlags.hsfOverride,
+      ['TrustSet']
+    )
+    await setHooksV3({
+      client: testContext.client,
+      seed: testContext.gw.seed,
+      hooks: [{ Hook: hook }],
+    } as SetHookParams)
+
+    // TSH Alice
+    const tx1param1 = new iHookParamEntry(
+      new iHookParamName('A'),
+      new iHookParamValue(floatToLEXfl('10'), true)
+    )
+    const tx1param2 = new iHookParamEntry(
+      new iHookParamName('I'),
+      new iHookParamValue(
+        AccountID.from(testContext.gw.classicAddress).toHex(),
+        true
+      )
+    )
+    const tx1param3 = new iHookParamEntry(
+      new iHookParamName('C'),
+      new iHookParamValue(Currency.from('ABC').toHex(), true)
+    )
+    const hook2 = createHookPayload(
+      0,
+      'txn_trust_set',
+      'txn_trust_set',
+      SetHookFlags.hsfOverride,
+      ['Invoke'],
+      [tx1param1.toXrpl(), tx1param2.toXrpl(), tx1param3.toXrpl()]
+    )
+    await setHooksV3({
       client: testContext.client,
       seed: testContext.alice.seed,
+      hooks: [{ Hook: hook2 }],
     } as SetHookParams)
+
+    const aliceWallet = testContext.alice
+    // INVOKE IN
+    const builtTx: Invoke = {
+      TransactionType: 'Invoke',
+      Account: aliceWallet.classicAddress,
+    }
+    const result = await Xrpld.submit(testContext.client, {
+      wallet: aliceWallet,
+      tx: builtTx,
+    })
+    const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
+      testContext.client,
+      result.meta as TransactionMetadata
+    )
+    expect(hookExecutions.executions[0].HookReturnString).toMatch(
+      'txn_trust_set.c: Tx emitted success.'
+    )
+    console.log(hookExecutions.executions[0].HookReturnString)
+    close(testContext.client)
+
     await clearAllHooksV3({
       client: testContext.client,
       seed: testContext.gw.seed,
     } as SetHookParams)
-    await teardownClient(testContext)
+
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+
+    // expect(hookExecutions.executions[0].HookReturnString).toEqual(
+    //   'tsh.c: Finished.'
+    // )
   })
 
-  it('invoke on io - incoming', async () => {
+  it('tsh non emitted txn', async () => {
     const USD = IC.gw('USD', testContext.gw.classicAddress)
-
-    USD.set(200)
-    const takerGets: IssuedCurrencyAmount = {
-      value: String(USD.value),
-      currency: USD.currency as string,
-      issuer: USD.issuer as string,
-    }
-    const sellTx: OfferCreate = {
-      TransactionType: 'OfferCreate',
-      Account: testContext.alice.classicAddress,
-      TakerGets: takerGets,
-      TakerPays: xrpToDrops(String(0.7 * (USD.value as number))),
-      Flags: OfferCreateFlags.tfSell,
-    }
-    await Xrpld.submit(testContext.client, {
-      wallet: testContext.alice,
-      tx: sellTx,
-    })
 
     const asTx: AccountSet = {
       TransactionType: 'AccountSet',
@@ -107,17 +177,27 @@ describe('tsh', () => {
       TakerGets: xrpToDrops(String(0.7 * (USD.value as number))),
       TakerPays: takerPays,
     }
-    await Xrpld.submit(testContext.client, {
+    const result = await Xrpld.submit(testContext.client, {
       wallet: testContext.bob,
       tx: buyTx,
     })
-    // const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
-    //   testContext.client,
-    //   result.meta as TransactionMetadata
-    // )
-    // console.log(hookExecutions.executions[0].HookReturnString)
-    // expect(hookExecutions.executions[0].HookReturnString).toEqual(
-    //   'tsh_strong: Finished.'
-    // )
+    const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
+      testContext.client,
+      result.meta as TransactionMetadata
+    )
+    console.log(hookExecutions.executions[0].HookReturnString)
+    expect(hookExecutions.executions[0].HookReturnString).toEqual(
+      'tsh.c: Finished.'
+    )
+
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.gw.seed,
+    } as SetHookParams)
+
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
   })
 })
