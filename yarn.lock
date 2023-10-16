@@ -699,6 +699,18 @@
     create-hash "^1.2.0"
     decimal.js "^10.2.0"
 
+"@transia/ripple-binary-codec@^1.4.6-alpha.4":
+  version "1.4.6-alpha.4"
+  resolved "https://registry.yarnpkg.com/@transia/ripple-binary-codec/-/ripple-binary-codec-1.4.6-alpha.4.tgz#6ab8a7f427890df6ffd067c431dfcc702ae06cb7"
+  integrity sha512-aMQszXtkCQV1lfIek0doIVE6TqITxoXX78yHCRZ6/HWckW7kS5OTynQBCXpfZA84Y1qq9dW1FscZ2uNLdCBB/A==
+  dependencies:
+    "@transia/ripple-address-codec" "^4.2.8-alpha.0"
+    assert "^2.0.0"
+    big-integer "^1.6.48"
+    buffer "5.6.0"
+    create-hash "^1.2.0"
+    decimal.js "^10.2.0"
+
 "@transia/ripple-keypairs@^1.1.8-alpha.0":
   version "1.1.8-alpha.0"
   resolved "https://registry.yarnpkg.com/@transia/ripple-keypairs/-/ripple-keypairs-1.1.8-alpha.0.tgz#1ed997633a8e3645ea3fcd6362f18d3f2b0eef49"
@@ -720,7 +732,22 @@
     crypto-js "^4.1.1"
     dotenv "^16.3.1"
 
-"@transia/xrpl@^2.7.3-alpha.10", "@transia/xrpl@^2.7.3-alpha.3":
+"@transia/xrpl@^2.7.3-alpha.16":
+  version "2.7.3-alpha.16"
+  resolved "https://registry.yarnpkg.com/@transia/xrpl/-/xrpl-2.7.3-alpha.16.tgz#88933ef15174510c66712c99a92c9e7480909313"
+  integrity sha512-djVkdoTnRgCoLsCJQH7tNhKywN5J5SrBsz7anDQcNGZZkrp9dFVxUPV2XxiaAR+5wd5OQaNyFjmagGmeu6ey7w==
+  dependencies:
+    "@transia/ripple-address-codec" "^4.2.8-alpha.0"
+    "@transia/ripple-binary-codec" "^1.4.6-alpha.4"
+    "@transia/ripple-keypairs" "^1.1.8-alpha.0"
+    bignumber.js "^9.0.0"
+    bip32 "^2.0.6"
+    bip39 "^3.0.4"
+    https-proxy-agent "^5.0.0"
+    lodash "^4.17.4"
+    ws "^8.2.2"
+
+"@transia/xrpl@^2.7.3-alpha.3":
   version "2.7.3-alpha.10"
   resolved "https://registry.yarnpkg.com/@transia/xrpl/-/xrpl-2.7.3-alpha.10.tgz#670e08d850337ced78b95d14650ff54d501890e7"
   integrity sha512-WLKlwXgziYl3VNcoqEko1zAPsuy/0pqL/555IATPPkTOFOGNaZDb86v8Ncpz/u1O85UCBYe5Qyc7g61n1mp0qA==
