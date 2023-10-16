@@ -10,6 +10,11 @@ import {
   CAROL_WALLET,
   DAVE_WALLET,
   ELSA_WALLET,
+  FRANK_WALLET,
+  GRACE_WALLET,
+  HEIDI_WALLET,
+  IVAN_WALLET,
+  JUDY_WALLET,
 } from './constants'
 import { fundSystem } from '../xrpl-helpers'
 import { IC } from './tools'
@@ -27,6 +32,11 @@ export interface XrplIntegrationTestContext {
   carol: Wallet
   dave: Wallet
   elsa: Wallet
+  frank: Wallet
+  grace: Wallet
+  heidi: Wallet
+  ivan: Wallet
+  judy: Wallet
 }
 
 export async function teardownClient(
@@ -81,11 +91,18 @@ export async function setupClient(
     carol: CAROL_WALLET,
     dave: DAVE_WALLET,
     elsa: ELSA_WALLET,
+    frank: FRANK_WALLET,
+    grace: GRACE_WALLET,
+    heidi: HEIDI_WALLET,
+    ivan: IVAN_WALLET,
+    judy: JUDY_WALLET,
   }
   return connectWithRetry(context.client)
     .then(async () => {
       context.client.networkID = await context.client.getNetworkID()
       await fundSystem(context.client, context.master, context.ic)
+      // await initGovernTable(context.client, context.alice, context.master)
+      // await setGovernTable(context.client, context.alice, context.elsa)
       return context
     })
     .catch(async (error: unknown) => {

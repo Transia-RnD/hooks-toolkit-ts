@@ -30,3 +30,18 @@ export const DAVE_WALLET = Wallet.fromSeed('sh2Q7wDfjdvyVaVHEE8JT3C9osGFD')
 // wallet secret == "elsa"
 // rL8xeQSGxTmKXXyLUFRuAAKsWMY1BMpQbe
 export const ELSA_WALLET = Wallet.fromSeed('sspu32LMDPU9V5NCUb584FqbdPsZ6')
+// wallet secret == "frank"
+// rDvJdyJXEMcLByY7y8fPXKnK6g9BpAyhb9
+export const FRANK_WALLET = Wallet.fromSeed('sshnbebSnLqrwyh8rorMcYgH18fXR')
+// wallet secret == "grace"
+// rKwXpiHGcQSzKEGXcwej5Eq2CQtN6HoTDr
+export const GRACE_WALLET = Wallet.fromSeed('saNMoZ8vo5xHhTkdY591ZM5tzxC4J')
+// wallet secret == "heidi"
+// rMcXuYsQ3MjFeRRqi1GvasJzTdL7wuL3hN
+export const HEIDI_WALLET = Wallet.fromSeed('shQ9J4uun5BFQ5coEeUorTPipssR8')
+// wallet secret == "ivan"
+// rhW5hg2xE7w2ewepbhWtgZWW8SuN6uW97S
+export const IVAN_WALLET = Wallet.fromSeed('ssUL8VwUfDNzttN7AsimLPyiP7RXQ')
+// wallet secret == "judy"
+// rpggxGs4yFaFEGThxBEbhir7T9Fb5LQKLC
+export const JUDY_WALLET = Wallet.fromSeed('shaiav41HpCvyHQhbSJDWS2pAqD77')

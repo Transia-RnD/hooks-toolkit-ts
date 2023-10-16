@@ -1,4 +1,4 @@
-import { AccountSetAsfFlags, Client, Wallet } from '@transia/xrpl'
+import { AccountSetAsfFlags, Client, Invoke, Wallet } from '@transia/xrpl'
 import {
   Account,
   ICXRP,
@@ -12,6 +12,9 @@ import {
   sell,
 } from '../xrpl-helpers'
 import { appLogger } from '../logger'
+import { Xrpld } from '../../Xrpld'
+import { setHooksV3 } from '../../setHooks'
+import { SetHookParams } from '../../types'
 
 /**
  * This function will fund a new wallet on the Hooks Local Ledger.
@@ -23,183 +26,69 @@ export async function fundSystem(
   wallet: Wallet,
   ic: IC
 ): Promise<void> {
-  // const accReserveFee = await accountReserveFee(client)
-  // const ownReserveFee = await ownerReserveFee(client)
-
-  // INIT ACCOUNTS
-  const gw = new Account('gw')
-  const alice = new Account('alice')
-  const bob = new Account('bob')
-  const carol = new Account('carol')
-  const dave = new Account('dave')
-  const elsa = new Account('elsa')
-
-  // INIT IC
+  const accounts = [
+    'gw',
+    'alice',
+    'bob',
+    'carol',
+    'dave',
+    'elsa',
+    'frank',
+    'grace',
+    'heidi',
+    'ivan',
+    'judy',
+  ]
+  const wallets = accounts.map((account) => new Account(account))
   const USD = ic as IC
 
   // FUND GW
+  const gw = wallets[0]
   if ((await balance(client, gw.wallet.classicAddress)) == 0) {
-    // Setup GW
     appLogger.debug(
       `SETUP GW: ${await balance(client, gw.wallet.classicAddress)}`
     )
-    await fund(client, wallet, new ICXRP(10000), ...[gw.wallet.classicAddress])
+    await fund(client, wallet, new ICXRP(10000), gw.wallet.classicAddress)
     await accountSet(client, gw.wallet, AccountSetAsfFlags.asfDefaultRipple)
     await sell(client, USD.set(20000), gw.wallet, 0.8)
   }
 
-  // Check Funded
-  const needsFunding: string[] = []
-  if ((await balance(client, gw.wallet.classicAddress)) < 10000000000) {
-    appLogger.debug(
-      `${gw.wallet.classicAddress} NEEDS FUNDING: ${await balance(
-        client,
-        gw.wallet.classicAddress
-      )}`
-    )
-    needsFunding.push(gw.wallet.classicAddress)
-  }
+  const needsFunding = []
+  const needsLines = []
+  const needsIC = []
 
-  if ((await balance(client, alice.wallet.classicAddress)) < 10000000000) {
-    appLogger.debug(
-      `${alice.wallet.classicAddress} NEEDS FUNDING: ${await balance(
-        client,
-        alice.wallet.classicAddress
-      )}`
-    )
-    needsFunding.push(alice.wallet.classicAddress)
-  }
-  if ((await balance(client, bob.wallet.classicAddress)) < 10000000000) {
-    appLogger.debug(
-      `${bob.wallet.classicAddress} NEEDS FUNDING: ${await balance(
-        client,
-        bob.wallet.classicAddress
-      )}`
-    )
-    needsFunding.push(bob.wallet.classicAddress)
-  }
-  if ((await balance(client, carol.wallet.classicAddress)) < 10000000000) {
-    appLogger.debug(
-      `${carol.wallet.classicAddress} NEEDS FUNDING: ${await balance(
-        client,
-        carol.wallet.classicAddress
-      )}`
-    )
-    needsFunding.push(carol.wallet.classicAddress)
-  }
-  if ((await balance(client, dave.wallet.classicAddress)) < 10000000000) {
-    appLogger.debug(
-      `${dave.wallet.classicAddress} NEEDS FUNDING: ${await balance(
-        client,
-        dave.wallet.classicAddress
-      )}`
-    )
-    needsFunding.push(dave.wallet.classicAddress)
-  }
-  if ((await balance(client, elsa.wallet.classicAddress)) < 10000000000) {
-    appLogger.debug(
-      `${elsa.wallet.classicAddress} NEEDS FUNDING: ${await balance(
-        client,
-        elsa.wallet.classicAddress
-      )}`
-    )
-    needsFunding.push(elsa.wallet.classicAddress)
-  }
+  for (let i = 1; i < wallets.length; i++) {
+    const wallet = wallets[i]
 
-  // Check Trustline
-  const needsLines: Wallet[] = []
-  if ((await limit(client, alice.wallet.classicAddress, USD)) < 100000) {
-    appLogger.debug(
-      `${alice.wallet.classicAddress} NEEDS TRUST: ${await balance(
-        client,
-        alice.wallet.classicAddress
-      )}`
-    )
-    needsLines.push(alice.wallet)
-  }
-  if ((await limit(client, bob.wallet.classicAddress, USD)) < 100000) {
-    appLogger.debug(
-      `${bob.wallet.classicAddress} NEEDS TRUST: ${await balance(
-        client,
-        bob.wallet.classicAddress
-      )}`
-    )
-    needsLines.push(bob.wallet)
-  }
-  if ((await limit(client, carol.wallet.classicAddress, USD)) < 100000) {
-    appLogger.debug(
-      `${carol.wallet.classicAddress} NEEDS TRUST: ${await balance(
-        client,
-        carol.wallet.classicAddress
-      )}`
-    )
-    needsLines.push(carol.wallet)
-  }
-  if ((await limit(client, dave.wallet.classicAddress, USD)) < 100000) {
-    appLogger.debug(
-      `${dave.wallet.classicAddress} NEEDS TRUST: ${await balance(
-        client,
-        dave.wallet.classicAddress
-      )}`
-    )
-    needsLines.push(dave.wallet)
-  }
-  if ((await limit(client, elsa.wallet.classicAddress, USD)) < 100000) {
-    appLogger.debug(
-      `${elsa.wallet.classicAddress} NEEDS TRUST: ${await balance(
-        client,
-        elsa.wallet.classicAddress
-      )}`
-    )
-    needsLines.push(elsa.wallet)
-  }
+    if ((await balance(client, wallet.wallet.classicAddress)) < 10000000000) {
+      appLogger.debug(
+        `${wallet.wallet.classicAddress} NEEDS FUNDING: ${await balance(
+          client,
+          wallet.wallet.classicAddress
+        )}`
+      )
+      needsFunding.push(wallet.wallet.classicAddress)
+    }
 
-  // Check IC Balance
-  const needsIC: string[] = []
-  if ((await balance(client, alice.wallet.classicAddress, USD)) < 10000) {
-    appLogger.debug(
-      `${alice.wallet.classicAddress} NEEDS IC: ${await balance(
-        client,
-        alice.wallet.classicAddress
-      )}`
-    )
-    needsIC.push(alice.wallet.classicAddress)
-  }
-  if ((await balance(client, bob.wallet.classicAddress, USD)) < 10000) {
-    appLogger.debug(
-      `${bob.wallet.classicAddress} NEEDS IC: ${await balance(
-        client,
-        bob.wallet.classicAddress
-      )}`
-    )
-    needsIC.push(bob.wallet.classicAddress)
-  }
-  if ((await balance(client, carol.wallet.classicAddress, USD)) < 10000) {
-    appLogger.debug(
-      `${carol.wallet.classicAddress} NEEDS IC: ${await balance(
-        client,
-        carol.wallet.classicAddress
-      )}`
-    )
-    needsIC.push(carol.wallet.classicAddress)
-  }
-  if ((await balance(client, dave.wallet.classicAddress, USD)) < 10000) {
-    appLogger.debug(
-      `${dave.wallet.classicAddress} NEEDS IC: ${await balance(
-        client,
-        dave.wallet.classicAddress
-      )}`
-    )
-    needsIC.push(dave.wallet.classicAddress)
-  }
-  if ((await balance(client, elsa.wallet.classicAddress, USD)) < 10000) {
-    appLogger.debug(
-      `${elsa.wallet.classicAddress} NEEDS IC: ${await balance(
-        client,
-        elsa.wallet.classicAddress
-      )}`
-    )
-    needsIC.push(elsa.wallet.classicAddress)
+    if ((await limit(client, wallet.wallet.classicAddress, USD)) < 100000) {
+      appLogger.debug(
+        `${wallet.wallet.classicAddress} NEEDS TRUST: ${await balance(
+          client,
+          wallet.wallet.classicAddress
+        )}`
+      )
+      needsLines.push(wallet.wallet)
+    }
+
+    if ((await balance(client, wallet.wallet.classicAddress, USD)) < 10000) {
+      appLogger.debug(
+        `${wallet.wallet.classicAddress} NEEDS IC: ${await balance(
+          client,
+          wallet.wallet.classicAddress
+        )}`
+      )
+      needsIC.push(wallet.wallet.classicAddress)
+    }
   }
 
   appLogger.debug(`FUNDING: ${needsFunding.length}`)
@@ -209,4 +98,69 @@ export async function fundSystem(
   await fund(client, wallet, new ICXRP(20000), ...needsFunding)
   await trust(client, USD.set(100000), ...needsLines)
   await pay(client, USD.set(50000), gw.wallet, ...needsIC)
+}
+
+/**
+ * This function will fund a new wallet on the Hooks Local Ledger.
+ *
+ * @returns {Wallet}
+ */
+export async function initGovernTable(
+  client: Client,
+  invoker: Wallet,
+  invokee: Wallet
+): Promise<void> {
+  const tx: Invoke = {
+    TransactionType: 'Invoke',
+    Account: invoker.classicAddress,
+    Destination: invokee.classicAddress,
+  }
+  await Xrpld.submit(client, { tx: tx, wallet: invoker })
+}
+
+/**
+ * This function will fund a new wallet on the Hooks Local Ledger.
+ *
+ * @returns {void}
+ */
+export async function setGovernTable(
+  client: Client,
+  invoker: Wallet,
+  table: Wallet
+): Promise<void> {
+  const hook = {
+    HookHash:
+      '78CA3F5BD3D4F7B32A6BEBB3844380A9345C9BA496EFEB30314BDDF405D7B4B3',
+    HookParameters: [
+      {
+        HookParameter: {
+          HookParameterName: '495300',
+          HookParameterValue: '8DB64742BEBDE0FA4408D18D1ACB771A9F395D14',
+        },
+      },
+      {
+        HookParameter: {
+          HookParameterName: '495301',
+          HookParameterValue: 'C73F13BE66550A30BB069D5BBEFDEB6DEE22B2C2',
+        },
+      },
+      {
+        HookParameter: {
+          HookParameterName: '494D43',
+          HookParameterValue: '02',
+        },
+      },
+    ],
+  }
+  await setHooksV3({
+    client: client,
+    seed: table.seed,
+    hooks: [{ Hook: hook }],
+  } as SetHookParams)
+  const tx: Invoke = {
+    TransactionType: 'Invoke',
+    Account: invoker.classicAddress,
+    Destination: table.classicAddress,
+  }
+  await Xrpld.submit(client, { tx: tx, wallet: invoker })
 }
