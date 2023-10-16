@@ -24,7 +24,7 @@ export class iHookExecutions {
         HookReturnString: convertHexToString(
           entry.HookExecution.HookReturnString
         ).replace(/\0[\s\S]*$/g, ''),
-      } as iHookExecution
+      } as unknown as iHookExecution
     })
   }
 }
