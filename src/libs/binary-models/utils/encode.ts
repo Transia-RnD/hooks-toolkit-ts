@@ -155,6 +155,9 @@ export function varStringToHex(
 }
 
 export function xflToHex(value: XFL): string {
+  if (value === 0) {
+    return '0000000000000000'
+  }
   return floatToLEXfl(String(value))
 }
 

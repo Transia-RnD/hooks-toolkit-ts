@@ -212,6 +212,26 @@ describe('decode', () => {
       expect(sampleModelDecoded.value).toBe(currencyExpected)
     })
 
+    test('single xfl field 0', () => {
+      const SampleModel = class extends BaseModel {
+        value: XFL
+
+        constructor(value: XFL) {
+          super()
+          this.value = value
+        }
+
+        getMetadata(): Metadata {
+          return [{ field: 'value', type: 'xfl' }]
+        }
+      }
+
+      const sampleEncoded = '0000000000000000'
+      const sampleModelDecoded = decodeModel(sampleEncoded, SampleModel)
+      const currencyExpected = 0
+      expect(sampleModelDecoded.value).toBe(currencyExpected)
+    })
+
     test('single currency field', () => {
       const SampleModel = class extends BaseModel {
         currency: Currency

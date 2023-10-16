@@ -307,6 +307,27 @@ describe('encode', () => {
       expect(hex).toBe('0080C6A47E8DC354')
     })
 
+    test('single xfl field 0', () => {
+      const SampleModel = class extends BaseModel {
+        value: XFL
+
+        constructor(value: XFL) {
+          super()
+          this.value = value
+        }
+
+        getMetadata(): Metadata {
+          return [{ field: 'value', type: 'xfl' }]
+        }
+      }
+
+      const value = 0
+      const sample = new SampleModel(value)
+
+      const hex = encodeModel(sample)
+      expect(hex).toBe('0000000000000000')
+    })
+
     test('single currency field', () => {
       const SampleModel = class extends BaseModel {
         currency: Currency

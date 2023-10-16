@@ -302,6 +302,9 @@ export function hexToVarString(
 }
 
 export function hexToXfl(hex: string): XFL {
+  if (hex === '0000000000000000') {
+    return 0
+  }
   const value = flipHex(hex)
   const xfl = hexToUInt64(value.slice(0, 16))
   return parseFloat(toString(xfl))

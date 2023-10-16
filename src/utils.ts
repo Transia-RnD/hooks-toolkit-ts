@@ -277,6 +277,11 @@ export function genHash(account: string, amount: Amount, tag?: number) {
   return hash.slice(0, 32).toString('hex').toUpperCase()
 }
 
+export function generateHash(dataBytes: Buffer) {
+  const hash = createHash('sha512').update(dataBytes).digest()
+  return hash.slice(0, 32).toString('hex').toUpperCase()
+}
+
 export function padHexString(input: string, targetLength = 64): string {
   const paddedString = '0'.repeat(targetLength - input.length) + input
   return paddedString
