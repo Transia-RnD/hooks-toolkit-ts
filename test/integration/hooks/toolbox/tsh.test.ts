@@ -116,7 +116,8 @@ describe('tsh', () => {
       'txn_trust_set.c: Tx emitted success.'
     )
     console.log(hookExecutions.executions[0].HookReturnString)
-    close(testContext.client)
+
+    await close(testContext.client)
 
     await clearAllHooksV3({
       client: testContext.client,
