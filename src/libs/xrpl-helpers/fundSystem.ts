@@ -26,7 +26,7 @@ export async function fundSystem(
   wallet: Wallet,
   ic: IC
 ): Promise<void> {
-  const accounts = [
+  const userAccounts = [
     'gw',
     'alice',
     'bob',
@@ -39,16 +39,20 @@ export async function fundSystem(
     'ivan',
     'judy',
   ]
-  const wallets = accounts.map((account) => new Account(account))
+  const userWallets = userAccounts.map((account) => new Account(account))
+
+  const hookAccounts = ['hook1', 'hook2', 'hook3', 'hook4', 'hook5']
+  const hookWallets = hookAccounts.map((account) => new Account(account))
+
   const USD = ic as IC
 
   // FUND GW
-  const gw = wallets[0]
+  const gw = userWallets[0]
   if ((await balance(client, gw.wallet.classicAddress)) == 0) {
     appLogger.debug(
       `SETUP GW: ${await balance(client, gw.wallet.classicAddress)}`
     )
-    await fund(client, wallet, new ICXRP(10000), gw.wallet.classicAddress)
+    await fund(client, wallet, new ICXRP(10000000), gw.wallet.classicAddress)
     await accountSet(client, gw.wallet, AccountSetAsfFlags.asfDefaultRipple)
     await sell(client, USD.set(20000), gw.wallet, 0.8)
   }
@@ -57,8 +61,8 @@ export async function fundSystem(
   const needsLines = []
   const needsIC = []
 
-  for (let i = 1; i < wallets.length; i++) {
-    const wallet = wallets[i]
+  for (let i = 1; i < userWallets.length; i++) {
+    const wallet = userWallets[i]
 
     if ((await balance(client, wallet.wallet.classicAddress)) < 10000000000) {
       appLogger.debug(
@@ -88,6 +92,20 @@ export async function fundSystem(
         )}`
       )
       needsIC.push(wallet.wallet.classicAddress)
+    }
+  }
+
+  for (let i = 0; i < hookWallets.length; i++) {
+    const wallet = hookWallets[i]
+
+    if ((await balance(client, wallet.wallet.classicAddress)) < 10000000000) {
+      appLogger.debug(
+        `${wallet.wallet.classicAddress} NEEDS FUNDING: ${await balance(
+          client,
+          wallet.wallet.classicAddress
+        )}`
+      )
+      needsFunding.push(wallet.wallet.classicAddress)
     }
   }
 

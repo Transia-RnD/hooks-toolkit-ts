@@ -45,3 +45,19 @@ export const IVAN_WALLET = Wallet.fromSeed('ssUL8VwUfDNzttN7AsimLPyiP7RXQ')
 // wallet secret == "judy"
 // rpggxGs4yFaFEGThxBEbhir7T9Fb5LQKLC
 export const JUDY_WALLET = Wallet.fromSeed('shaiav41HpCvyHQhbSJDWS2pAqD77')
+
+// wallet secret == "hook1"
+// rBpVrkKc8QnxsCGsngMJgmDKqxJKoWHfKt
+export const HOOK1_WALLET = Wallet.fromSeed('ssM2MJpZchJhEWYCP1wMqpD9MWbcd')
+// wallet secret == "hook2"
+// rpeWVvqpm2EPzfFiWrV421AMHKUQBk5aDt
+export const HOOK2_WALLET = Wallet.fromSeed('ss7Ec7bReBqsYpLY2cVsyJsgeLJLq')
+// wallet secret == "hook3"
+// raNiq8ztgmvSXuKrD8iEn2QL6MEf72wSXz
+export const HOOK3_WALLET = Wallet.fromSeed('shgqrTAn8TkqKSfVHhDU4kMthzHeJ')
+// wallet secret == "hook4"
+// rHbizjpTJsqKh4WBcJnJr99uP6H1chRcTd
+export const HOOK4_WALLET = Wallet.fromSeed('snZ1P5gkmuJYUi2LDtSSzYQnxcdp8')
+// wallet secret == "hook5"
+// rUPJACGdNu2rNRiWYpjTbr9BGYz8caXEQG
+export const HOOK5_WALLET = Wallet.fromSeed('ssUcdBBRiCendP9TenSr2tfKhFw7Z')

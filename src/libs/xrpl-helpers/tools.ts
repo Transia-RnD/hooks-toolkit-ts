@@ -18,6 +18,25 @@ import { RippleState } from '@transia/xrpl/dist/npm/models/ledger'
 import { BaseRequest } from '@transia/xrpl/dist/npm/models/methods/baseMethod'
 import { appTransaction } from './transaction'
 import { appLogger } from '../logger'
+import {
+  ALICE_WALLET,
+  BOB_WALLET,
+  CAROL_WALLET,
+  DAVE_WALLET,
+  ELSA_WALLET,
+  FRANK_WALLET,
+  GRACE_WALLET,
+  GW_WALLET,
+  HEIDI_WALLET,
+  HOOK1_WALLET,
+  HOOK2_WALLET,
+  HOOK3_WALLET,
+  HOOK4_WALLET,
+  HOOK5_WALLET,
+  IVAN_WALLET,
+  JUDY_WALLET,
+  NOT_ACTIVE_WALLET,
+} from './constants'
 
 const LEDGER_ACCEPT_REQUEST = { command: 'ledger_accept' } as BaseRequest
 
@@ -36,31 +55,71 @@ export class Account {
 
     this.name = name as string
     if (name === 'gw') {
-      this.wallet = Wallet.fromSeed('safmpBLsy2paxybRMpvXqFqSrV5HG')
+      this.wallet = GW_WALLET
       this.account = this.wallet.classicAddress
     }
     if (name === 'notactivated') {
-      this.wallet = Wallet.fromSeed('snqPCkCnfAbK4p981HZZGMj8SnhZ7')
+      this.wallet = NOT_ACTIVE_WALLET
       this.account = this.wallet.classicAddress
     }
     if (name === 'alice') {
-      this.wallet = Wallet.fromSeed('ssbTMHrmEJP7QEQjWJH3a72LQipBM')
+      this.wallet = ALICE_WALLET
       this.account = this.wallet.classicAddress
     }
     if (name === 'bob') {
-      this.wallet = Wallet.fromSeed('spkcsko6Ag3RbCSVXV2FJ8Pd4Zac1')
+      this.wallet = BOB_WALLET
       this.account = this.wallet.classicAddress
     }
     if (name === 'carol') {
-      this.wallet = Wallet.fromSeed('snzb83cV8zpLPTE4nQamoLP9pbhB7')
+      this.wallet = CAROL_WALLET
       this.account = this.wallet.classicAddress
     }
     if (name === 'dave') {
-      this.wallet = Wallet.fromSeed('sh2Q7wDfjdvyVaVHEE8JT3C9osGFD')
+      this.wallet = DAVE_WALLET
       this.account = this.wallet.classicAddress
     }
     if (name === 'elsa') {
-      this.wallet = Wallet.fromSeed('sspu32LMDPU9V5NCUb584FqbdPsZ6')
+      this.wallet = ELSA_WALLET
+      this.account = this.wallet.classicAddress
+    }
+    if (name === 'frank') {
+      this.wallet = FRANK_WALLET
+      this.account = this.wallet.classicAddress
+    }
+    if (name === 'grace') {
+      this.wallet = GRACE_WALLET
+      this.account = this.wallet.classicAddress
+    }
+    if (name === 'heidi') {
+      this.wallet = HEIDI_WALLET
+      this.account = this.wallet.classicAddress
+    }
+    if (name === 'ivan') {
+      this.wallet = IVAN_WALLET
+      this.account = this.wallet.classicAddress
+    }
+    if (name === 'judy') {
+      this.wallet = JUDY_WALLET
+      this.account = this.wallet.classicAddress
+    }
+    if (name === 'hook1') {
+      this.wallet = HOOK1_WALLET
+      this.account = this.wallet.classicAddress
+    }
+    if (name === 'hook2') {
+      this.wallet = HOOK2_WALLET
+      this.account = this.wallet.classicAddress
+    }
+    if (name === 'hook3') {
+      this.wallet = HOOK3_WALLET
+      this.account = this.wallet.classicAddress
+    }
+    if (name === 'hook4') {
+      this.wallet = HOOK4_WALLET
+      this.account = this.wallet.classicAddress
+    }
+    if (name === 'hook5') {
+      this.wallet = HOOK5_WALLET
       this.account = this.wallet.classicAddress
     }
   }
@@ -236,11 +295,12 @@ export async function fund(
         Amount: uicx.amount as unknown as IssuedCurrencyAmount,
       }
 
-      await appTransaction(ctx, builtTx, wallet, {
+      const response = await appTransaction(ctx, builtTx, wallet, {
         hardFail: true,
         count: 1,
         delayMs: 1000,
       })
+      appLogger.debug(JSON.stringify(response))
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       appLogger.debug(error)
@@ -264,11 +324,12 @@ export async function pay(
         Destination: acct as string,
         Amount: uicx.amount as unknown as IssuedCurrencyAmount,
       }
-      await appTransaction(ctx, builtTx, signer, {
+      const response = await appTransaction(ctx, builtTx, signer, {
         hardFail: true,
         count: 1,
         delayMs: 1000,
       })
+      appLogger.debug(JSON.stringify(response))
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       appLogger.debug(error)
@@ -298,12 +359,14 @@ export async function sell(
       TakerGets: takerGets,
       TakerPays: xrpToDrops(String(rate * uicx.value)),
       Flags: OfferCreateFlags.tfSell,
+      NetworkID: ctx.networkID,
     }
-    await appTransaction(ctx, builtTx, signer, {
+    const response = await appTransaction(ctx, builtTx, signer, {
       hardFail: true,
       count: 1,
       delayMs: 1000,
     })
+    appLogger.debug(JSON.stringify(response))
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     appLogger.debug(error)
@@ -331,12 +394,14 @@ export async function buy(
       Account: signer.classicAddress,
       TakerGets: xrpToDrops(String(rate * uicx.value)),
       TakerPays: takerPays,
+      NetworkID: ctx.networkID,
     }
-    await appTransaction(ctx, builtTx, signer, {
+    const response = await appTransaction(ctx, builtTx, signer, {
       hardFail: true,
       count: 1,
       delayMs: 1000,
     })
+    appLogger.debug(JSON.stringify(response))
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     appLogger.debug(error)
@@ -357,12 +422,14 @@ export async function trust(
         TransactionType: 'TrustSet',
         Account: acct.classicAddress as string,
         LimitAmount: uicx.amount as unknown as IssuedCurrencyAmount,
+        NetworkID: ctx.networkID,
       }
-      await appTransaction(ctx, builtTx, acct, {
+      const response = await appTransaction(ctx, builtTx, acct, {
         hardFail: true,
         count: 1,
         delayMs: 1000,
       })
+      appLogger.debug(JSON.stringify(response))
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       appLogger.debug(error.data?.decoded)
@@ -383,12 +450,14 @@ export async function accountSet(
     TransferRate: 0,
     Domain: convertStringToHex('https://usd.transia.io'),
     SetFlag: flag,
+    NetworkID: ctx.networkID,
   }
-  await appTransaction(ctx, builtTx, account, {
+  const response = await appTransaction(ctx, builtTx, account, {
     hardFail: true,
     count: 1,
     delayMs: 1000,
   })
+  appLogger.debug(JSON.stringify(response))
 }
 
 export async function accountClear(
@@ -402,6 +471,7 @@ export async function accountClear(
     TransferRate: 0,
     Domain: convertStringToHex('https://usd.transia.io'),
     ClearFlag: flag,
+    NetworkID: ctx.networkID,
   }
   await appTransaction(ctx, builtTx, account, {
     hardFail: true,

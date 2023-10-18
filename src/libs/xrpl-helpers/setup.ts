@@ -15,6 +15,11 @@ import {
   HEIDI_WALLET,
   IVAN_WALLET,
   JUDY_WALLET,
+  HOOK1_WALLET,
+  HOOK2_WALLET,
+  HOOK3_WALLET,
+  HOOK4_WALLET,
+  HOOK5_WALLET,
 } from './constants'
 import { fundSystem } from '../xrpl-helpers'
 import { IC } from './tools'
@@ -37,6 +42,11 @@ export interface XrplIntegrationTestContext {
   heidi: Wallet
   ivan: Wallet
   judy: Wallet
+  hook1: Wallet
+  hook2: Wallet
+  hook3: Wallet
+  hook4: Wallet
+  hook5: Wallet
 }
 
 export async function teardownClient(
@@ -96,6 +106,11 @@ export async function setupClient(
     heidi: HEIDI_WALLET,
     ivan: IVAN_WALLET,
     judy: JUDY_WALLET,
+    hook1: HOOK1_WALLET,
+    hook2: HOOK2_WALLET,
+    hook3: HOOK3_WALLET,
+    hook4: HOOK4_WALLET,
+    hook5: HOOK5_WALLET,
   }
   return connectWithRetry(context.client)
     .then(async () => {
