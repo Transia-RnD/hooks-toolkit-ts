@@ -687,10 +687,10 @@
     base-x "^3.0.9"
     create-hash "^1.1.2"
 
-"@transia/ripple-binary-codec@^1.4.6-alpha.2":
-  version "1.4.6-alpha.2"
-  resolved "https://registry.yarnpkg.com/@transia/ripple-binary-codec/-/ripple-binary-codec-1.4.6-alpha.2.tgz#89bac82c2123cbd924ea1b8f6b85011e29394f9f"
-  integrity sha512-WjjLZJK+k7eT6ehgU0EGnOSzogAnmtXhuaWC+FI9u1VC2bIN8644qIRwkVLpwe+eMbVvmaGHeDYn8WfLrZHfSA==
+"@transia/ripple-binary-codec@^1.4.6-alpha.5":
+  version "1.4.6-alpha.5"
+  resolved "https://registry.yarnpkg.com/@transia/ripple-binary-codec/-/ripple-binary-codec-1.4.6-alpha.5.tgz#a855d60a843220b9f4bba83eeee39232f0ac9d74"
+  integrity sha512-2VT4JZMqWbpS0ZdiSBMlUeZhWVUbzI6n04QKdUuIuI6K0tFe4VYcRPxrux6S5TC1stnEMHYl0+zx9eKkjE0Stw==
   dependencies:
     "@transia/ripple-address-codec" "^4.2.8-alpha.0"
     assert "^2.0.0"
@@ -711,22 +711,24 @@
     hash.js "^1.0.3"
 
 "@transia/xpop-toolkit@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@transia/xpop-toolkit/-/xpop-toolkit-1.0.2.tgz#11f4034ff092c685c791313afdc99dc02b66d83e"
-  integrity sha512-ShP0+UrBtlQ1TYui+2Wll11FjxuPeW3AcC5Wjr5pQIk9BGeJ2Fpm6V+Wng0csQcDd5cd6i2P400p9lLP6bsr3w==
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@transia/xpop-toolkit/-/xpop-toolkit-1.0.4.tgz#41b46eaf443d7c7a5e612950a3104b1e43f890ef"
+  integrity sha512-IzNFNoC2XYz/lBmkOpra3l5o6/cMF8Tdr05gBvglWj5zXlD5GOfaYb9kcc8+LyDkjT9hsr6Cyqj4I15+cOQXmw==
   dependencies:
-    "@transia/xrpl" "^2.7.3-alpha.3"
+    "@transia/xrpl" "^2.7.3-alpha.16"
+    "@types/base-64" "^1.0.0"
     axios "^1.4.0"
+    chai "^4.3.7"
     crypto-js "^4.1.1"
     dotenv "^16.3.1"
 
-"@transia/xrpl@^2.7.3-alpha.10", "@transia/xrpl@^2.7.3-alpha.3":
-  version "2.7.3-alpha.10"
-  resolved "https://registry.yarnpkg.com/@transia/xrpl/-/xrpl-2.7.3-alpha.10.tgz#670e08d850337ced78b95d14650ff54d501890e7"
-  integrity sha512-WLKlwXgziYl3VNcoqEko1zAPsuy/0pqL/555IATPPkTOFOGNaZDb86v8Ncpz/u1O85UCBYe5Qyc7g61n1mp0qA==
+"@transia/xrpl@^2.7.3-alpha.10", "@transia/xrpl@^2.7.3-alpha.16":
+  version "2.7.3-alpha.18"
+  resolved "https://registry.yarnpkg.com/@transia/xrpl/-/xrpl-2.7.3-alpha.18.tgz#3f1bc0a5592e3140d470674bb6a407aa56be7aee"
+  integrity sha512-d727dhGVgLMTlCTgHBpu9ESjGY/4S6N+1scE9WryAH8V3AmPlqFqRS2zGx4o4Kb3dmoOPxvFsBCKOyT2uXD/eQ==
   dependencies:
     "@transia/ripple-address-codec" "^4.2.8-alpha.0"
-    "@transia/ripple-binary-codec" "^1.4.6-alpha.2"
+    "@transia/ripple-binary-codec" "^1.4.6-alpha.5"
     "@transia/ripple-keypairs" "^1.1.8-alpha.0"
     bignumber.js "^9.0.0"
     bip32 "^2.0.6"
@@ -792,6 +794,11 @@
   integrity sha512-MitHFXnhtgwsGZWtT68URpOvLN4EREih1u3QtQiN4VdAxWKRVvGCSvw/Qth0M0Qq3pJpnGOu5JaM/ydK7OGbqg==
   dependencies:
     "@babel/types" "^7.20.7"
+
+"@types/base-64@^1.0.0":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@types/base-64/-/base-64-1.0.1.tgz#9b7c0f7c06e1ddceece866f24db45d7ac23f817d"
+  integrity sha512-syGYQWNlO2yyGJjyP9i3eZeHZN+QS3V11EnsVwCiYgOQXMmQNAIgVpFsZ146R+o3l9ltB+KEVKsPW8RCyq2EAw==
 
 "@types/chai@^4.3.4":
   version "4.3.5"
