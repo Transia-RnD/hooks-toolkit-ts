@@ -17,6 +17,7 @@ import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
 import { RippleState } from '@transia/xrpl/dist/npm/models/ledger'
 import { BaseRequest } from '@transia/xrpl/dist/npm/models/methods/baseMethod'
 import { appTransaction } from './transaction'
+import { appLogger } from '../logger'
 
 const LEDGER_ACCEPT_REQUEST = { command: 'ledger_accept' } as BaseRequest
 
@@ -59,7 +60,7 @@ export class Account {
       this.account = this.wallet.classicAddress
     }
     if (name === 'elsa') {
-      this.wallet = Wallet.fromSeed('sEdTeiqmPdUob32gyD6vPUskq1Z7TP3')
+      this.wallet = Wallet.fromSeed('sspu32LMDPU9V5NCUb584FqbdPsZ6')
       this.account = this.wallet.classicAddress
     }
   }
@@ -121,8 +122,9 @@ export async function accountSeq(
   try {
     const response = await ctx.request(request)
     return response.result.account_data.Sequence
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.log(error.message)
+    // appLogger.debug(error.message)
     return 0
   }
 }
@@ -177,7 +179,7 @@ export async function balance(
     return await icBalance(ctx, account, ic)
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.log(error.message)
+      // appLogger.debug(error.message)
       return 0
     }
     return 0
@@ -212,7 +214,7 @@ export async function limit(
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.log(error.message)
+      // appLogger.debug(error.message)
       return 0
     }
     return 0
@@ -241,9 +243,9 @@ export async function fund(
       })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.log(error)
-      console.log(error.data?.decoded)
-      console.log(error.data?.tx)
+      appLogger.debug(error)
+      appLogger.debug(error.data?.decoded)
+      appLogger.debug(error.data?.tx)
     }
   }
 }
@@ -269,9 +271,9 @@ export async function pay(
       })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.log(error)
-      console.log(error.data?.decoded)
-      console.log(error.data?.tx)
+      appLogger.debug(error)
+      appLogger.debug(error.data?.decoded)
+      appLogger.debug(error.data?.tx)
       throw error
     }
   }
@@ -304,9 +306,9 @@ export async function sell(
     })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.log(error)
-    console.log(error.data?.decoded)
-    console.log(error.data?.tx)
+    appLogger.debug(error)
+    appLogger.debug(error.data?.decoded)
+    appLogger.debug(error.data?.tx)
     throw error
   }
 }
@@ -337,9 +339,9 @@ export async function buy(
     })
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.log(error)
-    console.log(error.data?.decoded)
-    console.log(error.data?.tx)
+    appLogger.debug(error)
+    appLogger.debug(error.data?.decoded)
+    appLogger.debug(error.data?.tx)
     throw error
   }
 }
@@ -363,20 +365,43 @@ export async function trust(
       })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.log(error.data?.decoded)
-      console.log(error.data?.tx)
+      appLogger.debug(error.data?.decoded)
+      appLogger.debug(error.data?.tx)
       throw error
     }
   }
 }
 
-export async function accountSet(ctx: Client, account: Wallet): Promise<void> {
+export async function accountSet(
+  ctx: Client,
+  account: Wallet,
+  flag: AccountSetAsfFlags
+): Promise<void> {
   const builtTx: AccountSet = {
     TransactionType: 'AccountSet',
     Account: account.classicAddress as string,
     TransferRate: 0,
     Domain: convertStringToHex('https://usd.transia.io'),
-    SetFlag: AccountSetAsfFlags.asfDefaultRipple,
+    SetFlag: flag,
+  }
+  await appTransaction(ctx, builtTx, account, {
+    hardFail: true,
+    count: 1,
+    delayMs: 1000,
+  })
+}
+
+export async function accountClear(
+  ctx: Client,
+  account: Wallet,
+  flag: AccountSetAsfFlags
+): Promise<void> {
+  const builtTx: AccountSet = {
+    TransactionType: 'AccountSet',
+    Account: account.classicAddress as string,
+    TransferRate: 0,
+    Domain: convertStringToHex('https://usd.transia.io'),
+    ClearFlag: flag,
   }
   await appTransaction(ctx, builtTx, account, {
     hardFail: true,

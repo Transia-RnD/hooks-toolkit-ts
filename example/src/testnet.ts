@@ -15,7 +15,7 @@ import {
 } from '@transia/hooks-toolkit'
 
 export async function main(): Promise<void> {
-  const serverUrl = 'wss://hooks-testnet-v3.xrpl-labs.com'
+  const serverUrl = 'wss://xahau-test.net'
   const client = new Client(serverUrl)
   await client.connect()
   client.networkID = await client.getNetworkID()

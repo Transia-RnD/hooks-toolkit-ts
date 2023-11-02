@@ -18,7 +18,7 @@ import { validateConnection, Xrpld, getXpopBlob } from '@transia/xpop-toolkit'
 export async function main(): Promise<void> {
   // Define the URLs for the burn and mint clients
   const burnUrl = 'wss://testnet.transia.co'
-  const mintUrl = 'wss://hooks-testnet-v3.xrpl-labs.com'
+  const mintUrl = 'wss://xahau-test.net'
 
   // Create the burn and mint clients and connect to them
   const burnClient = new Client(burnUrl)

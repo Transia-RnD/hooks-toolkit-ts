@@ -1,11 +1,12 @@
-import { decodeAccountID } from '@transia/xrpl'
-import { floatToLEXfl, fromCurrencyToHex } from '../../../utils'
+import { convertStringToHex, decodeAccountID } from '@transia/xrpl'
+import { floatToLEXfl } from '../../../utils'
 import { BaseModel } from '../BaseModel'
 import {
   UInt8,
   UInt32,
   UInt64,
   UInt224,
+  Hash256,
   VarString,
   XFL,
   Currency,
@@ -57,8 +58,6 @@ function encodeField(
   maxStringLength?: number
 ): string {
   switch (type) {
-    case 'bool':
-      return uint8ToHex(fieldValue as UInt8)
     case 'uint8':
       return uint8ToHex(fieldValue as UInt8)
     case 'uint32':
@@ -67,6 +66,8 @@ function encodeField(
       return uint64ToHex(fieldValue as UInt64)
     case 'uint224':
       return uint224ToHex(fieldValue as UInt224)
+    case 'hash256':
+      return fieldValue as Hash256
     case 'varString':
       if (maxStringLength === undefined) {
         throw Error('maxStringLength is required for type varString')
@@ -158,8 +159,8 @@ export function xflToHex(value: XFL): string {
 }
 
 export function currencyToHex(value: Currency): string {
-  const content = fromCurrencyToHex(value)
-  return content.padEnd(40, '0').toUpperCase() // 40
+  const content = convertStringToHex(value)
+  return content.padEnd(16, '0').padStart(40, '0') // 40
 }
 
 export function xrpAddressToHex(value: XRPAddress): string {

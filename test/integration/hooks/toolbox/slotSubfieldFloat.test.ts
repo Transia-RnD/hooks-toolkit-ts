@@ -19,6 +19,7 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
 describe('slotSubfieldFloat', () => {
@@ -26,10 +27,6 @@ describe('slotSubfieldFloat', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-
-  it('slot subfield float - success', async () => {
     const hook = createHookPayload(
       0,
       'slot_subfield_float',
@@ -42,7 +39,16 @@ describe('slotSubfieldFloat', () => {
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('slot subfield float - success', async () => {
     // PAYMENT OUT
     const aliceWallet = testContext.alice
     const bobWallet = testContext.bob

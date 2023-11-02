@@ -20,6 +20,7 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
 // FilterOnXrp: ACCEPT: success
@@ -30,11 +31,6 @@ describe('filterOnXrp', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-    console.log(testContext.client.isConnected())
-  })
-  afterAll(async () => teardownClient(testContext))
-
-  it('filter on xrp - success', async () => {
     const hook = createHookPayload(
       0,
       'filter_on_xrp',
@@ -47,7 +43,16 @@ describe('filterOnXrp', () => {
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('filter on xrp - success', async () => {
     // PAYMENT IN
     const aliceWallet = testContext.alice
     const bobWallet = testContext.bob
@@ -71,19 +76,6 @@ describe('filterOnXrp', () => {
   })
 
   it('filter on xrp - failure', async () => {
-    const hook = createHookPayload(
-      0,
-      'filter_on_xrp',
-      'filter_on_xrp',
-      SetHookFlags.hsfOverride,
-      ['Payment']
-    )
-    await setHooksV3({
-      client: testContext.client,
-      seed: testContext.alice.seed,
-      hooks: [{ Hook: hook }],
-    } as SetHookParams)
-
     try {
       // PAYMENT IN
       const amount: IssuedCurrencyAmount = {
@@ -103,6 +95,7 @@ describe('filterOnXrp', () => {
         wallet: bobWallet,
         tx: builtTx,
       })
+      throw Error('invalidError')
     } catch (error: unknown) {
       if (error instanceof Error) {
         expect(error.message).toEqual(

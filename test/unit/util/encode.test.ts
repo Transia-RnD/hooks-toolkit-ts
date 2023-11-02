@@ -214,14 +214,20 @@ describe('encode', () => {
   describe('currencyToHex', () => {
     test('3 character currency', () => {
       const testCurrency = 'APL'
-      const expectedResult = '41504C0000000000000000000000000000000000'
+      const expectedResult = '00000000000000000000000041504C0000000000'
 
       expect(currencyToHex(testCurrency)).toBe(expectedResult)
     })
 
     test('4 character currency', () => {
       const testCurrency = 'APPL'
-      const expectedResult = '4150504C00000000000000000000000000000000'
+      const expectedResult = '0000000000000000000000004150504C00000000'
+
+      expect(currencyToHex(testCurrency)).toBe(expectedResult)
+    })
+    test('12 character currency', () => {
+      const testCurrency = 'MyCoolSymbol'
+      const expectedResult = '00000000000000004D79436F6F6C53796D626F6C'
 
       expect(currencyToHex(testCurrency)).toBe(expectedResult)
     })
@@ -319,7 +325,7 @@ describe('encode', () => {
       const sample = new SampleModel(currency)
 
       const hex = encodeModel(sample)
-      expect(hex).toBe('4150504C00000000000000000000000000000000')
+      expect(hex).toBe('0000000000000000000000004150504C00000000')
     })
 
     test('single xrpAddress field', () => {

@@ -3,6 +3,7 @@ import {
   calculateHookOn,
   hexHookParameters,
   SetHook,
+  SetHookFlags,
 } from '@transia/xrpl'
 import { SetHookParams, iHook } from './types'
 import { HookGrant, HookParameter } from '@transia/xrpl/dist/npm/models/common'
@@ -11,6 +12,7 @@ import {
   prepareTransactionV3,
   appTransaction,
 } from './libs/xrpl-helpers/transaction'
+import { appLogger } from './libs/logger'
 
 export function createHookPayload(
   version?: number | null,
@@ -57,9 +59,9 @@ export async function setHooksV3({ client, seed, hooks }: SetHookParams) {
 
   await prepareTransactionV3(client, tx)
 
-  console.log(`1. Transaction to submit (before autofill):`)
-  console.log(JSON.stringify(tx, null, 2))
-  console.log(`\n2. Submitting transaction...`)
+  appLogger.debug(`1. Transaction to submit (before autofill):`)
+  appLogger.debug(JSON.stringify(tx, null, 2))
+  appLogger.debug(`\n2. Submitting transaction...`)
 
   await appTransaction(client, tx, HOOK_ACCOUNT, {
     hardFail: true,
@@ -67,5 +69,66 @@ export async function setHooksV3({ client, seed, hooks }: SetHookParams) {
     delayMs: 1000,
   })
 
-  console.log(`\n3. SetHook Success...`)
+  appLogger.debug(`\n3. SetHook Success...`)
+}
+
+export async function clearAllHooksV3({ client, seed }: SetHookParams) {
+  const HOOK_ACCOUNT = Wallet.fromSeed(seed)
+  const hook = {
+    CreateCode: '',
+    Flags: SetHookFlags.hsfOverride | SetHookFlags.hsfNSDelete,
+  } as iHook
+  const tx: SetHook = {
+    TransactionType: `SetHook`,
+    Account: HOOK_ACCOUNT.classicAddress,
+    Hooks: [
+      { Hook: hook },
+      { Hook: hook },
+      { Hook: hook },
+      { Hook: hook },
+      { Hook: hook },
+      { Hook: hook },
+      { Hook: hook },
+      { Hook: hook },
+      { Hook: hook },
+      { Hook: hook },
+    ],
+  }
+
+  await prepareTransactionV3(client, tx)
+
+  appLogger.debug(`1. Transaction to submit (before autofill):`)
+  appLogger.debug(JSON.stringify(tx, null, 2))
+  appLogger.debug(`\n2. Submitting transaction...`)
+
+  await appTransaction(client, tx, HOOK_ACCOUNT, {
+    hardFail: true,
+    count: 2,
+    delayMs: 1000,
+  })
+
+  appLogger.debug(`\n3. SetHook Success...`)
+}
+
+export async function clearHookStateV3({ client, seed, hooks }: SetHookParams) {
+  const HOOK_ACCOUNT = Wallet.fromSeed(seed)
+  const tx: SetHook = {
+    TransactionType: `SetHook`,
+    Account: HOOK_ACCOUNT.classicAddress,
+    Hooks: hooks,
+  }
+
+  await prepareTransactionV3(client, tx)
+
+  appLogger.debug(`1. Transaction to submit (before autofill):`)
+  appLogger.debug(JSON.stringify(tx, null, 2))
+  appLogger.debug(`\n2. Submitting transaction...`)
+
+  await appTransaction(client, tx, HOOK_ACCOUNT, {
+    hardFail: true,
+    count: 2,
+    delayMs: 1000,
+  })
+
+  appLogger.debug(`\n3. SetHook Success...`)
 }

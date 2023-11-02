@@ -8,9 +8,13 @@ import {
   ALICE_WALLET,
   BOB_WALLET,
   CAROL_WALLET,
+  DAVE_WALLET,
+  ELSA_WALLET,
 } from './constants'
 import { fundSystem } from '../xrpl-helpers'
 import { IC } from './tools'
+import { clearAllHooksV3 } from '../../setHooks'
+import { SetHookParams } from '../../types'
 
 export interface XrplIntegrationTestContext {
   client: Client
@@ -21,6 +25,8 @@ export interface XrplIntegrationTestContext {
   alice: Wallet
   bob: Wallet
   carol: Wallet
+  dave: Wallet
+  elsa: Wallet
 }
 
 export async function teardownClient(
@@ -47,6 +53,19 @@ async function connectWithRetry(client: Client, tries = 0): Promise<void> {
   })
 }
 
+export async function teardownHook(
+  context: XrplIntegrationTestContext,
+  accounts?: Wallet[] | []
+): Promise<void> {
+  const promises = accounts.map(async (acct: Wallet) => {
+    await clearAllHooksV3({
+      client: context.client,
+      seed: acct.seed,
+    } as SetHookParams)
+  })
+  await Promise.all(promises)
+}
+
 export async function setupClient(
   server = serverUrl
 ): Promise<XrplIntegrationTestContext> {
@@ -60,6 +79,8 @@ export async function setupClient(
     alice: ALICE_WALLET,
     bob: BOB_WALLET,
     carol: CAROL_WALLET,
+    dave: DAVE_WALLET,
+    elsa: ELSA_WALLET,
   }
   return connectWithRetry(context.client)
     .then(async () => {

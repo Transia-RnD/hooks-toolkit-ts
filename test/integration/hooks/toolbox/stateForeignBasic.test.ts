@@ -21,6 +21,7 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
@@ -56,7 +57,17 @@ describe('stateForeignBasic', () => {
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
   })
-  afterAll(async () => teardownClient(testContext))
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.bob.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
   it('state foreign basic - invalid account', async () => {
     const aliceWallet = testContext.alice
@@ -361,7 +372,6 @@ describe('stateForeignBasic', () => {
       result.meta as TransactionMetadata
     )
     console.log(hookExecutions.executions[0].HookReturnString)
-
     // expect(hookExecutions.executions[0].HookReturnString).toEqual('')
 
     const hook2State = await StateUtility.getHookState(

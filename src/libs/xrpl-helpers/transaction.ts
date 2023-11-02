@@ -17,6 +17,7 @@ import {
   TransactionMetadata,
 } from '@transia/xrpl'
 import { hashSignedTx } from '@transia/xrpl/dist/npm/utils/hashes'
+import { appLogger } from '../logger'
 
 interface ServerStateRPCResult {
   state: {
@@ -180,9 +181,9 @@ export async function submitTransaction({
 }): Promise<SubmitResponse> {
   let response: SubmitResponse
   try {
-    response = await client.submit(transaction, { wallet })
+    const preparedTx = await client.autofill(transaction)
 
-    console.log(response)
+    response = await client.submit(preparedTx, { wallet })
 
     // Retry if another transaction finished before this one
     while (
@@ -198,10 +199,11 @@ export async function submitTransaction({
       // eslint-disable-next-line no-await-in-loop -- We are retrying in a loop on purpose
       response = await client.submit(transaction, { wallet })
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.log(error)
-    console.log(JSON.stringify(error.data.decoded))
-    console.log(JSON.stringify(error.data.tx))
+    appLogger.debug(error)
+    appLogger.debug(JSON.stringify(error.data.decoded))
+    appLogger.debug(JSON.stringify(error.data.tx))
 
     if (error instanceof TimeoutError || error instanceof NotConnectedError) {
       // retry
@@ -265,9 +267,9 @@ export async function appTransaction(
   }
 ): Promise<TxResponse> {
   if (process.env.RIPPLED_ENV === 'standalone') {
-    return testTransaction(client, transaction, wallet, retry)
+    return await testTransaction(client, transaction, wallet, retry)
   } else {
-    return prodTransactionAndWait(client, transaction, wallet, retry)
+    return await prodTransactionAndWait(client, transaction, wallet, retry)
   }
 }
 
@@ -311,16 +313,16 @@ export async function testTransaction(
 
   if (response.result.engine_result !== 'tesSUCCESS') {
     // eslint-disable-next-line no-console -- See output
-    console.error(
+    appLogger.error(
       `Transaction was not successful. Expected response.result.engine_result to be tesSUCCESS but got ${response.result.engine_result}`
     )
     // eslint-disable-next-line no-console -- See output
-    console.error('The transaction was: ', transaction)
+    appLogger.error('The transaction was: ', transaction)
     // eslint-disable-next-line no-console -- See output
-    console.error('The response was: ', JSON.stringify(response))
+    appLogger.error('The response was: ', JSON.stringify(response))
   }
 
-  if (retry?.hardFail) {
+  if (retry?.hardFail && response.result.engine_result !== 'tecHOOK_REJECTED') {
     assert.equal(
       response.result.engine_result,
       'tesSUCCESS',
@@ -352,8 +354,6 @@ export async function prodTransactionAndWait(
     wallet: wallet,
   })
 
-  console.log(response.result.meta as TransactionMetadata)
-
   // check that the transaction was successful
   assert.equal(response.type, 'response')
 
@@ -364,16 +364,16 @@ export async function prodTransactionAndWait(
   const txResult = meta.TransactionResult
   if (txResult !== 'tesSUCCESS') {
     // eslint-disable-next-line no-console -- See output
-    console.error(
+    appLogger.error(
       `Transaction was not successful. Expected response.result.engine_result to be tesSUCCESS but got ${txResult}`
     )
     // eslint-disable-next-line no-console -- See output
-    console.error('The transaction was: ', transaction)
+    appLogger.error('The transaction was: ', transaction)
     // eslint-disable-next-line no-console -- See output
-    console.error('The response was: ', JSON.stringify(response))
+    appLogger.error('The response was: ', JSON.stringify(response))
   }
 
-  if (retry?.hardFail) {
+  if (retry?.hardFail && txResult !== 'tecHOOK_REJECTED') {
     assert.equal(
       txResult,
       'tesSUCCESS',

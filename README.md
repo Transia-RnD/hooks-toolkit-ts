@@ -1,4 +1,4 @@
-# The Hooks Tookkit (Typescript)
+# The Hooks Toolkit (Typescript)
 
 ## Global Prerequsits
 
@@ -23,7 +23,7 @@ You can also build a single hook with;
 
 ## Debug the test env
 
-`tail -f debug.log | grep HookTrace`
+`tail -f xrpld/log/debug.log | grep HookTrace`
 
 ## Test the Hook Library
 

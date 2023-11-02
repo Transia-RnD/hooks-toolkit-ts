@@ -13,6 +13,7 @@ import {
   appTransaction,
 } from './libs/xrpl-helpers/transaction'
 import { SmartContractParams } from './types'
+import { appLogger } from './libs/logger'
 
 export class Xrpld {
   // TX V3
@@ -22,12 +23,12 @@ export class Xrpld {
     }
     const builtTx = params.tx as Transaction
     await prepareTransactionV3(client, builtTx)
-    // console.log(JSON.stringify(builtTx))
+    appLogger.debug(JSON.stringify(builtTx))
 
     // @ts-expect-error - invoke is tx
     validate(builtTx)
     const txResponse = await appTransaction(client, builtTx, params.wallet, {
-      hardFail: false,
+      hardFail: true,
       count: 1,
       delayMs: 1000,
     })

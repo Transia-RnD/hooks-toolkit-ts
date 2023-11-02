@@ -1,18 +1,13 @@
 // xrpl
-import {
-  Payment,
-  SetHookFlags,
-  TransactionMetadata,
-  xrpToDrops,
-} from '@transia/xrpl'
+import { Invoke, SetHookFlags, TransactionMetadata } from '@transia/xrpl'
 // xrpl-helpers
 import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
   serverUrl,
+  close,
 } from '../../../../src/libs/xrpl-helpers'
-// src
 import {
   Xrpld,
   SetHookParams,
@@ -25,20 +20,35 @@ import {
   iHookParamValue,
   floatToLEXfl,
 } from '../../../../dist/npm/src'
+import { AccountID, Currency } from '@transia/ripple-binary-codec/dist/types'
 
-// HookOnTT: ACCEPT: success
-
-describe('paramBasic', () => {
+describe('trustSet', () => {
   let testContext: XrplIntegrationTestContext
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
+    const tx1param1 = new iHookParamEntry(
+      new iHookParamName('A'),
+      new iHookParamValue(floatToLEXfl('10'), true)
+    )
+    const tx1param2 = new iHookParamEntry(
+      new iHookParamName('I'),
+      new iHookParamValue(
+        AccountID.from(testContext.gw.classicAddress).toHex(),
+        true
+      )
+    )
+    const tx1param3 = new iHookParamEntry(
+      new iHookParamName('C'),
+      new iHookParamValue(Currency.from('ABC').toHex(), true)
+    )
     const hook = createHookPayload(
       0,
-      'param_basic',
-      'param_basic',
+      'txn_trust_set',
+      'txn_trust_set',
       SetHookFlags.hsfOverride,
-      ['Payment']
+      ['Invoke'],
+      [tx1param1.toXrpl(), tx1param2.toXrpl(), tx1param3.toXrpl()]
     )
     await setHooksV3({
       client: testContext.client,
@@ -54,30 +64,24 @@ describe('paramBasic', () => {
     await teardownClient(testContext)
   })
 
-  it('tx param basic - success', async () => {
-    // PAYMENT IN
-    const param1 = new iHookParamEntry(
-      new iHookParamName('TEST'),
-      new iHookParamValue(floatToLEXfl('10'), true)
-    )
+  it('txn trust hook', async () => {
     const aliceWallet = testContext.alice
-    const bobWallet = testContext.bob
-    const builtTx: Payment = {
-      TransactionType: 'Payment',
-      Account: bobWallet.classicAddress,
-      Destination: aliceWallet.classicAddress,
-      Amount: xrpToDrops(10),
-      HookParameters: [param1.toXrpl()],
+    // INVOKE IN
+    const builtTx: Invoke = {
+      TransactionType: 'Invoke',
+      Account: aliceWallet.classicAddress,
     }
     const result = await Xrpld.submit(testContext.client, {
-      wallet: bobWallet,
+      wallet: aliceWallet,
       tx: builtTx,
     })
-
     const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
       testContext.client,
       result.meta as TransactionMetadata
     )
-    expect(hookExecutions.executions[0].HookReturnString).toEqual('')
+    expect(hookExecutions.executions[0].HookReturnString).toMatch(
+      'txn_trust_set.c: Tx emitted success.'
+    )
+    await close(testContext.client)
   })
 })

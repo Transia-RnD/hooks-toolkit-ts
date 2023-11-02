@@ -1,45 +1,49 @@
 // xrpl
-import { Invoke, SetHookFlags } from '@transia/xrpl'
+import { Invoke, SetHookFlags, TransactionMetadata } from '@transia/xrpl'
 // xrpl-helpers
 import {
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
   serverUrl,
+  close,
 } from '../../../../src/libs/xrpl-helpers'
-// src
 import {
   Xrpld,
   SetHookParams,
-  StateUtility,
+  ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
-describe('keyletTrustline', () => {
+describe('offerCreate', () => {
   let testContext: XrplIntegrationTestContext
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-  // beforeEach(async () => {})
-
-  it('invoke on io - incoming', async () => {
     const hook = createHookPayload(
       0,
-      'keylet_trustline',
-      'keylet_trustline',
+      'txn_offer_create',
+      'txn_offer_create',
       SetHookFlags.hsfOverride,
       ['Invoke']
     )
-
     await setHooksV3({
       client: testContext.client,
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('txn offer create hook', async () => {
     // INVOKE IN
     const aliceWallet = testContext.alice
     const bobWallet = testContext.bob
@@ -52,16 +56,19 @@ describe('keyletTrustline', () => {
       wallet: bobWallet,
       tx: builtTx,
     })
-    // const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
-    //   testContext.client,
-    //   result.meta as TransactionMetadata
-    // )
-    // console.log(hookExecutions.executions[0].HookReturnString)
-    const hookStateDir = await StateUtility.getHookStateDir(
+    const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
       testContext.client,
-      testContext.alice.classicAddress,
-      'keylet_owner_dir'
+      result.meta as TransactionMetadata
     )
-    console.log(hookStateDir)
+    expect(hookExecutions.executions[0].HookReturnString).toMatch(
+      'txn_offer_create.c: Tx emitted success.'
+    )
+    await close(testContext.client)
+    // confirm that the offer actually went through
+    const accountOffersResponse = await testContext.client.request({
+      command: 'account_offers',
+      account: testContext.alice.classicAddress,
+    })
+    expect(accountOffersResponse.result.offers?.length).toEqual(2)
   })
 })

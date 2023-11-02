@@ -20,6 +20,7 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
 // FilterOnToken: ACCEPT: success
@@ -30,10 +31,6 @@ describe('filterOnToken', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-  })
-  afterAll(async () => teardownClient(testContext))
-
-  it('filter on token - success', async () => {
     const hook = createHookPayload(
       0,
       'filter_on_token',
@@ -46,7 +43,16 @@ describe('filterOnToken', () => {
       seed: testContext.alice.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
+  })
+  afterAll(async () => {
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.alice.seed,
+    } as SetHookParams)
+    await teardownClient(testContext)
+  })
 
+  it('filter on token - success', async () => {
     // PAYMENT IN
     const amount: IssuedCurrencyAmount = {
       value: '1',
@@ -75,18 +81,6 @@ describe('filterOnToken', () => {
   })
 
   it('filter on token - failure', async () => {
-    const hook = createHookPayload(
-      0,
-      'filter_on_token',
-      'filter_on_token',
-      SetHookFlags.hsfOverride,
-      ['Payment']
-    )
-    await setHooksV3({
-      client: testContext.client,
-      seed: testContext.alice.seed,
-      hooks: [{ Hook: hook }],
-    } as SetHookParams)
     try {
       // PAYMENT IN
       const aliceWallet = testContext.alice

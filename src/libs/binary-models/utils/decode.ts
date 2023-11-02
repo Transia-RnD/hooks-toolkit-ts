@@ -30,11 +30,6 @@ export function decodeModel<T extends BaseModel>(
   } of metadata) {
     let fieldHex = ''
     switch (type) {
-      case 'bool':
-        fieldHex = hex.slice(hexIndex, hexIndex + 2)
-        decodedField = decodeField(fieldHex, type)
-        hexIndex += 2
-        break
       case 'uint8':
         fieldHex = hex.slice(hexIndex, hexIndex + 2)
         decodedField = decodeField(fieldHex, type)
@@ -54,6 +49,11 @@ export function decodeModel<T extends BaseModel>(
         fieldHex = hex.slice(hexIndex, hexIndex + 56)
         decodedField = decodeField(fieldHex, type)
         hexIndex += 56
+        break
+      case 'hash256':
+        fieldHex = hex.slice(hexIndex, hexIndex + 64)
+        decodedField = decodeField(fieldHex, type)
+        hexIndex += 64
         break
       case 'varString':
         if (maxStringLength === undefined) {
@@ -124,7 +124,9 @@ export function decodeModel<T extends BaseModel>(
 export function decodeMetadata(
   hex: string,
   metadata: Metadata
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Record<string, any> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const model: Record<string, any> = {}
   let hexIndex = 0
   let decodedField = null
@@ -136,11 +138,6 @@ export function decodeMetadata(
   } of metadata) {
     let fieldHex = ''
     switch (type) {
-      case 'bool':
-        fieldHex = hex.slice(hexIndex, hexIndex + 2)
-        decodedField = decodeField(fieldHex, type)
-        hexIndex += 2
-        break
       case 'uint8':
         fieldHex = hex.slice(hexIndex, hexIndex + 2)
         decodedField = decodeField(fieldHex, type)
@@ -160,6 +157,11 @@ export function decodeMetadata(
         fieldHex = hex.slice(hexIndex, hexIndex + 56)
         decodedField = decodeField(fieldHex, type)
         hexIndex += 56
+        break
+      case 'hash256':
+        fieldHex = hex.slice(hexIndex, hexIndex + 64)
+        decodedField = decodeField(fieldHex, type)
+        hexIndex += 64
         break
       case 'varString':
         if (maxStringLength === undefined) {
@@ -232,8 +234,6 @@ function decodeField(
   maxStringLength?: number
 ): unknown {
   switch (type) {
-    case 'bool':
-      return hexToUInt8(hex)
     case 'uint8':
       return hexToUInt8(hex)
     case 'uint32':
@@ -242,6 +242,8 @@ function decodeField(
       return hexToUInt64(hex)
     case 'uint224':
       return hexToUInt224(hex)
+    case 'hash256':
+      return hex
     case 'varString':
       if (maxStringLength === undefined) {
         throw Error('maxStringLength is required for type varString')
@@ -306,8 +308,9 @@ export function hexToXfl(hex: string): XFL {
 }
 
 export function hexToCurrency(hex: string): Currency {
-  const value = convertHexToString(hex)
-  return value.slice(0, 40).replace(/\0[\s\S]*$/g, '')
+  const cleanHex = hex.replace(/0/g, ' ').trim().replace(/ /g, '0')
+  const value = convertHexToString(cleanHex)
+  return value.replace(/\0[\s\S]*$/g, '')
 }
 
 export function hexToXRPAddress(hex: string): XRPAddress {

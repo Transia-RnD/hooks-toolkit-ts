@@ -1,16 +1,17 @@
 import { encodeModel } from './utils/encode'
 import { decodeModel } from './utils/decode'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ModelClass<T extends BaseModel> = new (...args: any[]) => T
 
 export type MetadataElement<T extends BaseModel> = {
   field: string
   type:
-    | 'bool'
     | 'uint8'
     | 'uint32'
     | 'uint64'
     | 'uint224'
+    | 'hash256'
     | 'varString'
     | 'xfl'
     | 'currency'
@@ -54,9 +55,6 @@ export abstract class BaseModel {
       modelClass: fieldModelClass,
     } of metadata) {
       switch (type) {
-        case 'bool':
-          length += 2
-          break
         case 'uint8':
           length += 2
           break
@@ -68,6 +66,9 @@ export abstract class BaseModel {
           break
         case 'uint224':
           length += 56
+          break
+        case 'hash256':
+          length += 64
           break
         case 'varString':
           if (maxStringLength === undefined) {
@@ -109,9 +110,6 @@ export abstract class BaseModel {
 
     for (const { type, maxStringLength, metadata: modelMetadata } of metadata) {
       switch (type) {
-        case 'bool':
-          length += 2
-          break
         case 'uint8':
           length += 2
           break
@@ -123,6 +121,9 @@ export abstract class BaseModel {
           break
         case 'uint224':
           length += 56
+          break
+        case 'hash256':
+          length += 64
           break
         case 'varString':
           if (maxStringLength === undefined) {
@@ -166,8 +167,6 @@ export abstract class BaseModel {
       .getMetadata()
       .map((metadata: MetadataElement<T>) => {
         switch (metadata.type) {
-          case 'bool':
-            return 0
           case 'uint8':
             return 0
           case 'uint32':
@@ -176,6 +175,8 @@ export abstract class BaseModel {
             return BigInt(0)
           case 'uint224':
             return BigInt(0)
+          case 'hash256':
+            return ''
           case 'varString':
             return ''
           case 'xfl':
