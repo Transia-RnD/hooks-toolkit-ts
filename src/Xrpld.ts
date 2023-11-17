@@ -39,7 +39,10 @@ export class Xrpld {
         client,
         txResponse?.result?.meta as TransactionMetadata
       )
-      throw Error(hookExecutions.executions[0].HookReturnString)
+      if (hookExecutions.executions.length === 1) {
+        throw Error(hookExecutions.executions[0].HookReturnString)
+      }
+      throw Error(JSON.stringify(hookExecutions.executions))
     }
     return txResponse?.result
   }
