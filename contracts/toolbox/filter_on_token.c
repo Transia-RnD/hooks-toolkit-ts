@@ -12,7 +12,7 @@
 int64_t hook(uint32_t reserved) {
     TRACESTR("filter_on_token: Start.");
 
-    unsigned char amount_buffer[SFS_AMOUNT_IOU];
+    unsigned char amount_buffer[48];
     int64_t amount_len = otxn_field(SBUF(amount_buffer), sfAmount);
     if (amount_len == 8) {
         DONE("filter_on_token: Ignoring XRP Transaction");

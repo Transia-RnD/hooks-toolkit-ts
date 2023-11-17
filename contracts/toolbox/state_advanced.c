@@ -11,11 +11,11 @@ int64_t hook(uint32_t reserved) {
     TRACESTR("state_advanced: Start.");
 
     // ACCOUNT: Origin Tx Account
-    uint8_t otx_acc[SFS_ACCOUNT];
-    otxn_field(otx_acc, SFS_ACCOUNT, sfAccount);
+    uint8_t otx_acc[20];
+    otxn_field(otx_acc, 20, sfAccount);
     
     // ACCOUNT: Hook Account
-    uint8_t hook_acc[SFS_ACCOUNT];
+    uint8_t hook_acc[20];
     hook_account(SBUF(hook_acc));
 
     // FILTER ON: ACCOUNT
@@ -27,9 +27,9 @@ int64_t hook(uint32_t reserved) {
     TRACEHEX(otxn_param_value);
 
     uint8_t state_value[29];
-    state(SBUF(state_value), hook_acc, SFS_ACCOUNT);
+    state(SBUF(state_value), hook_acc, 20);
 
-    state_set(SBUF(otxn_param_value), hook_acc, SFS_ACCOUNT);
+    state_set(SBUF(otxn_param_value), hook_acc, 20);
 
     TRACEVAR(state_value) // <- value
 
