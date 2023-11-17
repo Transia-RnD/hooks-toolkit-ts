@@ -7,11 +7,7 @@ import {
 import { hexNamespace } from '../utils'
 
 export class StateUtility {
-  static async getHook(
-    client: Client,
-    account: string
-    // ): Promise<iHookState<T>> {
-  ): Promise<LeHook> {
+  static async getHook(client: Client, account: string): Promise<LeHook> {
     if (!client.isConnected()) {
       throw new Error('xrpl Client is not connected')
     }
@@ -28,7 +24,6 @@ export class StateUtility {
   static async getHookDefinition(
     client: Client,
     hash: string
-    // ): Promise<iHookState<T>> {
   ): Promise<LeHookDefinition> {
     if (!client.isConnected()) {
       throw new Error('xrpl Client is not connected')
@@ -45,12 +40,10 @@ export class StateUtility {
     client: Client,
     account: string,
     namespace: string
-    // ): Promise<iHookState<T>> {
-  ): Promise<unknown> {
+  ): Promise<LeHookState[]> {
     if (!client.isConnected()) {
       throw new Error('xrpl Client is not connected')
     }
-    // Step 3. Get HookState from Hook Account using HookNamespace
     const request: Request = {
       // @ts-expect-error - this command exists on Hooks Testnet v3
       command: 'account_namespace',
