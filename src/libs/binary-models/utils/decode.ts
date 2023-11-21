@@ -55,6 +55,11 @@ export function decodeModel<T extends BaseModel>(
         decodedField = decodeField(fieldHex, type)
         hexIndex += 64
         break
+      case 'publicKey':
+        fieldHex = hex.slice(hexIndex, hexIndex + 66)
+        decodedField = decodeField(fieldHex, type)
+        hexIndex += 66
+        break
       case 'varString':
         if (maxStringLength === undefined) {
           throw Error('maxStringLength is required for type varString')
@@ -163,6 +168,11 @@ export function decodeMetadata(
         decodedField = decodeField(fieldHex, type)
         hexIndex += 64
         break
+      case 'publicKey':
+        fieldHex = hex.slice(hexIndex, hexIndex + 66)
+        decodedField = decodeField(fieldHex, type)
+        hexIndex += 66
+        break
       case 'varString':
         if (maxStringLength === undefined) {
           throw Error('maxStringLength is required for type varString')
@@ -243,6 +253,8 @@ function decodeField(
     case 'uint224':
       return hexToUInt224(hex)
     case 'hash256':
+      return hex
+    case 'publicKey':
       return hex
     case 'varString':
       if (maxStringLength === undefined) {

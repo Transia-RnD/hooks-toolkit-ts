@@ -16,6 +16,7 @@ import {
   XFL,
   Currency,
   XRPAddress,
+  PublicKey,
 } from '../../../src/libs/binary-models'
 
 describe('decode', () => {
@@ -273,6 +274,31 @@ describe('decode', () => {
       const ownerExpected = 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh'
 
       expect(sampleModelDecoded.owner).toBe(ownerExpected)
+    })
+
+    test('single publicKey field', () => {
+      const SampleModel = class extends BaseModel {
+        pk: PublicKey
+
+        constructor(pk: PublicKey) {
+          super()
+          this.pk = pk
+        }
+
+        getMetadata(): Metadata {
+          return [{ field: 'pk', type: 'publicKey' }]
+        }
+      }
+
+      const sampleEncoded =
+        '32D2471DB72B27E3310F355BB33E339BF26F8392D5A93D3BC0FC3B566612DA0F0A'
+
+      const sampleModelDecoded = decodeModel(sampleEncoded, SampleModel)
+
+      const ownerExpected =
+        '32D2471DB72B27E3310F355BB33E339BF26F8392D5A93D3BC0FC3B566612DA0F0A'
+
+      expect(sampleModelDecoded.pk).toBe(ownerExpected)
     })
 
     test('single description field', () => {

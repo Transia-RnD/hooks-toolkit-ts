@@ -12,6 +12,7 @@ export type MetadataElement<T extends BaseModel> = {
     | 'uint64'
     | 'uint224'
     | 'hash256'
+    | 'publicKey'
     | 'varString'
     | 'xfl'
     | 'currency'
@@ -70,6 +71,9 @@ export abstract class BaseModel {
         case 'hash256':
           length += 64
           break
+        case 'publicKey':
+          length += 66
+          break
         case 'varString':
           if (maxStringLength === undefined) {
             throw Error('maxStringLength is required for type varString')
@@ -125,6 +129,9 @@ export abstract class BaseModel {
         case 'hash256':
           length += 64
           break
+        case 'publicKey':
+          length += 66
+          break
         case 'varString':
           if (maxStringLength === undefined) {
             throw Error('maxStringLength is required for type varString')
@@ -176,6 +183,8 @@ export abstract class BaseModel {
           case 'uint224':
             return BigInt(0)
           case 'hash256':
+            return ''
+          case 'publicKey':
             return ''
           case 'varString':
             return ''

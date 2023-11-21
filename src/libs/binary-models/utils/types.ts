@@ -5,6 +5,7 @@ type UInt32 = number
 type UInt64 = bigint
 type UInt224 = bigint
 type Hash256 = string
+type PublicKey = string
 type VarString = string
 type XFL = number
 type Currency = string
@@ -17,6 +18,7 @@ type Model = {
     | UInt64
     | UInt224
     | Hash256
+    | PublicKey
     | VarString
     | XFL
     | Currency
@@ -33,6 +35,7 @@ export {
   UInt64,
   UInt224,
   Hash256,
+  PublicKey,
   VarString,
   XFL,
   Currency,
