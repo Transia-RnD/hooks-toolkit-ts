@@ -4,7 +4,6 @@ import {
   HookDefinition as LeHookDefinition,
   HookState as LeHookState,
 } from '@transia/xrpl/dist/npm/models/ledger'
-import { hexNamespace } from '../utils'
 
 export class StateUtility {
   static async getHook(client: Client, account: string): Promise<LeHook> {
@@ -48,7 +47,7 @@ export class StateUtility {
       // @ts-expect-error - this command exists on Hooks Testnet v3
       command: 'account_namespace',
       account: account,
-      namespace_id: hexNamespace(namespace),
+      namespace_id: namespace,
     }
     const response = await client.request(request)
     // @ts-expect-error - this is defined
@@ -68,7 +67,7 @@ export class StateUtility {
       hook_state: {
         account: account,
         key: key,
-        namespace_id: hexNamespace(namespace),
+        namespace_id: namespace,
       },
     }
     const hookStateResp = await client.request(hookStateReq)
