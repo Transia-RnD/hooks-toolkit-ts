@@ -14,36 +14,42 @@ import {
 } from './libs/xrpl-helpers/transaction'
 import { appLogger } from './libs/logger'
 
-export function createHookPayload(
-  version?: number | null,
-  createFile?: string | null,
-  namespace?: string | null,
-  flags?: number | 0,
-  hookOnArray?: string[] | null,
-  hookParams?: HookParameter[] | null,
+export interface SetHookPayload {
+  version?: number | null
+  hookHash?: string | null
+  createFile?: string | null
+  namespace?: string | null
+  flags?: number | 0
+  hookOnArray?: string[] | null
+  hookParams?: HookParameter[] | null
   hookGrants?: HookGrant[] | null
-): iHook {
+}
+
+export function createHookPayload(payload: SetHookPayload): iHook {
   const hook = {} as iHook
-  if (typeof version === 'number') {
-    hook.HookApiVersion = version
+  if (typeof payload.version === 'number') {
+    hook.HookApiVersion = payload.version
   }
-  if (createFile && typeof createFile === 'string') {
-    hook.CreateCode = readHookBinaryHexFromNS(createFile)
+  if (payload.hookHash && typeof payload.hookHash === 'string') {
+    hook.HookHash = payload.hookHash
   }
-  if (namespace) {
-    hook.HookNamespace = hexNamespace(namespace)
+  if (payload.createFile && typeof payload.createFile === 'string') {
+    hook.CreateCode = readHookBinaryHexFromNS(payload.createFile)
   }
-  if (flags) {
-    hook.Flags = flags
+  if (payload.namespace) {
+    hook.HookNamespace = hexNamespace(payload.namespace)
   }
-  if (hookOnArray) {
-    hook.HookOn = calculateHookOn(hookOnArray)
+  if (payload.flags) {
+    hook.Flags = payload.flags
   }
-  if (hookParams) {
-    hook.HookParameters = hexHookParameters(hookParams)
+  if (payload.hookOnArray) {
+    hook.HookOn = calculateHookOn(payload.hookOnArray)
   }
-  if (hookGrants) {
-    hook.HookGrants = hookGrants
+  if (payload.hookParams) {
+    hook.HookParameters = hexHookParameters(payload.hookParams)
+  }
+  if (payload.hookGrants) {
+    hook.HookGrants = payload.hookGrants
   }
   // DA: validate
   return hook

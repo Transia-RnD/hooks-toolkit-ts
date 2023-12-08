@@ -11,7 +11,7 @@ import {
 } from '@transia/xrpl'
 
 export type iHook = {
-  // HookHash?: string
+  HookHash?: string
   CreateCode?: string
   Flags?: number
   HookOn?: string
