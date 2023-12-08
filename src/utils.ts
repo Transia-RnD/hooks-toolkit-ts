@@ -232,24 +232,28 @@ export function formatAccountBlob(
   return blob
 }
 
+export interface ACBlob {
+  issuer: string
+  currency: string
+}
+
 export function formatAccountCurrencyBlob(
-  currency: string,
-  addAccts: string[] = [],
-  removeAccts: string[] = []
+  addAccts: ACBlob[] = [],
+  removeAccts: ACBlob[] = []
 ) {
   // encode blob
   let blob = ''
   for (let i = 0; i < addAccts.length; ++i) {
     const entry = addAccts[i]
     blob += '00'
-    blob += AccountID.from(entry).toHex()
-    blob += Currency.from(currency).toHex()
+    blob += AccountID.from(entry.issuer).toHex()
+    blob += Currency.from(entry.currency).toHex()
   }
   for (let i = 0; i < removeAccts.length; ++i) {
     const entry = removeAccts[i]
     blob += '01'
-    blob += AccountID.from(entry).toHex()
-    blob += Currency.from(currency).toHex()
+    blob += AccountID.from(entry.issuer).toHex()
+    blob += Currency.from(entry.currency).toHex()
   }
   return blob
 }
