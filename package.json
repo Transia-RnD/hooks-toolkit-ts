@@ -1,6 +1,6 @@
 {
   "name": "@transia/hooks-toolkit",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "A toolkit for interacting with smart contracts (hooks) on the XRP Ledger.",
   "main": "dist/npm/src/index.js",
   "files": [
