@@ -19,6 +19,7 @@ import {
   Currency,
   XRPAddress,
   PublicKey,
+  decodeModel,
 } from '../../../src/libs/binary-models'
 
 describe('encode', () => {
@@ -475,15 +476,20 @@ describe('encode', () => {
       }
 
       const SampleModel = class extends BaseModel {
+        modeFlag: UInt8
         nested: NestedModel
 
-        constructor(nested: NestedModel) {
+        constructor(modeFlag: UInt8, nested: NestedModel) {
           super()
+          this.modeFlag = modeFlag
           this.nested = nested
         }
 
         getMetadata(): Metadata {
-          return [{ field: 'nested', type: 'model', modelClass: NestedModel }]
+          return [
+            { field: 'modeFlag', type: 'uint8' },
+            { field: 'nested', type: 'model', modelClass: NestedModel },
+          ]
         }
       }
 
@@ -494,10 +500,10 @@ describe('encode', () => {
         BigInt('1000000000')
       )
 
-      const sample = new SampleModel(nestedModel)
+      const sample = new SampleModel(1, nestedModel)
       const hex = encodeModel(sample)
       expect(hex).toBe(
-        '01B5F762798A53D543A014CAF8B297CFF8F2F937E804746573740000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003B9ACA00'
+        '0101B5F762798A53D543A014CAF8B297CFF8F2F937E804746573740000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003B9ACA00'
       )
     })
 
@@ -531,45 +537,73 @@ describe('encode', () => {
         }
       }
 
-      const SampleModel = class extends BaseModel {
-        nestedModelArray: NestedModel[]
+      class SimpleModel extends BaseModel {
+        modeFlag: UInt8
+        modeInt64: UInt64
+        nested: NestedModel
 
-        constructor(nestedModelArray: NestedModel[]) {
+        constructor(modeFlag: UInt8, modeInt64: UInt64, nested: NestedModel) {
           super()
+          this.modeFlag = modeFlag
+          this.modeInt64 = modeInt64
+          this.nested = nested
+        }
+
+        getMetadata(): Metadata {
+          return [
+            { field: 'modeFlag', type: 'uint8' },
+            { field: 'modeInt64', type: 'uint64' },
+            { field: 'nested', type: 'model', modelClass: NestedModel },
+          ]
+        }
+      }
+
+      const SampleModel = class extends BaseModel {
+        modeFlag: UInt8
+        nestedModelArray: SimpleModel[]
+
+        constructor(modeFlag: UInt8, nestedModelArray: SimpleModel[]) {
+          super()
+          this.modeFlag = modeFlag
           this.nestedModelArray = nestedModelArray
         }
 
         getMetadata(): Metadata {
           return [
+            { field: 'modeFlag', type: 'uint8' },
             {
               field: 'nestedModelArray',
               type: 'varModelArray',
-              modelClass: NestedModel,
+              modelClass: SimpleModel,
               maxArrayLength: 5,
             },
           ]
         }
       }
 
-      const nestedModels = [
-        new NestedModel(
-          1,
-          'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh',
-          'nested model 1',
-          BigInt('1000000000')
-        ),
-        new NestedModel(
-          2,
-          'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh',
-          'nested model 2',
-          BigInt('43245323')
-        ),
+      const nestedModel1 = new NestedModel(
+        1,
+        'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh',
+        'nested model 1',
+        BigInt('1000000000')
+      )
+      const nestedModel2 = new NestedModel(
+        2,
+        'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh',
+        'nested model 2',
+        BigInt('43245323')
+      )
+      const simpleModels = [
+        new SimpleModel(1, BigInt(1), nestedModel1),
+        new SimpleModel(2, BigInt(1), nestedModel2),
       ]
 
-      const sample = new SampleModel(nestedModels)
+      const sample = new SampleModel(1, simpleModels)
       const hex = encodeModel(sample)
+      console.log(decodeModel(hex, SampleModel))
+
       expect(hex).toBe(
-        '0201B5F762798A53D543A014CAF8B297CFF8F2F937E80E6E6573746564206D6F64656C203100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003B9ACA0002B5F762798A53D543A014CAF8B297CFF8F2F937E80E6E6573746564206D6F64656C203200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000293DF0B'
+        '010201000000000000000101B5F762798A53D543A014CAF8B297CFF8F2F937E80E6E6573746564206D6F64656C203100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003B9ACA0002000000000000000102B5F762798A53D543A014CAF8B297CFF8F2F937E80E6E6573746564206D6F64656C203200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000293DF0B'
       )
     })
   })
