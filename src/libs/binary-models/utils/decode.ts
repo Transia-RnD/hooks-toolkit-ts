@@ -91,7 +91,7 @@ export function decodeModel<T extends BaseModel>(
         }
         const modelHexLength = BaseModel.getHexLength(fieldModelClass)
         fieldHex = hex.slice(hexIndex, hexIndex + modelHexLength)
-        decodedField = decodeModel(hex, fieldModelClass)
+        decodedField = decodeModel(fieldHex, fieldModelClass)
         hexIndex += modelHexLength
         break
       case 'varModelArray':
@@ -204,7 +204,7 @@ export function decodeMetadata(
         }
         const modelHexLength = BaseModel.getHexLengthMeta(modelMetadata)
         fieldHex = hex.slice(hexIndex, hexIndex + modelHexLength)
-        decodedField = decodeMetadata(hex, modelMetadata)
+        decodedField = decodeMetadata(fieldHex, modelMetadata)
         hexIndex += modelHexLength
         break
       case 'varModelArray':
