@@ -21,13 +21,13 @@ describe('base', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-    const hook = createHookPayload(
-      0,
-      'random',
-      'random',
-      SetHookFlags.hsfOverride,
-      ['Invoke']
-    )
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'random',
+      namespace: 'random',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+    })
     await setHooksV3({
       client: testContext.client,
       seed: testContext.alice.seed,
