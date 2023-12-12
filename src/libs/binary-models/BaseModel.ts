@@ -82,6 +82,7 @@ export abstract class BaseModel {
           break
         case 'xfl':
           length += 16
+          break
         case 'currency':
           length += 40
           break
@@ -99,7 +100,6 @@ export abstract class BaseModel {
           throw Error(`Unknown type: ${type}`)
       }
     }
-
     return length
   }
 
