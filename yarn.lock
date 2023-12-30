@@ -749,10 +749,10 @@
     lodash "^4.17.4"
     ws "^8.2.2"
 
-"@transia/xrpl@^2.7.3-alpha.20":
-  version "2.7.3-alpha.20"
-  resolved "https://registry.yarnpkg.com/@transia/xrpl/-/xrpl-2.7.3-alpha.20.tgz#288e380c96b7ce2ba0fcdefc2a40487702213911"
-  integrity sha512-eCAGlAKjE5oXEUuDtJvSCywmRDb8BStSUu7U9TbG+OaPD6TwZjL4j4kt6Pxb2HJleg7aPsWybIMZgj1YBIVdag==
+"@transia/xrpl@^2.7.3-alpha.21":
+  version "2.7.3-alpha.21"
+  resolved "https://registry.yarnpkg.com/@transia/xrpl/-/xrpl-2.7.3-alpha.21.tgz#c65bf78de86fa0bd8abdb9631f02ec511c09f695"
+  integrity sha512-EO1TsVXmzDJodRu8zON3DenY6XPjpu40eg+94Ul/AnbG1idBczlCJifg+5tQviRJEZ7faSpHWMNEUvGo9IoxlQ==
   dependencies:
     "@transia/ripple-address-codec" "^4.2.8-alpha.0"
     "@transia/ripple-binary-codec" "^1.4.6-alpha.6"

@@ -6,7 +6,6 @@ import {
   teardownClient,
   accountReserveFee,
   ownerReserveFee,
-  prepareTransactionV3,
 } from '../../../src/libs/xrpl-helpers'
 
 describe('transaction', () => {
@@ -24,17 +23,5 @@ describe('transaction', () => {
   it('ownerReserveFee should be 50 XRP', async () => {
     const fee = await ownerReserveFee(testContext.client)
     expect(fee).toBe(2000000)
-  })
-
-  it('prepareTransactionV3', async () => {
-    const tx: Transaction = {
-      TransactionType: 'Payment',
-      Account: testContext.alice.classicAddress,
-      Destination: testContext.bob.classicAddress,
-      Amount: '10000000',
-    }
-    await prepareTransactionV3(testContext.client, tx)
-    expect(tx.NetworkID).toBe(undefined)
-    expect(tx.Fee).toBe('20')
   })
 })

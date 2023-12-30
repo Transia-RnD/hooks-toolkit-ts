@@ -8,10 +8,7 @@ import {
 import { SetHookParams, iHook } from './types'
 import { HookGrant, HookParameter } from '@transia/xrpl/dist/npm/models/common'
 import { readHookBinaryHexFromNS, hexNamespace } from './utils'
-import {
-  prepareTransactionV3,
-  appTransaction,
-} from './libs/xrpl-helpers/transaction'
+import { appTransaction } from './libs/xrpl-helpers/transaction'
 import { appLogger } from './libs/logger'
 
 export interface SetHookPayload {
@@ -63,8 +60,6 @@ export async function setHooksV3({ client, seed, hooks }: SetHookParams) {
     Hooks: hooks,
   }
 
-  await prepareTransactionV3(client, tx)
-
   appLogger.debug(`1. Transaction to submit (before autofill):`)
   appLogger.debug(JSON.stringify(tx, null, 2))
   appLogger.debug(`\n2. Submitting transaction...`)
@@ -101,8 +96,6 @@ export async function clearAllHooksV3({ client, seed }: SetHookParams) {
     ],
   }
 
-  await prepareTransactionV3(client, tx)
-
   appLogger.debug(`1. Transaction to submit (before autofill):`)
   appLogger.debug(JSON.stringify(tx, null, 2))
   appLogger.debug(`\n2. Submitting transaction...`)
@@ -123,8 +116,6 @@ export async function clearHookStateV3({ client, seed, hooks }: SetHookParams) {
     Account: HOOK_ACCOUNT.classicAddress,
     Hooks: hooks,
   }
-
-  await prepareTransactionV3(client, tx)
 
   appLogger.debug(`1. Transaction to submit (before autofill):`)
   appLogger.debug(JSON.stringify(tx, null, 2))

@@ -66,15 +66,6 @@ export async function getTransactionFee(
   return result
 }
 
-export async function prepareTransactionV3(
-  client: Client,
-  transaction: Transaction
-) {
-  if (!transaction.Fee) {
-    transaction.Fee = await getTransactionFee(client, transaction)
-  }
-}
-
 async function sendLedgerAccept(client: Client): Promise<unknown> {
   return client.connection.request({ command: 'ledger_accept' })
 }

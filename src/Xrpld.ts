@@ -8,10 +8,7 @@ import {
   validate,
 } from '@transia/xrpl'
 import { ExecutionUtility } from './keylet-utils'
-import {
-  prepareTransactionV3,
-  appTransaction,
-} from './libs/xrpl-helpers/transaction'
+import { appTransaction } from './libs/xrpl-helpers/transaction'
 import { SmartContractParams } from './types'
 import { appLogger } from './libs/logger'
 
@@ -22,7 +19,6 @@ export class Xrpld {
       throw Error('Missing tx parameter')
     }
     const builtTx = params.tx as Transaction
-    await prepareTransactionV3(client, builtTx)
     appLogger.debug(JSON.stringify(builtTx))
 
     // @ts-expect-error - invoke is tx
