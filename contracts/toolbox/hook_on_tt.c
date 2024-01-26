@@ -8,10 +8,9 @@ int64_t hook(uint32_t reserved) {
     TRACESTR("hook_on_tt: Start.");
 
     int64_t tt = otxn_type();
-    TRACEVAR(tt);
 
     // HOOK ON: TT
-    if (tt != ttINVOKE)
+    if (otxn_type() != ttINVOKE)
     {
         rollback(SBUF("hook_on_tt: HookOn field is incorrectly set."), INVALID_TXN);
     }

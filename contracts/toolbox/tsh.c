@@ -3,6 +3,10 @@
 int64_t hook(uint32_t reserved) {
     TRACESTR("tsh.c: Start.");
 
+    uint8_t aaw_buffer[1];
+    if (otxn_param(SBUF(aaw_buffer), "AAW", 3) == 1)
+        hook_again();
+
     switch (reserved)
     {
     case 0:

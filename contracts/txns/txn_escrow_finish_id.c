@@ -4,7 +4,7 @@
 #include "hookapi.h"
 
 // clang-format off
-uint8_t txn[274] =
+uint8_t txn[268] =
 {
 /* size,upto */
 /*   3,  0 */ 0x12U, 0x00U, 0x02U,                                                             /* tt = EscrowFinish */
@@ -13,32 +13,28 @@ uint8_t txn[274] =
 /*   5, 13 */ 0x99U, 0x99U, 0x99U, 0x99U, 0x99U,                                               /* dtag, flipped */
 /*   6, 18 */ 0x20U, 0x1AU, 0x00U, 0x00U, 0x00U, 0x00U,                                        /* first ledger seq */
 /*   6, 24 */ 0x20U, 0x1BU, 0x00U, 0x00U, 0x00U, 0x00U,                                        /* last ledger seq */
-/*   6, 30  */ 0x20U, 0x19U, 0x00U, 0x00U, 0x00U, 0x00U,                                       /* offer sequence  */
-/*  34, 36 */ 0x50U, 0x23U, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   /* hash256 id */
-/*   9, 70 */ 0x68U, 0x40U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U,                   /* fee      */
-/*  35, 79 */ 0x73U, 0x21U, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, /* pubkey   */
-/*  22,114 */ 0x81U, 0x14U, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,                           /* src acc  */
-/*  22,136 */ 0x82U, 0x14U, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,                           /* owner acc  */
-/* 116,158 */                                                                                  /* emit details */
-/*   0,274 */
+/*  34, 30 */ 0x50U, 0x23U, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,   /* hash256 id */
+/*   9, 64 */ 0x68U, 0x40U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U,                   /* fee      */
+/*  35, 73 */ 0x73U, 0x21U, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, /* pubkey   */
+/*  22,108 */ 0x81U, 0x14U, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,                           /* src acc  */
+/*  22,130 */ 0x82U, 0x14U, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,                           /* owner acc  */
+/* 116,152 */                                                                                  /* emit details */
+/*   0,268 */
 };
 // clang-format on
-
-// ACCOUNTS
-#define HOOK_ACC (txn + 116U)
 
 // TXS
 #define DTAG_OUT (txn + 14U)
 #define FLS_OUT (txn + 20U)
 #define LLS_OUT (txn + 26U)
-#define OWNER_OUT (txn + 138U)
-#define ID_OUT (txn + 38U)
-#define EMIT_OUT (txn + 158U)
-#define FEE_OUT (txn + 71U)
+#define ID_OUT (txn + 32U)
+#define FEE_OUT (txn + 65U)
+#define HOOK_ACC (txn + 110U)
+#define OWNER_OUT (txn + 132U)
+#define EMIT_OUT (txn + 152U)
 
 int64_t hook(uint32_t reserved)
 {
-
     TRACESTR("txn_escrow_finish_id.c: Called.");
 
     // ACCOUNT: Hook Account

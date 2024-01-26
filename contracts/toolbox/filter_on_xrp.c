@@ -8,7 +8,7 @@ int64_t hook(uint32_t reserved) {
     TRACESTR("filter_on_xrp: Start.");
 
     // FILTER ON AMOUNT: XRP
-    unsigned char amount_buffer[48];
+    uint8_t amount_buffer[48];
     int64_t amount_len = otxn_field(SBUF(amount_buffer), sfAmount);
     if (amount_len != 8) {
         rollback(SBUF("filter_on_xrp: Ignoring non XRP Transaction"), __LINE__);
