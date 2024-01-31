@@ -12,6 +12,7 @@ import {
   setupClient,
   teardownClient,
   serverUrl,
+  trust,
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
@@ -31,23 +32,29 @@ describe('filterOnToken', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-    const hook = createHookPayload(
-      0,
-      'filter_on_token',
-      'filter_on_token',
-      SetHookFlags.hsfOverride,
-      ['Payment']
+
+    await trust(
+      testContext.client,
+      testContext.ic.set(100000),
+      ...[testContext.hook1]
     )
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'filter_on_token',
+      namespace: 'filter_on_token',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Payment'],
+    })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
   })
   afterAll(async () => {
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
     await teardownClient(testContext)
   })
@@ -59,12 +66,12 @@ describe('filterOnToken', () => {
       currency: 'USD',
       issuer: testContext.gw.classicAddress,
     }
-    const aliceWallet = testContext.alice
+    const hookWallet = testContext.hook1
     const bobWallet = testContext.bob
     const builtTx: Payment = {
       TransactionType: 'Payment',
       Account: bobWallet.classicAddress,
-      Destination: aliceWallet.classicAddress,
+      Destination: hookWallet.classicAddress,
       Amount: amount,
     }
     const result = await Xrpld.submit(testContext.client, {
@@ -83,12 +90,12 @@ describe('filterOnToken', () => {
   it('filter on token - failure', async () => {
     try {
       // PAYMENT IN
-      const aliceWallet = testContext.alice
+      const hookWallet = testContext.hook1
       const bobWallet = testContext.bob
       const builtTx: Payment = {
         TransactionType: 'Payment',
         Account: bobWallet.classicAddress,
-        Destination: aliceWallet.classicAddress,
+        Destination: hookWallet.classicAddress,
         Amount: xrpToDrops(1),
       }
       await Xrpld.submit(testContext.client, {

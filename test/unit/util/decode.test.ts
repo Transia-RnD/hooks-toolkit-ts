@@ -14,7 +14,6 @@ import {
   UInt8,
   VarString,
   XFL,
-  Hash256,
   Currency,
   XRPAddress,
   PublicKey,

@@ -34,26 +34,26 @@ describe('hookOnTT', () => {
   })
 
   it('invoke on tt - success', async () => {
-    const hook = createHookPayload(
-      0,
-      'hook_on_tt',
-      'hook_on_tt',
-      SetHookFlags.hsfOverride,
-      ['Invoke']
-    )
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'hook_on_tt',
+      namespace: 'hook_on_tt',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+    })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
 
     // INVOKE IN
-    const aliceWallet = testContext.alice
+    const hookWallet = testContext.hook1
     const bobWallet = testContext.bob
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
       Account: bobWallet.classicAddress,
-      Destination: aliceWallet.classicAddress,
+      Destination: hookWallet.classicAddress,
     }
     await Xrpld.submit(testContext.client, {
       wallet: bobWallet,
@@ -62,26 +62,26 @@ describe('hookOnTT', () => {
   })
 
   it('invoke on tt - invalid', async () => {
-    const hook = createHookPayload(
-      0,
-      'hook_on_tt',
-      'hook_on_tt',
-      SetHookFlags.hsfOverride,
-      ['Payment']
-    )
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'hook_on_tt',
+      namespace: 'hook_on_tt',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+    })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
     try {
       // PAYMENT IN
-      const aliceWallet = testContext.alice
+      const hookWallet = testContext.hook1
       const bobWallet = testContext.bob
       const builtTx: Payment = {
         TransactionType: 'Payment',
         Account: bobWallet.classicAddress,
-        Destination: aliceWallet.classicAddress,
+        Destination: hookWallet.classicAddress,
         Amount: xrpToDrops(1),
       }
       await Xrpld.submit(testContext.client, {

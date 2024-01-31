@@ -33,23 +33,23 @@ describe('paramBasic', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-    const hook = createHookPayload(
-      0,
-      'param_basic',
-      'param_basic',
-      SetHookFlags.hsfOverride,
-      ['Payment']
-    )
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'param_basic',
+      namespace: 'param_basic',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Payment'],
+    })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
   })
   afterAll(async () => {
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
     await teardownClient(testContext)
   })
@@ -60,12 +60,12 @@ describe('paramBasic', () => {
       new iHookParamName('TEST'),
       new iHookParamValue(floatToLEXfl('10'), true)
     )
-    const aliceWallet = testContext.alice
+    const hookWallet = testContext.hook1
     const bobWallet = testContext.bob
     const builtTx: Payment = {
       TransactionType: 'Payment',
       Account: bobWallet.classicAddress,
-      Destination: aliceWallet.classicAddress,
+      Destination: hookWallet.classicAddress,
       Amount: xrpToDrops(10),
       HookParameters: [param1.toXrpl()],
     }

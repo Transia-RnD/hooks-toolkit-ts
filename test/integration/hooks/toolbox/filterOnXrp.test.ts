@@ -31,35 +31,35 @@ describe('filterOnXrp', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-    const hook = createHookPayload(
-      0,
-      'filter_on_xrp',
-      'filter_on_xrp',
-      SetHookFlags.hsfOverride,
-      ['Payment']
-    )
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'filter_on_xrp',
+      namespace: 'filter_on_xrp',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Payment'],
+    })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
   })
   afterAll(async () => {
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
     await teardownClient(testContext)
   })
 
   it('filter on xrp - success', async () => {
     // PAYMENT IN
-    const aliceWallet = testContext.alice
+    const hookWallet = testContext.hook1
     const bobWallet = testContext.bob
     const builtTx: Payment = {
       TransactionType: 'Payment',
       Account: bobWallet.classicAddress,
-      Destination: aliceWallet.classicAddress,
+      Destination: hookWallet.classicAddress,
       Amount: xrpToDrops(1),
     }
     const result = await Xrpld.submit(testContext.client, {
@@ -83,12 +83,12 @@ describe('filterOnXrp', () => {
         currency: 'USD',
         issuer: testContext.gw.classicAddress,
       }
-      const aliceWallet = testContext.alice
+      const hookWallet = testContext.hook1
       const bobWallet = testContext.bob
       const builtTx: Payment = {
         TransactionType: 'Payment',
         Account: bobWallet.classicAddress,
-        Destination: aliceWallet.classicAddress,
+        Destination: hookWallet.classicAddress,
         Amount: amount,
       }
       await Xrpld.submit(testContext.client, {

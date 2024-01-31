@@ -54,7 +54,7 @@ describe('SetHook - End to End', () => {
     } as iHook
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
 
@@ -62,7 +62,7 @@ describe('SetHook - End to End', () => {
     const hookReq: LedgerEntryRequest = {
       command: 'ledger_entry',
       hook: {
-        account: testContext.alice.classicAddress,
+        account: testContext.hook1.classicAddress,
       },
     }
     const hookRes = await testContext.client.request(hookReq)
@@ -81,23 +81,23 @@ describe('SetHook - End to End', () => {
     )
 
     // INVOKE IN
-    const aliceWallet = testContext.alice
-    const aliceAccHex = AccountID.from(aliceWallet.classicAddress).toHex()
+    const hookWallet = testContext.hook1
+    const hookAccHex = AccountID.from(hookWallet.classicAddress).toHex()
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
-      Account: aliceWallet.classicAddress,
+      Account: hookWallet.classicAddress,
     }
     await Xrpld.submit(testContext.client, {
-      wallet: aliceWallet,
+      wallet: hookWallet,
       tx: builtTx,
     })
 
     // VALIDATION
     const hookState = await StateUtility.getHookState(
       testContext.client,
-      testContext.alice.classicAddress,
-      padHexString(aliceAccHex),
-      'state_basic'
+      testContext.hook1.classicAddress,
+      padHexString(hookAccHex),
+      hexNamespace('state_basic')
     )
     const stateCount = Number(
       UInt64.from(flipHex(hookState.HookStateData)).valueOf()
@@ -110,13 +110,13 @@ describe('SetHook - End to End', () => {
     } as iHook
     await clearHookStateV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: clearHook }],
     } as SetHookParams)
 
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
   })
 })
@@ -144,13 +144,13 @@ describe('SetHook - (noop|create|install', () => {
 
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
     const hookReq: LedgerEntryRequest = {
       command: 'ledger_entry',
       hook: {
-        account: testContext.alice.classicAddress,
+        account: testContext.hook1.classicAddress,
       },
     }
     const hookRes = await testContext.client.request(hookReq)
@@ -170,7 +170,7 @@ describe('SetHook - (noop|create|install', () => {
 
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
   })
 
@@ -185,14 +185,14 @@ describe('SetHook - (noop|create|install', () => {
 
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook1 }],
     } as SetHookParams)
 
     const hook1Req: LedgerEntryRequest = {
       command: 'ledger_entry',
       hook: {
-        account: testContext.alice.classicAddress,
+        account: testContext.hook1.classicAddress,
       },
     }
     const hook1Res = await testContext.client.request(hook1Req)
@@ -211,14 +211,14 @@ describe('SetHook - (noop|create|install', () => {
 
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.bob.seed,
+      seed: testContext.hook2.seed,
       hooks: [{ Hook: hook2 }],
     } as SetHookParams)
 
     const hookReq: LedgerEntryRequest = {
       command: 'ledger_entry',
       hook: {
-        account: testContext.bob.classicAddress,
+        account: testContext.hook2.classicAddress,
       },
     }
     const hookRes = await testContext.client.request(hookReq)
@@ -235,11 +235,11 @@ describe('SetHook - (noop|create|install', () => {
 
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.bob.seed,
+      seed: testContext.hook2.seed,
     } as SetHookParams)
   })
 
@@ -255,7 +255,7 @@ describe('SetHook - (noop|create|install', () => {
 
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook1 }],
     } as SetHookParams)
 
@@ -264,14 +264,14 @@ describe('SetHook - (noop|create|install', () => {
     } as iHook
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook2 }],
     } as SetHookParams)
 
     const hookReq1: LedgerEntryRequest = {
       command: 'ledger_entry',
       hook: {
-        account: testContext.alice.classicAddress,
+        account: testContext.hook1.classicAddress,
       },
     }
     const hookRes1 = await testContext.client.request(hookReq1)
@@ -298,7 +298,7 @@ describe('SetHook - (noop|create|install', () => {
 
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook1 }],
     } as SetHookParams)
 
@@ -308,14 +308,14 @@ describe('SetHook - (noop|create|install', () => {
     } as iHook
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
     try {
       const hookReq: LedgerEntryRequest = {
         command: 'ledger_entry',
         hook: {
-          account: testContext.alice.classicAddress,
+          account: testContext.hook1.classicAddress,
         },
       }
       await testContext.client.request(hookReq)
@@ -338,28 +338,28 @@ describe('SetHook - (noop|create|install', () => {
     } as iHook
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
 
     // INVOKE IN
-    const aliceWallet = testContext.alice
-    const aliceAccHex = AccountID.from(aliceWallet.classicAddress).toHex()
+    const hookWallet = testContext.hook1
+    const hookAccHex = AccountID.from(hookWallet.classicAddress).toHex()
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
-      Account: aliceWallet.classicAddress,
+      Account: hookWallet.classicAddress,
     }
     await Xrpld.submit(testContext.client, {
-      wallet: aliceWallet,
+      wallet: hookWallet,
       tx: builtTx,
     })
 
     // VALIDATION
     const hookState = await StateUtility.getHookState(
       testContext.client,
-      testContext.alice.classicAddress,
-      padHexString(aliceAccHex),
-      'state_basic'
+      testContext.hook1.classicAddress,
+      padHexString(hookAccHex),
+      hexNamespace('state_basic')
     )
     const stateCount = Number(
       UInt64.from(flipHex(hookState.HookStateData)).valueOf()
@@ -372,16 +372,16 @@ describe('SetHook - (noop|create|install', () => {
     } as iHook
     await clearHookStateV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: clearHook }],
     } as SetHookParams)
 
     try {
       await StateUtility.getHookState(
         testContext.client,
-        testContext.alice.classicAddress,
-        padHexString(aliceAccHex),
-        'state_basic'
+        testContext.hook1.classicAddress,
+        padHexString(hookAccHex),
+        hexNamespace('state_basic')
       )
       throw Error('invalidError')
     } catch (error: unknown) {

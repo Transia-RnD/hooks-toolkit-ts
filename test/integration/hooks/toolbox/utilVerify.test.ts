@@ -40,6 +40,7 @@ describe('utilVerify', () => {
   })
 
   it('util verify - invalid signature', async () => {
+    const hookWallet = testContext.hook1
     const aliceWallet = testContext.alice
     const bobWallet = testContext.bob
     const carolWallet = testContext.carol
@@ -53,17 +54,17 @@ describe('utilVerify', () => {
       new iHookParamName('VP'),
       new iHookParamValue(aliceWallet.publicKey, true)
     )
-    const hook = createHookPayload(
-      0,
-      'util_verify',
-      'util_verify',
-      SetHookFlags.hsfOverride,
-      ['Invoke'],
-      [hookParam1.toXrpl(), hookParam2.toXrpl()]
-    )
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'util_verify',
+      namespace: 'util_verify',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+      hookParams: [hookParam1.toXrpl(), hookParam2.toXrpl()],
+    })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
 
@@ -76,7 +77,7 @@ describe('utilVerify', () => {
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
       Account: bobWallet.classicAddress,
-      Destination: aliceWallet.classicAddress,
+      Destination: hookWallet.classicAddress,
       HookParameters: [txParam1.toXrpl()],
     }
     const result = await Xrpld.submit(testContext.client, {
@@ -94,6 +95,7 @@ describe('utilVerify', () => {
   })
 
   it('util verify - valid signature', async () => {
+    const hookWallet = testContext.hook1
     const aliceWallet = testContext.alice
     const bobWallet = testContext.bob
     const bobAccHex = AccountID.from(bobWallet.classicAddress).toHex()
@@ -105,14 +107,14 @@ describe('utilVerify', () => {
       new iHookParamName('VP'),
       new iHookParamValue(aliceWallet.publicKey, true)
     )
-    const hook = createHookPayload(
-      0,
-      'util_verify',
-      'util_verify',
-      SetHookFlags.hsfOverride,
-      ['Invoke'],
-      [hookParam1.toXrpl(), hookParam2.toXrpl()]
-    )
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'util_verify',
+      namespace: 'util_verify',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+      hookParams: [hookParam1.toXrpl(), hookParam2.toXrpl()],
+    })
     await setHooksV3({
       client: testContext.client,
       seed: testContext.alice.seed,
@@ -129,7 +131,7 @@ describe('utilVerify', () => {
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
       Account: bobWallet.classicAddress,
-      Destination: aliceWallet.classicAddress,
+      Destination: hookWallet.classicAddress,
       HookParameters: [txParam1.toXrpl()],
     }
     const result = await Xrpld.submit(testContext.client, {

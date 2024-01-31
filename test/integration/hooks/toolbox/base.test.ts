@@ -21,23 +21,23 @@ describe('base', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-    const hook = createHookPayload(
-      0,
-      'base',
-      'base',
-      SetHookFlags.hsfOverride,
-      ['Invoke']
-    )
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'base',
+      namespace: 'base',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+    })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
   })
   afterAll(async () => {
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
     await teardownClient(testContext)
   })
@@ -45,14 +45,14 @@ describe('base', () => {
   it('basic hook', async () => {
     // INVOKE IN
     const aliceWallet = testContext.alice
-    const bobWallet = testContext.bob
+    const hookWallet = testContext.hook1
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
-      Account: bobWallet.classicAddress,
-      Destination: aliceWallet.classicAddress,
+      Account: aliceWallet.classicAddress,
+      Destination: hookWallet.classicAddress,
     }
     const result = await Xrpld.submit(testContext.client, {
-      wallet: bobWallet,
+      wallet: aliceWallet,
       tx: builtTx,
     })
     const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(

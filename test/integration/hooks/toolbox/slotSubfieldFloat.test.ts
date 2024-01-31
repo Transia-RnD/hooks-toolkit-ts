@@ -27,39 +27,40 @@ describe('slotSubfieldFloat', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-    const hook = createHookPayload(
-      0,
-      'slot_subfield_float',
-      'slot_subfield_float',
-      SetHookFlags.hsfOverride,
-      ['Payment']
-    )
+
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'slot_subfield_float',
+      namespace: 'slot_subfield_float',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Payment'],
+    })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
   })
   afterAll(async () => {
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
     await teardownClient(testContext)
   })
 
   it('slot subfield float - success', async () => {
     // PAYMENT OUT
-    const aliceWallet = testContext.alice
+    const hookWallet = testContext.hook1
     const bobWallet = testContext.bob
     const builtTx: Payment = {
       TransactionType: 'Payment',
-      Account: aliceWallet.classicAddress,
+      Account: hookWallet.classicAddress,
       Destination: bobWallet.classicAddress,
       Amount: xrpToDrops(10),
     }
     const result = await Xrpld.submit(testContext.client, {
-      wallet: aliceWallet,
+      wallet: hookWallet,
       tx: builtTx,
     })
 

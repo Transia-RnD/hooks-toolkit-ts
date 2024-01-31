@@ -21,23 +21,23 @@ describe('common_memo', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-    const hook = createHookPayload(
-      0,
-      'common_memo',
-      'common_memo',
-      SetHookFlags.hsfOverride,
-      ['Invoke']
-    )
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'common_memo',
+      namespace: 'common_memo',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+    })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
   })
   afterAll(async () => {
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
     await teardownClient(testContext)
   })
@@ -45,7 +45,7 @@ describe('common_memo', () => {
   it('common memo hook', async () => {
     // INVOKE IN
     const aliceWallet = testContext.alice
-    const bobWallet = testContext.bob
+    const hookWallet = testContext.hook1
     const Memos = [
       {
         Memo: {
@@ -56,12 +56,12 @@ describe('common_memo', () => {
     ]
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
-      Account: bobWallet.classicAddress,
-      Destination: aliceWallet.classicAddress,
+      Account: aliceWallet.classicAddress,
+      Destination: hookWallet.classicAddress,
       Memos: Memos,
     }
     const result = await Xrpld.submit(testContext.client, {
-      wallet: bobWallet,
+      wallet: aliceWallet,
       tx: builtTx,
     })
     const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(

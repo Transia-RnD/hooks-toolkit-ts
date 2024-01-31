@@ -13,13 +13,11 @@ import {
   lengthToHex,
   UInt64,
   UInt8,
-  // VarModelArray,
   VarString,
   XFL,
   Currency,
   XRPAddress,
   PublicKey,
-  decodeModel,
 } from '../../../src/libs/binary-models'
 
 describe('encode', () => {

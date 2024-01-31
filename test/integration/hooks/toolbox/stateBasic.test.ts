@@ -27,45 +27,45 @@ describe('stateBasic', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-    const hook = createHookPayload(
-      0,
-      'state_basic',
-      'state_basic',
-      SetHookFlags.hsfOverride,
-      ['Invoke']
-    )
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'state_basic',
+      namespace: 'state_basic',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+    })
 
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
   })
   afterAll(async () => {
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
     await teardownClient(testContext)
   })
 
   it('state basic - success', async () => {
     // INVOKE OUT
-    const aliceWallet = testContext.alice
-    const aliceAccHex = AccountID.from(aliceWallet.classicAddress).toHex()
+    const hookWallet = testContext.hook1
+    const hookAccHex = AccountID.from(hookWallet.classicAddress).toHex()
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
-      Account: aliceWallet.classicAddress,
+      Account: hookWallet.classicAddress,
     }
     await Xrpld.submit(testContext.client, {
-      wallet: aliceWallet,
+      wallet: hookWallet,
       tx: builtTx,
     })
 
     const hookState = await StateUtility.getHookState(
       testContext.client,
       testContext.alice.classicAddress,
-      padHexString(aliceAccHex),
+      padHexString(hookAccHex),
       'state_basic'
     )
     const stateCount = Number(

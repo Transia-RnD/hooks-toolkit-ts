@@ -60,58 +60,62 @@ describe('stateForeignBasic', () => {
   afterAll(async () => {
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.bob.seed,
+      seed: testContext.hook2.seed,
     } as SetHookParams)
     await teardownClient(testContext)
   })
 
   it('state foreign basic - invalid account', async () => {
-    const aliceWallet = testContext.alice
-    const bobWallet = testContext.bob
-    const bobAccHex = AccountID.from(bobWallet.classicAddress).toHex()
+    const hook1Wallet = testContext.hook1
+    const hook2Wallet = testContext.hook2
+    const hook2AccHex = AccountID.from(hook2Wallet.classicAddress).toHex()
 
     // NATIVE HOOK
-    const hook1 = createHookPayload(
-      0,
-      'state_basic',
-      'foreign',
-      SetHookFlags.hsfOverride,
-      ['Invoke']
-    )
+    const hook1 = createHookPayload({
+      version: 0,
+      createFile: 'state_basic',
+      namespace: 'foreign',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+    })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook1 }],
     } as SetHookParams)
 
     // FOREIGN HOOK
     const hook2param1 = new iHookParamEntry(
       new iHookParamName('FA'),
-      new iHookParamValue(bobAccHex, true)
+      new iHookParamValue(hook2AccHex, true)
     )
     const hook2param2 = new iHookParamEntry(
       new iHookParamName('FK'),
-      new iHookParamValue(bobAccHex, true)
+      new iHookParamValue(hook2AccHex, true)
     )
     const hook2param3 = new iHookParamEntry(
       new iHookParamName('FN'),
       new iHookParamValue(hexNamespace('foreign'), true)
     )
-    const hook2 = createHookPayload(
-      0,
-      'state_foreign_basic',
-      'foreign',
-      SetHookFlags.hsfOverride,
-      ['Invoke'],
-      [hook2param1.toXrpl(), hook2param2.toXrpl(), hook2param3.toXrpl()]
-    )
+    const hook2 = createHookPayload({
+      version: 0,
+      createFile: 'state_foreign_basic',
+      namespace: 'foreign',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+      hookParams: [
+        hook2param1.toXrpl(),
+        hook2param2.toXrpl(),
+        hook2param3.toXrpl(),
+      ],
+    })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.bob.seed,
+      seed: testContext.hook2.seed,
       hooks: [{ Hook: hook2 }],
     } as SetHookParams)
 
@@ -119,10 +123,10 @@ describe('stateForeignBasic', () => {
       // INVOKE IN NATIVE
       const builtTx1: Invoke = {
         TransactionType: 'Invoke',
-        Account: aliceWallet.classicAddress,
+        Account: hook1Wallet.classicAddress,
       }
       await Xrpld.submit(testContext.client, {
-        wallet: aliceWallet,
+        wallet: hook1Wallet,
         tx: builtTx1,
       })
     } catch (error: any) {
@@ -133,45 +137,49 @@ describe('stateForeignBasic', () => {
   })
 
   it('state foreign basic - no grant', async () => {
-    const aliceWallet = testContext.alice
-    const bobWallet = testContext.bob
-    const aliceAccHex = AccountID.from(aliceWallet.classicAddress).toHex()
+    const hook1Wallet = testContext.hook1
+    const hook2Wallet = testContext.hook2
+    const hook1AccHex = AccountID.from(hook1Wallet.classicAddress).toHex()
 
     // NATIVE HOOK
-    const hook1 = createHookPayload(
-      0,
-      'state_basic',
-      'foreign',
-      SetHookFlags.hsfOverride,
-      ['Invoke']
-    )
+    const hook1 = createHookPayload({
+      version: 0,
+      createFile: 'state_basic',
+      namespace: 'foreign',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+    })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook1 }],
     } as SetHookParams)
 
     // FOREIGN HOOK
     const hook2param1 = new iHookParamEntry(
       new iHookParamName('FA'),
-      new iHookParamValue(aliceAccHex, true)
+      new iHookParamValue(hook1AccHex, true)
     )
     const hook2param2 = new iHookParamEntry(
       new iHookParamName('FK'),
-      new iHookParamValue(aliceAccHex, true)
+      new iHookParamValue(hook1AccHex, true)
     )
     const hook2param3 = new iHookParamEntry(
       new iHookParamName('FN'),
       new iHookParamValue(hexNamespace('foreign'), true)
     )
-    const hook2 = createHookPayload(
-      0,
-      'state_foreign_basic',
-      'foreign',
-      SetHookFlags.hsfOverride,
-      ['Invoke'],
-      [hook2param1.toXrpl(), hook2param2.toXrpl(), hook2param3.toXrpl()]
-    )
+    const hook2 = createHookPayload({
+      version: 0,
+      createFile: 'state_foreign_basic',
+      namespace: 'foreign',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+      hookParams: [
+        hook2param1.toXrpl(),
+        hook2param2.toXrpl(),
+        hook2param3.toXrpl(),
+      ],
+    })
     await setHooksV3({
       client: testContext.client,
       seed: testContext.bob.seed,
@@ -181,10 +189,10 @@ describe('stateForeignBasic', () => {
     // INVOKE IN NATIVE
     const builtTx1: Invoke = {
       TransactionType: 'Invoke',
-      Account: aliceWallet.classicAddress,
+      Account: hook1Wallet.classicAddress,
     }
     await Xrpld.submit(testContext.client, {
-      wallet: aliceWallet,
+      wallet: hook1Wallet,
       tx: builtTx1,
     })
 
@@ -192,10 +200,10 @@ describe('stateForeignBasic', () => {
       // INVOKE IN FOREIGN
       const builtTx2: Invoke = {
         TransactionType: 'Invoke',
-        Account: bobWallet.classicAddress,
+        Account: hook2Wallet.classicAddress,
       }
       await Xrpld.submit(testContext.client, {
-        wallet: bobWallet,
+        wallet: hook2Wallet,
         tx: builtTx2,
       })
     } catch (error: any) {
@@ -206,32 +214,37 @@ describe('stateForeignBasic', () => {
   })
 
   it('state foreign basic - no grant authorize', async () => {
+    const hook1Wallet = testContext.hook1
+    const hook2Wallet = testContext.hook2
     const aliceWallet = testContext.alice
-    const bobWallet = testContext.bob
-    const carolWallet = testContext.carol
-    const aliceAccHex = AccountID.from(aliceWallet.classicAddress).toHex()
+    const hook1AccHex = AccountID.from(hook1Wallet.classicAddress).toHex()
 
     // NATIVE HOOK
     const hook1param1 = new iHookParamEntry(
       new iHookParamName('FA'),
-      new iHookParamValue(aliceAccHex, true)
+      new iHookParamValue(hook1AccHex, true)
     )
     const hook1param2 = new iHookParamEntry(
       new iHookParamName('FK'),
-      new iHookParamValue(padHexString(aliceAccHex), true)
+      new iHookParamValue(padHexString(hook1AccHex), true)
     )
     const hook1param3 = new iHookParamEntry(
       new iHookParamName('FN'),
       new iHookParamValue(hexNamespace('foreign'), true)
     )
-    const hook1 = createHookPayload(
-      0,
-      'state_foreign_basic',
-      'foreign',
-      SetHookFlags.hsfOverride,
-      ['Invoke'],
-      [hook1param1.toXrpl(), hook1param2.toXrpl(), hook1param3.toXrpl()]
-    )
+    const hook1 = createHookPayload({
+      version: 0,
+      createFile: 'state_foreign_basic',
+      namespace: 'foreign',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+      hookParams: [
+        hook1param1.toXrpl(),
+        hook1param2.toXrpl(),
+        hook1param3.toXrpl(),
+      ],
+    })
+
     await setHooksV3({
       client: testContext.client,
       seed: testContext.bob.seed,
@@ -251,17 +264,16 @@ describe('stateForeignBasic', () => {
     // FOREIGN HOOK
     const hook2Grant1 = new iHookGrantEntry(
       new iHookGrantHash(hookHash as string),
-      new iHookGrantAuthorize(carolWallet.classicAddress)
+      new iHookGrantAuthorize(aliceWallet.classicAddress)
     )
-    const hook2 = createHookPayload(
-      0,
-      'state_basic',
-      'foreign',
-      SetHookFlags.hsfOverride,
-      ['Invoke'],
-      null,
-      [hook2Grant1.toXrpl()]
-    )
+    const hook2 = createHookPayload({
+      version: 0,
+      createFile: 'state_basic',
+      namespace: 'foreign',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+      hookGrants: [hook2Grant1.toXrpl()],
+    })
     await setHooksV3({
       client: testContext.client,
       seed: testContext.alice.seed,
@@ -271,10 +283,10 @@ describe('stateForeignBasic', () => {
     // INVOKE IN FOREIGN
     const builtTx1: Invoke = {
       TransactionType: 'Invoke',
-      Account: aliceWallet.classicAddress,
+      Account: hook1Wallet.classicAddress,
     }
     await Xrpld.submit(testContext.client, {
-      wallet: aliceWallet,
+      wallet: hook1Wallet,
       tx: builtTx1,
     })
 
@@ -282,10 +294,10 @@ describe('stateForeignBasic', () => {
       // INVOKE IN NATIVE
       const builtTx2: Invoke = {
         TransactionType: 'Invoke',
-        Account: bobWallet.classicAddress,
+        Account: hook2Wallet.classicAddress,
       }
       await Xrpld.submit(testContext.client, {
-        wallet: bobWallet,
+        wallet: hook2Wallet,
         tx: builtTx2,
       })
     } catch (error: any) {
@@ -296,31 +308,36 @@ describe('stateForeignBasic', () => {
   })
 
   it('state foreign basic - success', async () => {
-    const aliceWallet = testContext.alice
+    const hook1Wallet = testContext.alice
     const bobWallet = testContext.bob
-    const aliceAccHex = AccountID.from(aliceWallet.classicAddress).toHex()
+    const hook1AccHex = AccountID.from(hook1Wallet.classicAddress).toHex()
 
     // NATIVE HOOK
     const hook1param1 = new iHookParamEntry(
       new iHookParamName('FA'),
-      new iHookParamValue(aliceAccHex, true)
+      new iHookParamValue(hook1AccHex, true)
     )
     const hook1param2 = new iHookParamEntry(
       new iHookParamName('FK'),
-      new iHookParamValue(padHexString(aliceAccHex), true)
+      new iHookParamValue(padHexString(hook1AccHex), true)
     )
     const hook1param3 = new iHookParamEntry(
       new iHookParamName('FN'),
       new iHookParamValue(hexNamespace('foreign'), true)
     )
-    const hook1 = createHookPayload(
-      0,
-      'state_foreign_basic',
-      'foreign',
-      SetHookFlags.hsfOverride,
-      ['Invoke'],
-      [hook1param1.toXrpl(), hook1param2.toXrpl(), hook1param3.toXrpl()]
-    )
+    const hook1 = createHookPayload({
+      version: 0,
+      createFile: 'state_foreign_basic',
+      namespace: 'foreign',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+      hookParams: [
+        hook1param1.toXrpl(),
+        hook1param2.toXrpl(),
+        hook1param3.toXrpl(),
+      ],
+    })
+
     await setHooksV3({
       client: testContext.client,
       seed: testContext.bob.seed,
@@ -342,15 +359,15 @@ describe('stateForeignBasic', () => {
       new iHookGrantHash(hookHash as string),
       new iHookGrantAuthorize(bobWallet.classicAddress)
     )
-    const hook2 = createHookPayload(
-      0,
-      'state_basic',
-      'foreign',
-      SetHookFlags.hsfOverride,
-      ['Invoke'],
-      null,
-      [hook2Grant1.toXrpl()]
-    )
+    const hook2 = createHookPayload({
+      version: 0,
+      createFile: 'state_basic',
+      namespace: 'foreign',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+      hookGrants: [hook2Grant1.toXrpl()],
+    })
+
     await setHooksV3({
       client: testContext.client,
       seed: testContext.alice.seed,
@@ -360,10 +377,10 @@ describe('stateForeignBasic', () => {
     // INVOKE OUT FOREIGN
     const builtTx1: Invoke = {
       TransactionType: 'Invoke',
-      Account: aliceWallet.classicAddress,
+      Account: hook1Wallet.classicAddress,
     }
     const result = await Xrpld.submit(testContext.client, {
-      wallet: aliceWallet,
+      wallet: hook1Wallet,
       tx: builtTx1,
     })
 
@@ -377,7 +394,7 @@ describe('stateForeignBasic', () => {
     const hook2State = await StateUtility.getHookState(
       testContext.client,
       testContext.alice.classicAddress,
-      padHexString(aliceAccHex),
+      padHexString(hook1AccHex),
       'foreign'
     )
     const foreignPreState = Number(
@@ -397,7 +414,7 @@ describe('stateForeignBasic', () => {
     const hook1State = await StateUtility.getHookState(
       testContext.client,
       testContext.alice.classicAddress,
-      padHexString(aliceAccHex),
+      padHexString(hook1AccHex),
       'foreign'
     )
     const nativePostState = Number(

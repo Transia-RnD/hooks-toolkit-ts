@@ -25,23 +25,24 @@ describe('filterOnIO', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-    const hook = createHookPayload(
-      0,
-      'filter_on_io',
-      'filter_on_io',
-      SetHookFlags.hsfOverride,
-      ['Invoke']
-    )
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'filter_on_io',
+      namespace: 'filter_on_io',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+    })
+
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
   })
   afterAll(async () => {
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
     await teardownClient(testContext)
   })
@@ -49,14 +50,14 @@ describe('filterOnIO', () => {
   it('invoke on io - incoming', async () => {
     // INVOKE IN
     const aliceWallet = testContext.alice
-    const bobWallet = testContext.bob
+    const hookWallet = testContext.hook1
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
-      Account: bobWallet.classicAddress,
-      Destination: aliceWallet.classicAddress,
+      Account: aliceWallet.classicAddress,
+      Destination: hookWallet.classicAddress,
     }
     const result = await Xrpld.submit(testContext.client, {
-      wallet: bobWallet,
+      wallet: aliceWallet,
       tx: builtTx,
     })
     const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
@@ -70,13 +71,13 @@ describe('filterOnIO', () => {
 
   it('invoke on io - outgoing', async () => {
     // INVOKE OUT
-    const aliceWallet = testContext.alice
+    const hookWallet = testContext.hook1
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
-      Account: aliceWallet.classicAddress,
+      Account: hookWallet.classicAddress,
     }
     const result = await Xrpld.submit(testContext.client, {
-      wallet: aliceWallet,
+      wallet: hookWallet,
       tx: builtTx,
     })
     const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(

@@ -37,23 +37,23 @@ describe('utilSha512', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-    const hook = createHookPayload(
-      0,
-      'util_sha512',
-      'util_sha512',
-      SetHookFlags.hsfOverride,
-      ['Payment']
-    )
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'util_sha512',
+      namespace: 'util_sha512',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Payment'],
+    })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
   })
   afterAll(async () => {
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
     await teardownClient(testContext)
   })
@@ -70,17 +70,17 @@ describe('utilSha512', () => {
         new iHookParamName('HAM'),
         new iHookParamValue(Amount.from(xrpToDrops(10)).toHex(), true)
       )
-      const aliceWallet = testContext.alice
+      const hookWallet = testContext.hook1
       const bobWallet = testContext.bob
       const builtTx: Payment = {
         TransactionType: 'Payment',
-        Account: aliceWallet.classicAddress,
+        Account: hookWallet.classicAddress,
         Destination: bobWallet.classicAddress,
         Amount: xrpToDrops(11),
         HookParameters: [param1.toXrpl(), param2.toXrpl()],
       }
       await Xrpld.submit(testContext.client, {
-        wallet: aliceWallet,
+        wallet: hookWallet,
         tx: builtTx,
       })
     } catch (error: any) {
@@ -99,17 +99,17 @@ describe('utilSha512', () => {
       new iHookParamName('HAM'),
       new iHookParamValue(Amount.from(xrpToDrops(10)).toHex(), true)
     )
-    const aliceWallet = testContext.alice
+    const hookWallet = testContext.hook1
     const bobWallet = testContext.bob
     const builtTx: Payment = {
       TransactionType: 'Payment',
-      Account: aliceWallet.classicAddress,
+      Account: hookWallet.classicAddress,
       Destination: bobWallet.classicAddress,
       Amount: xrpToDrops(10),
       HookParameters: [param1.toXrpl(), param2.toXrpl()],
     }
     const result = await Xrpld.submit(testContext.client, {
-      wallet: aliceWallet,
+      wallet: hookWallet,
       tx: builtTx,
     })
 
@@ -146,17 +146,17 @@ describe('utilSha512', () => {
         currency: 'USD',
         issuer: testContext.gw.classicAddress,
       }
-      const aliceWallet = testContext.alice
+      const hookWallet = testContext.hook1
       const bobWallet = testContext.bob
       const builtTx: Payment = {
         TransactionType: 'Payment',
-        Account: aliceWallet.classicAddress,
+        Account: hookWallet.classicAddress,
         Destination: bobWallet.classicAddress,
         Amount: amount,
         HookParameters: [param1.toXrpl(), param2.toXrpl()],
       }
       await Xrpld.submit(testContext.client, {
-        wallet: aliceWallet,
+        wallet: hookWallet,
         tx: builtTx,
       })
     } catch (error: any) {
@@ -188,17 +188,17 @@ describe('utilSha512', () => {
       currency: 'USD',
       issuer: testContext.gw.classicAddress,
     }
-    const aliceWallet = testContext.alice
+    const hookWallet = testContext.hook1
     const bobWallet = testContext.bob
     const builtTx: Payment = {
       TransactionType: 'Payment',
-      Account: aliceWallet.classicAddress,
+      Account: hookWallet.classicAddress,
       Destination: bobWallet.classicAddress,
       Amount: amount,
       HookParameters: [param1.toXrpl(), param2.toXrpl()],
     }
     const result = await Xrpld.submit(testContext.client, {
-      wallet: aliceWallet,
+      wallet: hookWallet,
       tx: builtTx,
     })
 
