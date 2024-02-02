@@ -24,13 +24,13 @@ export class Xrpld {
     // @ts-expect-error - invoke is tx
     validate(builtTx)
     const txResponse = await appTransaction(client, builtTx, params.wallet, {
-      hardFail: true,
+      hardFail: params.hardFail,
       count: 1,
       delayMs: 1000,
     })
     // @ts-expect-error - this is defined
     const txResult = txResponse?.result?.meta?.TransactionResult
-    if (txResult === 'tecHOOK_REJECTED') {
+    if (params.hardFail && txResult === 'tecHOOK_REJECTED') {
       const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
         client,
         txResponse?.result?.meta as TransactionMetadata
