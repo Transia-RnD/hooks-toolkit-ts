@@ -7,6 +7,8 @@ import {
   teardownClient,
   serverUrl,
   close,
+  trust,
+  pay,
 } from '../../../../src/libs/xrpl-helpers'
 import {
   Xrpld,
@@ -22,23 +24,35 @@ describe('offerCreate', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-    const hook = createHookPayload(
-      0,
-      'txn_offer_create',
-      'txn_offer_create',
-      SetHookFlags.hsfOverride,
-      ['Invoke']
+
+    await trust(
+      testContext.client,
+      testContext.ic.set(100000),
+      ...[testContext.hook1]
     )
+    await pay(
+      testContext.client,
+      testContext.ic.set(100),
+      testContext.gw,
+      ...[testContext.hook1.classicAddress]
+    )
+    const hook = createHookPayload({
+      version: 0,
+      createFile: 'txn_offer_create',
+      namespace: 'txn_offer_create',
+      flags: SetHookFlags.hsfOverride,
+      hookOnArray: ['Invoke'],
+    })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook }],
     } as SetHookParams)
   })
   afterAll(async () => {
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
     await teardownClient(testContext)
   })
@@ -46,14 +60,14 @@ describe('offerCreate', () => {
   it('txn offer create hook', async () => {
     // INVOKE IN
     const aliceWallet = testContext.alice
-    const bobWallet = testContext.bob
+    const hookWallet = testContext.hook1
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
-      Account: bobWallet.classicAddress,
-      Destination: aliceWallet.classicAddress,
+      Account: aliceWallet.classicAddress,
+      Destination: hookWallet.classicAddress,
     }
     const result = await Xrpld.submit(testContext.client, {
-      wallet: bobWallet,
+      wallet: aliceWallet,
       tx: builtTx,
     })
     const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(

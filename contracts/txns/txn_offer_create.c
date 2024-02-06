@@ -49,7 +49,7 @@ int64_t hook(uint32_t reserved) {
     TRACESTR("txn_offer_create.c: Called.");
     
     // ACCOUNT: Hook Account
-    uint8_t hook_acc[SFS_ACCOUNT];
+    uint8_t hook_acc[20];
     hook_account(HOOK_ACC, 20);
 
     uint8_t txn_currency[20] = {
