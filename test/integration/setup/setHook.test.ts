@@ -24,7 +24,6 @@ import {
   StateUtility,
   padHexString,
   flipHex,
-  clearHookStateV3,
 } from '../../../dist/npm/src'
 import {
   HookDefinition as LeHookDefinition,
@@ -108,7 +107,7 @@ describe('SetHook - End to End', () => {
       Flags: SetHookFlags.hsfNSDelete,
       HookNamespace: hexNamespace('state_basic'),
     } as iHook
-    await clearHookStateV3({
+    await setHooksV3({
       client: testContext.client,
       seed: testContext.hook1.seed,
       hooks: [{ Hook: clearHook }],
@@ -370,7 +369,7 @@ describe('SetHook - (noop|create|install', () => {
       Flags: SetHookFlags.hsfNSDelete,
       HookNamespace: hexNamespace('state_basic'),
     } as iHook
-    await clearHookStateV3({
+    await setHooksV3({
       client: testContext.client,
       seed: testContext.hook1.seed,
       hooks: [{ Hook: clearHook }],

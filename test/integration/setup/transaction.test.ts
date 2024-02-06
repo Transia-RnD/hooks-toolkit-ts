@@ -1,4 +1,3 @@
-import { Transaction } from '@transia/xrpl'
 import {
   XrplIntegrationTestContext,
   serverUrl,
