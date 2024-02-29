@@ -14,11 +14,12 @@ import {
   SetHookParams,
   createHookPayload,
   setHooksV3,
-  clearAllHooksV3,
+  // clearAllHooksV3,
   padHexString,
   StateUtility,
   flipHex,
 } from '../../../../dist/npm/src'
+import { hexNamespace } from '../../../../src/utils'
 
 // StateBasic: ACCEPT: success
 
@@ -42,10 +43,10 @@ describe('stateBasic', () => {
     } as SetHookParams)
   })
   afterAll(async () => {
-    await clearAllHooksV3({
-      client: testContext.client,
-      seed: testContext.hook1.seed,
-    } as SetHookParams)
+    // await clearAllHooksV3({
+    //   client: testContext.client,
+    //   seed: testContext.hook1.seed,
+    // } as SetHookParams)
     await teardownClient(testContext)
   })
 
@@ -66,7 +67,7 @@ describe('stateBasic', () => {
       testContext.client,
       testContext.alice.classicAddress,
       padHexString(hookAccHex),
-      'state_basic'
+      hexNamespace('state_basic')
     )
     const stateCount = Number(
       UInt64.from(flipHex(hookState.HookStateData)).valueOf()
