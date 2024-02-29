@@ -22,7 +22,7 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@transia/xpop-toolkit": "^1.0.4",
-    "@transia/xrpl": "^2.7.3-alpha.24",
+    "@transia/xrpl": "^2.7.3-alpha.25",
     "@types/create-hash": "^1.2.4",
     "@types/elliptic": "^6.4.16",
     "c2wasm-cli": "^1.0.6",
