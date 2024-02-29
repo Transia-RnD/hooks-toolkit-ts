@@ -3,6 +3,7 @@ import { BaseModel, Metadata, ModelClass } from '../BaseModel'
 import { lengthToHex } from './encode'
 import {
   UInt8,
+  UInt16,
   UInt32,
   UInt64,
   UInt224,
@@ -34,6 +35,11 @@ export function decodeModel<T extends BaseModel>(
         fieldHex = hex.slice(hexIndex, hexIndex + 2)
         decodedField = decodeField(fieldHex, type)
         hexIndex += 2
+        break
+      case 'uint16':
+        fieldHex = hex.slice(hexIndex, hexIndex + 4)
+        decodedField = decodeField(fieldHex, type)
+        hexIndex += 4
         break
       case 'uint32':
         fieldHex = hex.slice(hexIndex, hexIndex + 8)
@@ -148,6 +154,11 @@ export function decodeMetadata(
         decodedField = decodeField(fieldHex, type)
         hexIndex += 2
         break
+      case 'uint16':
+        fieldHex = hex.slice(hexIndex, hexIndex + 4)
+        decodedField = decodeField(fieldHex, type)
+        hexIndex += 4
+        break
       case 'uint32':
         fieldHex = hex.slice(hexIndex, hexIndex + 8)
         decodedField = decodeField(fieldHex, type)
@@ -246,6 +257,8 @@ function decodeField(
   switch (type) {
     case 'uint8':
       return hexToUInt8(hex)
+    case 'uint16':
+      return hexToUInt16(hex)
     case 'uint32':
       return hexToUInt32(hex)
     case 'uint64':
@@ -277,6 +290,10 @@ function decodeField(
 }
 
 export function hexToUInt8(hex: string): UInt8 {
+  return parseInt(hex, 16)
+}
+
+export function hexToUInt16(hex: string): UInt16 {
   return parseInt(hex, 16)
 }
 

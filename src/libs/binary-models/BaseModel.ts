@@ -8,6 +8,7 @@ export type MetadataElement<T extends BaseModel> = {
   field: string
   type:
     | 'uint8'
+    | 'uint16'
     | 'uint32'
     | 'uint64'
     | 'uint224'
@@ -58,6 +59,9 @@ export abstract class BaseModel {
       switch (type) {
         case 'uint8':
           length += 2
+          break
+        case 'uint16':
+          length += 4
           break
         case 'uint32':
           length += 8
@@ -117,6 +121,9 @@ export abstract class BaseModel {
         case 'uint8':
           length += 2
           break
+        case 'uint16':
+          length += 4
+          break
         case 'uint32':
           length += 8
           break
@@ -175,6 +182,8 @@ export abstract class BaseModel {
       .map((metadata: MetadataElement<T>) => {
         switch (metadata.type) {
           case 'uint8':
+            return 0
+          case 'uint16':
             return 0
           case 'uint32':
             return 0

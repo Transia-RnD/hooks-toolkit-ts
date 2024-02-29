@@ -3,6 +3,7 @@ import { floatToLEXfl } from '../../../utils'
 import { BaseModel } from '../BaseModel'
 import {
   UInt8,
+  UInt16,
   UInt32,
   UInt64,
   UInt224,
@@ -61,6 +62,8 @@ function encodeField(
   switch (type) {
     case 'uint8':
       return uint8ToHex(fieldValue as UInt8)
+    case 'uint16':
+      return uint32ToHex(fieldValue as UInt16)
     case 'uint32':
       return uint32ToHex(fieldValue as UInt32)
     case 'uint64':
