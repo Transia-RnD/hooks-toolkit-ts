@@ -1,9 +1,13 @@
-import { Client, LedgerEntryRequest, Request } from '@transia/xrpl'
+import { Client, LedgerEntryRequest } from '@transia/xrpl'
 import {
   Hook as LeHook,
   HookDefinition as LeHookDefinition,
   HookState as LeHookState,
 } from '@transia/xrpl/dist/npm/models/ledger'
+import {
+  AccountNamespaceRequest,
+  AccountNamespaceResponse,
+} from '@transia/xrpl/dist/npm/models/methods/accountNamespace'
 
 export class StateUtility {
   static async getHook(client: Client, account: string): Promise<LeHook> {
@@ -43,15 +47,13 @@ export class StateUtility {
     if (!client.isConnected()) {
       throw new Error('xrpl Client is not connected')
     }
-    const request: Request = {
-      // @ts-expect-error - this command exists on Hooks Testnet v3
+    const request: AccountNamespaceRequest = {
       command: 'account_namespace',
       account: account,
       namespace_id: namespace,
     }
-    const response = await client.request(request)
-    // @ts-expect-error - this is defined
-    return response.result.namespace_entries as unknown
+    const response = (await client.request(request)) as AccountNamespaceResponse
+    return response.result.namespace_entries as LeHookState[]
   }
   static async getHookState(
     client: Client,
