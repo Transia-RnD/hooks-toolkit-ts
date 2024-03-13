@@ -207,9 +207,11 @@ function reduceFlags(flags: GlobalFlags, flagEnum: any): number {
 
 export function readHookBinaryHexFromNS(filename: string): string {
   const buildPath = process.cwd() + '/' + 'build'
-  const wasm = fs.readFileSync(
-    path.resolve(__dirname, `${buildPath}/${filename}.wasm`)
-  )
+  return wasmToHex(path.resolve(__dirname, `${buildPath}/${filename}.wasm`))
+}
+
+export function wasmToHex(path: string): string {
+  const wasm = fs.readFileSync(path)
   return wasm.toString(`hex`).toUpperCase()
 }
 
