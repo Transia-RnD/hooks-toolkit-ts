@@ -14,6 +14,7 @@ import {
   teardownClient,
   serverUrl,
   trust,
+  pay,
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
@@ -43,6 +44,13 @@ describe('utilSha512', () => {
       testContext.client,
       testContext.ic.set(100000),
       ...[testContext.hook1]
+    )
+
+    await pay(
+      testContext.client,
+      testContext.ic.set(1000),
+      testContext.gw,
+      ...[testContext.hook1.classicAddress]
     )
 
     const hook = createHookPayload({
