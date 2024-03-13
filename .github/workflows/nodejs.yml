@@ -117,7 +117,7 @@ jobs:
 
       - name: Run docker in background
         run: |
-          docker run --detach --rm --name rippled-service -p 6006:6006 --health-cmd="wget localhost:6006 || exit 1" --health-interval=5s --health-retries=10 --health-timeout=2s transia/hooksv3d-standalone:latest
+          docker run --detach --rm --name rippled-service -p 6006:6006 --health-cmd="wget localhost:6006 || exit 1" --health-interval=5s --health-retries=10 --health-timeout=2s transia/xahaud:latest
 
       - name: Setup npm version 7
         run: |
