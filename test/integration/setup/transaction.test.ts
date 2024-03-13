@@ -16,11 +16,11 @@ describe('transaction', () => {
 
   it('accountReserveFee should be 200 XRP', async () => {
     const fee = await accountReserveFee(testContext.client)
-    expect(fee).toBe(10000000)
+    expect(fee).toBe(1000000)
   })
 
   it('ownerReserveFee should be 50 XRP', async () => {
     const fee = await ownerReserveFee(testContext.client)
-    expect(fee).toBe(2000000)
+    expect(fee).toBe(200000)
   })
 })

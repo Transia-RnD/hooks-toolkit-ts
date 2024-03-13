@@ -14,7 +14,7 @@ import {
   SetHookParams,
   createHookPayload,
   setHooksV3,
-  // clearAllHooksV3,
+  clearAllHooksV3,
   padHexString,
   StateUtility,
   flipHex,
@@ -43,10 +43,10 @@ describe('stateBasic', () => {
     } as SetHookParams)
   })
   afterAll(async () => {
-    // await clearAllHooksV3({
-    //   client: testContext.client,
-    //   seed: testContext.hook1.seed,
-    // } as SetHookParams)
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.hook1.seed,
+    } as SetHookParams)
     await teardownClient(testContext)
   })
 
@@ -65,7 +65,7 @@ describe('stateBasic', () => {
 
     const hookState = await StateUtility.getHookState(
       testContext.client,
-      testContext.alice.classicAddress,
+      testContext.hook1.classicAddress,
       padHexString(hookAccHex),
       hexNamespace('state_basic')
     )

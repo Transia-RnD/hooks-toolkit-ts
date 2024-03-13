@@ -28,7 +28,7 @@ describe('hookOnTT', () => {
   afterAll(async () => {
     await clearAllHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
     } as SetHookParams)
     await teardownClient(testContext)
   })
@@ -67,7 +67,7 @@ describe('hookOnTT', () => {
       createFile: 'hook_on_tt',
       namespace: 'hook_on_tt',
       flags: SetHookFlags.hsfOverride,
-      hookOnArray: ['Invoke'],
+      hookOnArray: ['Invoke', 'Payment'],
     })
     await setHooksV3({
       client: testContext.client,

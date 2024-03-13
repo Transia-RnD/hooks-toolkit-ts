@@ -47,7 +47,7 @@ int64_t hook(uint32_t reserved) {
     if (slot_subfield(1, sfBalance, 1) != 1)
         accept(SBUF("keylet.c: Could not load trustline `sfBalance`"), __LINE__);
 
-    int64_t balance = slot_float(1); // <- amount as token
+    int64_t _balance = slot_float(1); // <- amount as token
 
     accept(SBUF("base: Finished."), __LINE__);
 

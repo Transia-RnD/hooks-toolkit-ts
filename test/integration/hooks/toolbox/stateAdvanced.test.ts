@@ -1,6 +1,5 @@
 // xrpl
 import { Invoke, SetHookFlags } from '@transia/xrpl'
-import { AccountID } from '@transia/ripple-binary-codec/dist/types'
 // xrpl-helpers
 import {
   XrplIntegrationTestContext,
@@ -24,7 +23,9 @@ import {
 import {
   TestModel,
   decodeModel,
+  xrpAddressToHex,
 } from '../../../../dist/npm/src/libs/binary-models'
+import { hexNamespace } from '../../../../src/utils'
 
 // StateAdvanced: ACCEPT: success
 
@@ -58,9 +59,7 @@ describe('StateAdvanced', () => {
   it('state advanced - success', async () => {
     // INVOKE OUT
     const hookWallet = testContext.hook1
-    const hookAccHex = AccountID.from(hookWallet.classicAddress).toHex()
-
-    const testModel = new TestModel(BigInt(1685216402734), 'hello')
+    const testModel = new TestModel(BigInt(1685216402734), 'userId', 'hello')
 
     const param1 = new iHookParamEntry(
       new iHookParamName('TEST'),
@@ -71,6 +70,7 @@ describe('StateAdvanced', () => {
       Account: hookWallet.classicAddress,
       HookParameters: [param1.toXrpl()],
     }
+
     await Xrpld.submit(testContext.client, {
       wallet: hookWallet,
       tx: builtTx,
@@ -78,12 +78,14 @@ describe('StateAdvanced', () => {
 
     const hookState = await StateUtility.getHookState(
       testContext.client,
-      testContext.alice.classicAddress,
-      padHexString(hookAccHex),
-      'state_advanced'
+      testContext.hook1.classicAddress,
+      padHexString(xrpAddressToHex(hookWallet.classicAddress)),
+      hexNamespace('state_advanced')
     )
+
     const model = decodeModel(hookState.HookStateData, TestModel)
     expect(model.message).toBe('hello')
+    expect(model.updatedBy).toBe('userId')
     expect(model.updatedTime).toBe(1685216402734n)
   })
 })

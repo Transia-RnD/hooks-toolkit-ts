@@ -13,6 +13,7 @@ import {
   setupClient,
   teardownClient,
   serverUrl,
+  trust,
 } from '../../../../src/libs/xrpl-helpers'
 // src
 import {
@@ -37,6 +38,13 @@ describe('utilSha512', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
+
+    await trust(
+      testContext.client,
+      testContext.ic.set(100000),
+      ...[testContext.hook1]
+    )
+
     const hook = createHookPayload({
       version: 0,
       createFile: 'util_sha512',

@@ -182,7 +182,7 @@ describe('stateForeignBasic', () => {
     })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.bob.seed,
+      seed: testContext.hook2.seed,
       hooks: [{ Hook: hook2 }],
     } as SetHookParams)
 
@@ -247,14 +247,14 @@ describe('stateForeignBasic', () => {
 
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.bob.seed,
+      seed: testContext.hook2.seed,
       hooks: [{ Hook: hook1 }],
     } as SetHookParams)
 
     const hookReq: LedgerEntryRequest = {
       command: 'ledger_entry',
       hook: {
-        account: testContext.bob.classicAddress,
+        account: testContext.hook2.classicAddress,
       },
     }
     const hookRes = await testContext.client.request(hookReq)
@@ -276,7 +276,7 @@ describe('stateForeignBasic', () => {
     })
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook2 }],
     } as SetHookParams)
 
@@ -308,8 +308,8 @@ describe('stateForeignBasic', () => {
   })
 
   it('state foreign basic - success', async () => {
-    const hook1Wallet = testContext.alice
-    const bobWallet = testContext.bob
+    const hook1Wallet = testContext.hook1
+    const hook2Wallet = testContext.hook2
     const hook1AccHex = AccountID.from(hook1Wallet.classicAddress).toHex()
 
     // NATIVE HOOK
@@ -340,14 +340,14 @@ describe('stateForeignBasic', () => {
 
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.bob.seed,
+      seed: testContext.hook2.seed,
       hooks: [{ Hook: hook1 }],
     } as SetHookParams)
 
     const hookReq: LedgerEntryRequest = {
       command: 'ledger_entry',
       hook: {
-        account: testContext.bob.classicAddress,
+        account: testContext.hook2.classicAddress,
       },
     }
     const hookRes = await testContext.client.request(hookReq)
@@ -357,7 +357,7 @@ describe('stateForeignBasic', () => {
     // FOREIGN HOOK
     const hook2Grant1 = new iHookGrantEntry(
       new iHookGrantHash(hookHash as string),
-      new iHookGrantAuthorize(bobWallet.classicAddress)
+      new iHookGrantAuthorize(hook2Wallet.classicAddress)
     )
     const hook2 = createHookPayload({
       version: 0,
@@ -370,7 +370,7 @@ describe('stateForeignBasic', () => {
 
     await setHooksV3({
       client: testContext.client,
-      seed: testContext.alice.seed,
+      seed: testContext.hook1.seed,
       hooks: [{ Hook: hook2 }],
     } as SetHookParams)
 
@@ -389,13 +389,12 @@ describe('stateForeignBasic', () => {
       result.meta as TransactionMetadata
     )
     console.log(hookExecutions.executions[0].HookReturnString)
-    // expect(hookExecutions.executions[0].HookReturnString).toEqual('')
 
     const hook2State = await StateUtility.getHookState(
       testContext.client,
-      testContext.alice.classicAddress,
+      testContext.hook1.classicAddress,
       padHexString(hook1AccHex),
-      'foreign'
+      hexNamespace('foreign')
     )
     const foreignPreState = Number(
       UInt64.from(flipHex(hook2State.HookStateData)).valueOf()
@@ -404,18 +403,18 @@ describe('stateForeignBasic', () => {
     // INVOKE OUT NATIVE
     const builtTx2: Invoke = {
       TransactionType: 'Invoke',
-      Account: bobWallet.classicAddress,
+      Account: hook2Wallet.classicAddress,
     }
     await Xrpld.submit(testContext.client, {
-      wallet: bobWallet,
+      wallet: hook2Wallet,
       tx: builtTx2,
     })
 
     const hook1State = await StateUtility.getHookState(
       testContext.client,
-      testContext.alice.classicAddress,
+      testContext.hook1.classicAddress,
       padHexString(hook1AccHex),
-      'foreign'
+      hexNamespace('foreign')
     )
     const nativePostState = Number(
       UInt64.from(flipHex(hook1State.HookStateData)).valueOf()

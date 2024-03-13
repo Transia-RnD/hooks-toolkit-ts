@@ -34,7 +34,7 @@ int64_t hook(uint32_t reserved ) {
     GENERATE_RANDOM(hash, 32, 100, random_number);
     TRACEVAR(random_number);
     TRACESTR("random: End.");
-    accept(SBUF("random: Finished."), __LINE__);
+    accept(SBUF("random.c: Finished."), __LINE__);
     _g(1,1);   // every hook needs to import guard function and use it at least once
     // unreachable
     return 0;

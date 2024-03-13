@@ -16,8 +16,8 @@ export class TestModel extends BaseModel {
   getMetadata(): Metadata {
     return [
       { field: 'updatedTime', type: 'uint64' },
-      { field: 'updatedBy', type: 'varString', maxStringLength: 32 },
-      { field: 'message', type: 'varString', maxStringLength: 250 },
+      { field: 'updatedBy', type: 'varString', maxStringLength: 31 },
+      { field: 'message', type: 'varString', maxStringLength: 31 },
     ]
   }
 
