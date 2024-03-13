@@ -46,82 +46,68 @@ export class Account {
   wallet: Wallet
 
   constructor(name?: string, seed?: string) {
-    this.wallet = Wallet.generate()
-    this.account = this.wallet.classicAddress
     if (seed) {
       this.wallet = Wallet.fromSeed(seed)
-      this.account = this.wallet.classicAddress
     }
 
     this.name = name as string
     if (name === 'gw') {
       this.wallet = GW_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'notactivated') {
       this.wallet = NOT_ACTIVE_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'alice') {
       this.wallet = ALICE_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'bob') {
       this.wallet = BOB_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'carol') {
       this.wallet = CAROL_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'dave') {
       this.wallet = DAVE_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'elsa') {
       this.wallet = ELSA_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'frank') {
       this.wallet = FRANK_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'grace') {
       this.wallet = GRACE_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'heidi') {
       this.wallet = HEIDI_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'ivan') {
       this.wallet = IVAN_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'judy') {
       this.wallet = JUDY_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'hook1') {
       this.wallet = HOOK1_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'hook2') {
       this.wallet = HOOK2_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'hook3') {
       this.wallet = HOOK3_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'hook4') {
       this.wallet = HOOK4_WALLET
-      this.account = this.wallet.classicAddress
     }
     if (name === 'hook5') {
       this.wallet = HOOK5_WALLET
-      this.account = this.wallet.classicAddress
     }
+
+    if (!this.wallet) {
+      this.wallet = Wallet.generate()
+    }
+
+    this.account = this.wallet.classicAddress
   }
 }
 
