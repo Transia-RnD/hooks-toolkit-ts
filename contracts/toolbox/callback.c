@@ -38,8 +38,25 @@ uint8_t txn[305] =
 #define OTX_ACC (txn + 147U)
 #define EMIT_OUT (txn + 167U)
 
+#define SVAR(x) &(x), sizeof(x)
+
+#define NOPE(x)\
+    rollback(SBUF(x), __LINE__)
+
 int64_t cbak(uint32_t f)
 {
+    TRACEVAR(f);
+    int64_t meta_slot_no = meta_slot(0);
+    if (slot_subfield(meta_slot_no, sfTransactionResult, 1) != 1)
+        NOPE("Failed to dump transaction result");
+
+    uint8_t tr;
+    if (slot(SVAR(tr), 1) != 1)
+        NOPE("Failed to dump transaction result");
+
+    if (tr != 0)
+        NOPE("Emitted Transaction Result not tesSUCCESS (0).");
+
     uint8_t f_buf[4];
     UINT32_TO_BUF(f_buf, f);
     accept(SBUF(f_buf), __LINE__);
@@ -102,7 +119,7 @@ int64_t hook(uint32_t reserved)
         *b++ = (fee >> 0) & 0xFFU;
     }
 
-    TRACEHEX(txn); // <- final tx blob
+    // TRACEHEX(txn); // <- final tx blob
 
     // TXN: Emit/Send Txn
     uint8_t emithash[32];
