@@ -264,6 +264,43 @@ export async function appTransaction(
   }
 }
 
+// eslint-disable-next-line max-params -- Test function, many params are needed
+export async function appBatchTransaction(
+  client: Client,
+  batches: any[]
+): Promise<SubmitResponse[]> {
+  if (process.env.RIPPLED_ENV === 'standalone') {
+    const txResponses: SubmitResponse[] = []
+    await ledgerAccept(client)
+    for (let i = 0; i < batches.length; i++) {
+      const batchTx = batches[i]
+      const txResponse = await submitTransaction({
+        client,
+        transaction: batchTx.tx,
+        wallet: batchTx.wallet,
+        retry: {
+          count: 1,
+          delayMs: 4,
+        },
+      })
+      txResponses.push(txResponse)
+    }
+    await ledgerAccept(client)
+    return txResponses
+  } else {
+    const txResponses: SubmitResponse[] = []
+    for (let i = 0; i < batches.length; i++) {
+      const batchTx = batches[i]
+      const response = await client.submit(batchTx.tx, {
+        autofill: true,
+        wallet: batchTx.wallet,
+      })
+      txResponses.push(response)
+    }
+    return txResponses
+  }
+}
+
 /**
  * Sends a test transaction for integration testing.
  *

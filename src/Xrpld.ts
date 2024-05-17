@@ -8,7 +8,10 @@ import {
   validate,
 } from '@transia/xrpl'
 import { ExecutionUtility } from './keylet-utils'
-import { appTransaction } from './libs/xrpl-helpers/transaction'
+import {
+  appBatchTransaction,
+  appTransaction,
+} from './libs/xrpl-helpers/transaction'
 import { SmartContractParams } from './types'
 import { appLogger } from './libs/logger'
 
@@ -41,5 +44,17 @@ export class Xrpld {
       throw Error(JSON.stringify(hookExecutions.executions))
     }
     return txResponse?.result
+  }
+  // TX V3
+  static async submitBatch(client: Client, batches: SmartContractParams[]) {
+    if (!batches.length) {
+      throw Error('Missing batch txns')
+    }
+    for (let i = 0; i < batches.length; i++) {
+      const builtTx = batches[i].tx
+      // @ts-expect-error - invoke is tx
+      validate(builtTx)
+    }
+    return await appBatchTransaction(client, batches)
   }
 }
