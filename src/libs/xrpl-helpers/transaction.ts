@@ -2,7 +2,7 @@ import 'dotenv/config'
 import { encode } from '@transia/ripple-binary-codec'
 import { BaseResponse } from '@transia/xrpl/dist/npm/models/methods/baseMethod'
 import { getFeeEstimateXrp } from '@transia/xrpl/dist/npm/sugar'
-import { assert } from 'chai'
+// import { assert } from 'chai'
 import omit from 'lodash/omit'
 import throttle from 'lodash/throttle'
 import {
@@ -226,7 +226,7 @@ export async function verifySubmittedTransaction(
     transaction: hash,
   })
 
-  assert(data.result)
+  // assert(data.result)
   return data
   // assert.deepEqual(
   //   omit(data.result, [
@@ -337,7 +337,7 @@ export async function testTransaction(
   })
 
   // check that the transaction was successful
-  assert.equal(response.type, 'response')
+  // assert.equal(response.type, 'response')
 
   if (response.result.engine_result !== 'tesSUCCESS') {
     // eslint-disable-next-line no-console -- See output
@@ -351,11 +351,12 @@ export async function testTransaction(
   }
 
   if (retry?.hardFail && response.result.engine_result !== 'tecHOOK_REJECTED') {
-    assert.equal(
-      response.result.engine_result,
-      'tesSUCCESS',
-      response.result.engine_result_message
-    )
+    throw Error(response.result.engine_result_message)
+    // assert.equal(
+    //   response.result.engine_result,
+    //   'tesSUCCESS',
+    //   response.result.engine_result_message
+    // )
   }
 
   // check that the transaction is on the ledger
@@ -383,10 +384,7 @@ export async function prodTransactionAndWait(
   })
 
   // check that the transaction was successful
-  assert.equal(response.type, 'response')
-
-  // check that the transaction was successful
-  assert.equal(response.type, 'response')
+  // assert.equal(response.type, 'response')
 
   const meta = response.result.meta as TransactionMetadata
   const txResult = meta.TransactionResult
@@ -402,11 +400,7 @@ export async function prodTransactionAndWait(
   }
 
   if (retry?.hardFail && txResult !== 'tecHOOK_REJECTED') {
-    assert.equal(
-      txResult,
-      'tesSUCCESS',
-      'response.result.engine_result_message'
-    )
+    throw Error((response.result.meta as TransactionMetadata).TransactionResult)
   }
 
   // check that the transaction is on the ledger

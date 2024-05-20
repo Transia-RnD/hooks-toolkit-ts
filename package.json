@@ -28,13 +28,11 @@
   },
   "devDependencies": {
     "@tsconfig/node16": "^16.1.0",
-    "@types/chai": "^4.3.4",
     "@types/crypto-js": "^4.1.1",
     "@types/jest": "^29.5.0",
     "@types/lodash": "^4.14.192",
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
-    "chai": "^4.3.7",
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
