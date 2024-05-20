@@ -210,6 +210,11 @@ export function readHookBinaryHexFromNS(filename: string): string {
   return wasmToHex(path.resolve(__dirname, `${buildPath}/${filename}.wasm`))
 }
 
+export function readJSHookBinaryHexFromNS(filename: string): string {
+  const buildPath = process.cwd() + '/' + 'build'
+  return wasmToHex(path.resolve(__dirname, `${buildPath}/${filename}.bc`))
+}
+
 export function wasmToHex(path: string): string {
   const wasm = fs.readFileSync(path)
   return wasm.toString(`hex`).toUpperCase()
