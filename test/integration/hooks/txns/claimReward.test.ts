@@ -1,14 +1,13 @@
 // xrpl
 import { Invoke, SetHookFlags, TransactionMetadata } from '@transia/xrpl'
-// xrpl-helpers
 import {
+  // Testing
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
   serverUrl,
   close,
-} from '../../../../src/libs/xrpl-helpers'
-import {
+  // Main
   Xrpld,
   SetHookParams,
   ExecutionUtility,
@@ -18,9 +17,11 @@ import {
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
+  // Binary Model
+  uint32ToHex,
+  // Utils
+  flipHex,
 } from '../../../../dist/npm/src'
-import { uint32ToHex } from '../../../../dist/npm/src/libs/binary-models'
-import { flipHex } from '../../../../src/utils'
 
 describe('claimReward', () => {
   let testContext: XrplIntegrationTestContext

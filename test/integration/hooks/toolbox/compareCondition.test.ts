@@ -1,13 +1,12 @@
 // xrpl
 import { Invoke, SetHookFlags, TransactionMetadata } from '@transia/xrpl'
-// xrpl-helpers
 import {
+  // Testing
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
   serverUrl,
-} from '../../../../src/libs/xrpl-helpers'
-import {
+  // Main
   Xrpld,
   SetHookParams,
   ExecutionUtility,
@@ -21,7 +20,7 @@ import {
 } from '../../../../dist/npm/src'
 import { uint64ToHex } from '../../../../dist/npm/src/libs/binary-models'
 
-describe('compare condition', () => {
+describe('compareCondition', () => {
   let testContext: XrplIntegrationTestContext
 
   beforeAll(async () => {

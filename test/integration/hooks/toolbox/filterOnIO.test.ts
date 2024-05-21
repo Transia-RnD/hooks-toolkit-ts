@@ -1,14 +1,13 @@
 // xrpl
 import { Invoke, SetHookFlags, TransactionMetadata } from '@transia/xrpl'
-// xrpl-helpers
+// src
 import {
+  // Testing
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
   serverUrl,
-} from '../../../../src/libs/xrpl-helpers'
-// src
-import {
+  // Main
   Xrpld,
   SetHookParams,
   ExecutionUtility,

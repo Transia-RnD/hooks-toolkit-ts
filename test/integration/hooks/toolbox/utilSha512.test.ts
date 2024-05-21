@@ -7,17 +7,16 @@ import {
 } from '@transia/xrpl'
 import { AccountID, Amount } from '@transia/ripple-binary-codec/dist/types'
 import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
-// xrpl-helpers
+// src
 import {
+  // Testing
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
   serverUrl,
   trust,
   pay,
-} from '../../../../src/libs/xrpl-helpers'
-// src
-import {
+  // Main
   Xrpld,
   SetHookParams,
   ExecutionUtility,

@@ -5,15 +5,14 @@ import {
   TransactionMetadata,
   convertStringToHex,
 } from '@transia/xrpl'
-// xrpl-helpers
 import {
+  // Testing
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
   serverUrl,
   close,
-} from '../../../../src/libs/xrpl-helpers'
-import {
+  // Main
   Xrpld,
   SetHookParams,
   ExecutionUtility,
@@ -23,8 +22,9 @@ import {
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
+  // Binary Model
+  uint64ToHex,
 } from '../../../../dist/npm/src'
-import { uint64ToHex } from '../../../../dist/npm/src/libs/binary-models'
 
 describe('accountSet', () => {
   let testContext: XrplIntegrationTestContext

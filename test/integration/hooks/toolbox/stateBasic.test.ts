@@ -1,15 +1,14 @@
 // xrpl
 import { Invoke, SetHookFlags } from '@transia/xrpl'
 import { AccountID, UInt64 } from '@transia/ripple-binary-codec/dist/types'
-// xrpl-helpers
+// src
 import {
+  // Testing
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
   serverUrl,
-} from '../../../../src/libs/xrpl-helpers'
-// src
-import {
+  // Main
   Xrpld,
   SetHookParams,
   createHookPayload,
@@ -17,9 +16,10 @@ import {
   clearAllHooksV3,
   padHexString,
   StateUtility,
+  // Utils
   flipHex,
+  hexNamespace,
 } from '../../../../dist/npm/src'
-import { hexNamespace } from '../../../../src/utils'
 
 // StateBasic: ACCEPT: success
 
