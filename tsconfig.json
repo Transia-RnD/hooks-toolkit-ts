@@ -17,7 +17,7 @@
      "removeComments": true,
      "preserveConstEnums": true,
      "esModuleInterop": true,
-     "skipLibCheck": false,
+     "skipLibCheck": true,
      "resolveJsonModule": true,
      "preserveSymlinks": true,
      "typeRoots": [ "node_modules/@types", "@types" ],
@@ -36,6 +36,6 @@
      "**/*.spec.ts",
      "build",
      "dist",
-     "example"
+     "example",
    ]
 }

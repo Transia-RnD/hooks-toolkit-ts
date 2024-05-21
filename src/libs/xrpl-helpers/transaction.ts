@@ -403,7 +403,11 @@ export async function prodTransactionAndWait(
     appLogger.error('The response was: ', JSON.stringify(response))
   }
 
-  if (retry?.hardFail && txResult !== 'tecHOOK_REJECTED') {
+  if (
+    retry?.hardFail &&
+    txResult !== 'tesSUCCESS' &&
+    txResult !== 'tecHOOK_REJECTED'
+  ) {
     throw Error((response.result.meta as TransactionMetadata).TransactionResult)
   }
 
