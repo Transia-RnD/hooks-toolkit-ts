@@ -8,17 +8,16 @@ import {
   Transaction,
   TransactionMetadata,
 } from '@transia/xrpl'
-// xrpl-helpers
+// src
 import {
+  // Testing
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
   serverUrl,
   close,
   accountSet,
-} from '../../../../src/libs/xrpl-helpers'
-// src
-import {
+  // Main
   Xrpld,
   SetHookParams,
   createHookPayload,
@@ -27,7 +26,7 @@ import {
   ExecutionUtility,
 } from '../../../../dist/npm/src'
 
-describe('tsh', () => {
+describe('callback', () => {
   let testContext: XrplIntegrationTestContext
 
   beforeAll(async () => {

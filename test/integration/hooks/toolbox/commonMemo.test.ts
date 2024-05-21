@@ -1,13 +1,12 @@
 // xrpl
 import { Invoke, SetHookFlags, TransactionMetadata } from '@transia/xrpl'
-// xrpl-helpers
 import {
+  // Testing
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
   serverUrl,
-} from '../../../../src/libs/xrpl-helpers'
-import {
+  // Main
   Xrpld,
   SetHookParams,
   ExecutionUtility,
@@ -16,7 +15,7 @@ import {
   clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
-describe('common_memo', () => {
+describe('commonMemo', () => {
   let testContext: XrplIntegrationTestContext
 
   beforeAll(async () => {

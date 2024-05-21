@@ -1,14 +1,13 @@
 // xrpl
 import { Invoke, SetHookFlags } from '@transia/xrpl'
-// xrpl-helpers
+// src
 import {
+  // Testing
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
   serverUrl,
-} from '../../../../src/libs/xrpl-helpers'
-// src
-import {
+  // Main
   Xrpld,
   SetHookParams,
   createHookPayload,
@@ -18,8 +17,7 @@ import {
   iHookParamName,
   iHookParamValue,
   iHookParamEntry,
-} from '../../../../dist/npm/src'
-import {
+  // Binary Model
   BaseModel,
   Metadata,
   UInt8,
@@ -28,8 +26,9 @@ import {
   UInt64,
   xrpAddressToHex,
   decodeModel,
-} from '../../../../dist/npm/src/libs/binary-models'
-import { hexNamespace } from '../../../../src/utils'
+  // Utils
+  hexNamespace,
+} from '../../../../dist/npm/src'
 
 // StateNumbers: ACCEPT: success
 

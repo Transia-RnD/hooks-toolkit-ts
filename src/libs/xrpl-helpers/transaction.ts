@@ -350,7 +350,11 @@ export async function testTransaction(
     appLogger.error('The response was: ', JSON.stringify(response))
   }
 
-  if (retry?.hardFail && response.result.engine_result !== 'tecHOOK_REJECTED') {
+  if (
+    retry?.hardFail &&
+    response.result.engine_result !== 'tesSUCCESS' &&
+    response.result.engine_result !== 'tecHOOK_REJECTED'
+  ) {
     throw Error(response.result.engine_result_message)
     // assert.equal(
     //   response.result.engine_result,

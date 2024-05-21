@@ -5,15 +5,12 @@ import {
   calculateHookOn,
 } from '@transia/xrpl'
 import { AccountID, UInt64 } from '@transia/ripple-binary-codec/dist/types'
-// xrpl-helpers
+// src
 import {
   serverUrl,
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
-} from '../../../src/libs/xrpl-helpers'
-// src
-import {
   Xrpld,
   SetHookParams,
   setHooksV3,
