@@ -1,7 +1,6 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-     "jsx": "react",
      "composite": true,
      "module": "commonjs",
      "moduleResolution": "node",
@@ -21,11 +20,14 @@
      "skipLibCheck": false,
      "resolveJsonModule": true,
      "preserveSymlinks": true,
+     "typeRoots": [ "node_modules/@types", "@types" ],
    },
    "include": [
      "src/**/*.ts",
      "src/**/*.tsx",
-     "src/**/*.json"
+     "src/**/*.json",
+     "contractsjs/**/*.ts",
+     "@types/*.d.ts"
    ],
    "exclude": [
      "node_modules",
