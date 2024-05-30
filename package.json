@@ -1,6 +1,6 @@
 {
   "name": "@transia/hooks-toolkit",
-  "version": "1.0.16",
+  "version": "2.0.0-alpha.1",
   "description": "A toolkit for interacting with smart contracts (hooks) on the XRP Ledger.",
   "main": "dist/npm/src/index.js",
   "files": [
@@ -23,7 +23,6 @@
   "dependencies": {
     "@transia/xahau-models": "^2.7.3-alpha.27",
     "@transia/xrpl": "^2.7.3-alpha.27",
-    "c2wasm-cli": "^1.0.6",
     "crypto-js": "^4.1.1",
     "jshooks-api": "^1.0.2",
     "winston": "^3.10.0"
