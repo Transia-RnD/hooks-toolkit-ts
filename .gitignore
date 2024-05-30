@@ -10,5 +10,5 @@ xrpld
 xahau
 
 playground.ts
-/tmp
-/contractsjs/tmp
+**/tmp
+**/dist
