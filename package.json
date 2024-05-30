@@ -21,10 +21,11 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
+    "@transia/xahau-models": "^2.7.3-alpha.27",
     "@transia/xrpl": "^2.7.3-alpha.27",
-    "@transia/xrpl-models": "^2.9.1-alpha.0",
     "c2wasm-cli": "^1.0.6",
     "crypto-js": "^4.1.1",
+    "jshooks-api": "^1.0.2",
     "winston": "^3.10.0"
   },
   "devDependencies": {
