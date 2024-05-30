@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
+import { Transaction } from '@transia/xrpl-models'
+
 declare global {
   /********************************************************************************************************************* */
 
@@ -38,129 +41,163 @@ declare global {
   const util_raddr = (arg: any) => any
   const util_accid = (arg: any) => any
   const util_sha512h = (arg: any) => any
-  const hook_account = (arg?: any) => any
   const state = (arg: any) => any
-  const hook_hash = (arg: any) => any
   const state_set = (arg: any, arg: any) => any
-  const otxn_type = () => any
 
-  /********************************************************************************************************************* */
-  const ttPAYMENT = 0
-  const ttESCROW_CREATE = 1
-  const ttESCROW_FINISH = 2
-  const ttACCOUNT_SET = 3
-  const ttESCROW_CANCEL = 4
-  const ttREGULAR_KEY_SET = 5
-  // const ttNICKNAME_SET = 6 // deprecated
-  const ttOFFER_CREATE = 7
-  const ttOFFER_CANCEL = 8
-  const ttTICKET_CREATE = 10
-  // const ttSPINAL_TAP = 11 // deprecated
-  const ttSIGNER_LIST_SET = 12
-  const ttPAYCHAN_CREATE = 13
-  const ttPAYCHAN_FUND = 14
-  const ttPAYCHAN_CLAIM = 15
-  const ttCHECK_CREATE = 16
-  const ttCHECK_CASH = 17
-  const ttCHECK_CANCEL = 18
-  const ttDEPOSIT_PREAUTH = 19
-  const ttTRUST_SET = 20
-  const ttACCOUNT_DELETE = 21
-  const ttHOOK_SET = 22
-  const ttNFTOKEN_MINT = 25
-  const ttNFTOKEN_BURN = 26
-  const ttNFTOKEN_CREATE_OFFER = 27
-  const ttNFTOKEN_CANCEL_OFFER = 28
-  const ttNFTOKEN_ACCEPT_OFFER = 29
-  const ttURITOKEN_MINT = 45
-  const ttURITOKEN_BURN = 46
-  const ttURITOKEN_BUY = 47
-  const ttURITOKEN_CREATE_SELL_OFFER = 48
-  const ttURITOKEN_CANCEL_SELL_OFFER = 49
-  const ttREMIT = 95
-  const ttGENESIS_MINT = 96
-  const ttIMPORT = 97
-  const ttCLAIM_REWARD = 98
-  export const ttINVOKE = 99
-  const ttAMENDMENT = 100
-  const ttFEE = 101
-  const ttUNL_MODIFY = 102
-  const ttEMIT_FAILURE = 103
-  const ttUNL_REPORT = 104
-  /********************************************************************************************************************* */
-  const KEYLET_HOOK = 1
-  const KEYLET_HOOK_STATE = 2
-  const KEYLET_ACCOUNT = 3
-  const KEYLET_AMENDMENTS = 4
-  const KEYLET_CHILD = 5
-  const KEYLET_SKIP = 6
-  const KEYLET_FEES = 7
-  const KEYLET_NEGATIVE_UNL = 8
-  const KEYLET_LINE = 9
-  const KEYLET_OFFER = 10
-  const KEYLET_QUALITY = 11
-  const KEYLET_EMITTED_DIR = 12
-  const KEYLET_TICKET = 13
-  const KEYLET_SIGNERS = 14
-  const KEYLET_CHECK = 15
-  const KEYLET_DEPOSIT_PREAUTH = 16
-  const KEYLET_UNCHECKED = 17
-  const KEYLET_OWNER_DIR = 18
-  const KEYLET_PAGE = 19
-  const KEYLET_ESCROW = 20
-  const KEYLET_PAYCHAN = 21
-  const KEYLET_EMITTED = 22
-  const KEYLET_NFT_OFFER = 23
-  const KEYLET_HOOK_DEFINITION = 24
-  const KEYLET_HOOK_STATE_DIR = 25
-  const KEYLET_URITOKEN = 26
-  /********************************************************************************************************************* */
-  const COMPARE_EQUAL = 1
-  const COMPARE_LESS = 2
-  const COMPARE_GREATER = 4
-  /********************************************************************************************************************* */
-  const SUCCESS = 0
-  const OUT_OF_BOUNDS = -1
-  const INTERNAL_ERROR = -2
-  const TOO_BIG = -3
-  const TOO_SMALL = -4
-  const DOESNT_EXIST = -5
-  const NO_FREE_SLOTS = -6
-  const INVALID_ARGUMENT = -7
-  const ALREADY_SET = -8
-  const PREREQUISITE_NOT_MET = -9
-  const FEE_TOO_LARGE = -10
-  const EMISSION_FAILURE = -11
-  const TOO_MANY_NONCES = -12
-  const TOO_MANY_EMITTED_TXN = -13
-  const NOT_IMPLEMENTED = -14
-  const INVALID_ACCOUNT = -15
-  const GUARD_VIOLATION = -16
-  const INVALID_FIELD = -17
-  const PARSE_ERROR = -18
-  const RC_ROLLBACK = -19
-  const RC_ACCEPT = -20
-  const NO_SUCH_KEYLET = -21
-  const NOT_AN_ARRAY = -22
-  const NOT_AN_OBJECT = -23
-  const INVALID_FLOAT = -10024
-  const DIVISION_BY_ZERO = -25
-  const MANTISSA_OVERSIZED = -26
-  const MANTISSA_UNDERSIZED = -27
-  const EXPONENT_OVERSIZED = -28
-  const EXPONENT_UNDERSIZED = -29
-  const OVERFLOW = -30
-  const NOT_IOU_AMOUNT = -31
-  const NOT_AN_AMOUNT = -32
-  const CANT_RETURN_NEGATIVE = -33
-  const NOT_AUTHORIZED = -34
-  const PREVIOUS_FAILURE_PREVENTS_RETRY = -35
-  const TOO_MANY_PARAMS = -36
-  const INVALID_TXN = -37
-  const RESERVE_INSUFFICIENT = -38
-  const COMPLEX_NOT_SUPPORTED = -39
-  const DOES_NOT_MATCH = -40
-  /********************************************************************************************************************* */
+  // Cleaned DA
+
+  type JSResHookAccount = () => number[] | number
+  const hook_account: JSResHookAccount
+
+  declare function otxn_burden(): number
+  declare function otxn_generation(): number
+  declare function otxn_field(id: number): number[] | number
+  declare function otxn_id(flags: number): number[] | number
+  declare function otxn_type(): number
+  declare function otxn_slot(index: number): number
+  declare function otxn_param(key: number[] | string): number[] | number
+  declare function otxn_json(): Transaction
+
+  declare function hook_hash(index: number): number[] | number
+  declare function hook_again(): number
+  declare function fee_base(): number
+  declare function ledger_seq(): number
+  declare function ledger_last_hash(): number[]
+  declare function ledger_last_time(): number
+  declare function ledger_nonce(): number[] | number
+  declare function ledger_keylet(
+    low: number[] | string,
+    high: number[] | string
+  ): number[] | number
+
+  declare function hook_param(key: number[] | string): nunber[] | number
+  declare function hook_param_set(
+    value: number[] | string,
+    key: number[] | string,
+    hash: number[] | string
+  ): number
+  declare function hook_pos(): number
+  declare function hook_skip(hash: number[] | string, flags: number): number
+
+  declare function state(key: number[] | string): number[]
+  declare function state_foreign(
+    key: number[] | string,
+    namespace: number[] | string,
+    account: number[] | string
+  ): number[] | number
+  declare function state_set(
+    value: number[] | string,
+    key: number[] | string
+  ): number
+  declare function state_foreign_set(
+    value: number[] | string,
+    key: number[] | string,
+    namespace: number[] | string,
+    account: number[] | string
+  ): number
+
+  declare function slot(index: number): number[] | number
+  declare function slot_clear(index: number): number
+  declare function slot_count(index: number): number
+  declare function slot_float(index: number): number
+  declare function slot_set(key: number[] | string, index: number): number
+  declare function slot_size(index: number): number
+  declare function slot_subarray(
+    index: number,
+    id: number,
+    next: number
+  ): number
+  declare function slot_subfield(
+    index: number,
+    id: number,
+    next: number
+  ): number
+  declare function slot_type(index: number, flags: number): number
+
+  declare function float_set(exponent: number, mantissa: number): number
+  declare function float_multiply(float1: number, float2: number): number
+  declare function float_mulratio(
+    float1: number,
+    round_up: number,
+    numerator: number,
+    denominator: number
+  ): number
+  declare function float_negate(float1: number): number
+  declare function float_compare(
+    float1: number,
+    float2: number,
+    mode: number
+  ): number
+  declare function float_sum(float1: number, float2: number): number
+  declare function float_sto(
+    write_ptr: number,
+    write_len: number,
+    cread_ptr: number,
+    cread_len: number,
+    iread_ptr: number,
+    iread_len: number,
+    float1: number,
+    field_code: number
+  ): number
+  declare function float_sto_set(read_ptr: number, read_len: number): number
+  declare function float_invert(float1: number): number
+  declare function float_divide(float1: number, float2: number): number
+  declare function float_one(): number
+  declare function float_mantissa(float1: number): number
+  declare function float_sign(float1: number): number
+  declare function float_int(
+    float1: number,
+    decimal_places: number,
+    abs: number
+  ): number
+  declare function float_log(float1: number): number
+  declare function float_root(float1: number, n: number): number
+
+  declare function sto_emplace(
+    raw_sto: number[] | string,
+    raw_field: number[] | string,
+    field_id: number
+  ): number | number[]
+
+  declare function sto_erase(
+    raw_sto: number[] | string,
+    field_id: number
+  ): number | number[]
+
+  declare function sto_subarray(
+    raw_sto: number[] | string,
+    index: number
+  ): number | number[]
+
+  declare function sto_subfield(
+    raw_sto: number[] | string,
+    field_id: number
+  ): number
+
+  declare function sto_validate(raw_sto: number[] | string): number | number[]
+
+  // DA TODO: Does not exist in source, should it?
+  // declare function float_exponent(float1: number): number
+
+  declare function util_accid(raddr: any): number | string
+
+  declare function util_keylet(
+    keylet_type: number,
+    arg1?: number[] | number,
+    arg2?: number[] | number,
+    arg3?: number[] | number,
+    arg4?: number[] | number
+  ): number
+
+  declare function util_raddr(acc_id: any): number | string
+
+  declare function util_sha512h(bytes: number[]): number[] | number
+
+  declare function util_verify(
+    msg: number[],
+    sig: number[],
+    pub_key: number[]
+  ): number
 }
 
 export {}

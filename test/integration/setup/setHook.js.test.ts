@@ -130,7 +130,7 @@ describe('SetHook - (noop|create|install', () => {
 
   it('sethook - create', async () => {
     const hook = {
-      CreateCode: readJSHookBinaryHexFromNS('base copy'),
+      CreateCode: readJSHookBinaryHexFromNS('index'),
       Flags: SetHookFlags.hsfOverride,
       HookOn: calculateHookOn(['Invoke']),
       HookNamespace: hexNamespace('base'),
