@@ -20,14 +20,11 @@
      "skipLibCheck": true,
      "resolveJsonModule": true,
      "preserveSymlinks": true,
-     "typeRoots": [ "node_modules/@types", "@types" ],
    },
    "include": [
      "src/**/*.ts",
      "src/**/*.tsx",
-     "src/**/*.json",
-     "contractsjs/**/*.ts",
-     "@types/*.d.ts"
+     "src/**/*.json"
    ],
    "exclude": [
      "node_modules",
