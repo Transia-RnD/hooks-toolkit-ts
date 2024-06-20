@@ -2,7 +2,7 @@
 
 ## Global Prerequsits
 
-`$ npm i -g c2wasm-cli`
+`$ npm i -g js2wasm-cli`
 
 ## Compile Hooks
 
@@ -19,7 +19,7 @@ Here is what each command does in the background:
 
 You can also build a single hook with;
 
-`$ yarn run build:hook contracts/toolbox/base.c build`
+`$ yarn run build:hook contracts/toolbox/base.ts build`
 
 ## Debug the test env
 
@@ -35,7 +35,7 @@ Before you can run the integration tests you must have a standalone rippled serv
 
 - Full env with explorer:
 
-- - `$ xrpld-netgen up:standalone`
+- - `$ xrpld-netgen up:standalone --version=2024.5.30-HEAD+900`
 
 - Docker standalone only:
 
