@@ -7,11 +7,7 @@ import {
 } from '@transia/xrpl'
 import { SetHookParams, iHook } from './types'
 import { HookGrant, HookParameter } from '@transia/xrpl/dist/npm/models/common'
-import {
-  readJSHookBinaryHexFromNS,
-  readHookBinaryHexFromNS,
-  hexNamespace,
-} from './utils'
+import { readHookBinaryHexFromNS, hexNamespace } from './utils'
 import { appTransaction } from './libs/xrpl-helpers/transaction'
 import { appLogger } from './libs/logger'
 
@@ -37,14 +33,14 @@ export function createHookPayload(payload: SetHookPayload): iHook {
   if (payload.createFile && typeof payload.createFile === 'string') {
     switch (payload.version) {
       case 0:
-        hook.CreateCode = readHookBinaryHexFromNS(payload.createFile)
+        hook.CreateCode = readHookBinaryHexFromNS(payload.createFile, 'wasm')
         break
       case 1:
-        hook.CreateCode = readJSHookBinaryHexFromNS(payload.createFile)
+        hook.CreateCode = readHookBinaryHexFromNS(payload.createFile, 'bc')
         break
 
       default:
-        hook.CreateCode = readHookBinaryHexFromNS(payload.createFile)
+        hook.CreateCode = readHookBinaryHexFromNS(payload.createFile, 'wasm')
         break
     }
   }

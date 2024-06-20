@@ -42,7 +42,7 @@ describe('SetHook - End to End', () => {
   it('sethook - end to end', async () => {
     // SETHOOK IN
     const hook = {
-      CreateCode: readHookBinaryHexFromNS('state_basic'),
+      CreateCode: readHookBinaryHexFromNS('state_basic', 'wasm'),
       Flags: SetHookFlags.hsfOverride,
       HookOn: calculateHookOn(['Invoke']),
       HookNamespace: hexNamespace('state_basic'),
@@ -131,7 +131,7 @@ describe('SetHook - (noop|create|install', () => {
 
   it('sethook - create', async () => {
     const hook = {
-      CreateCode: readHookBinaryHexFromNS('hook_on_tt'),
+      CreateCode: readHookBinaryHexFromNS('hook_on_tt', 'wasm'),
       Flags: SetHookFlags.hsfOverride,
       HookOn: calculateHookOn(['Invoke']),
       HookNamespace: hexNamespace('hook_on_tt'),
@@ -172,7 +172,7 @@ describe('SetHook - (noop|create|install', () => {
 
   it('sethook - install', async () => {
     const hook1 = {
-      CreateCode: readHookBinaryHexFromNS('hook_on_tt'),
+      CreateCode: readHookBinaryHexFromNS('hook_on_tt', 'wasm'),
       Flags: SetHookFlags.hsfOverride,
       HookOn: calculateHookOn(['Invoke']),
       HookNamespace: hexNamespace('hook_on_tt'),
@@ -242,7 +242,7 @@ describe('SetHook - (noop|create|install', () => {
   // TODO: Make sure that the namespace was changed: Do Params & Grant
   it('sethook - update: Namespace', async () => {
     const hook1 = {
-      CreateCode: readHookBinaryHexFromNS('hook_on_tt'),
+      CreateCode: readHookBinaryHexFromNS('hook_on_tt', 'wasm'),
       Flags: SetHookFlags.hsfOverride,
       HookOn: calculateHookOn(['Invoke']),
       HookNamespace: hexNamespace('hook_on_tt'),
@@ -285,7 +285,7 @@ describe('SetHook - (noop|create|install', () => {
 
   it('sethook - delete', async () => {
     const hook1 = {
-      CreateCode: readHookBinaryHexFromNS('hook_on_tt'),
+      CreateCode: readHookBinaryHexFromNS('hook_on_tt', 'wasm'),
       Flags: SetHookFlags.hsfOverride,
       HookOn: calculateHookOn(['Invoke']),
       HookNamespace: hexNamespace('hook_on_tt'),
@@ -326,7 +326,7 @@ describe('SetHook - (noop|create|install', () => {
   it('sethook - ns reset', async () => {
     // SETHOOK IN
     const hook = {
-      CreateCode: readHookBinaryHexFromNS('state_basic'),
+      CreateCode: readHookBinaryHexFromNS('state_basic', 'wasm'),
       Flags: SetHookFlags.hsfOverride,
       HookOn: calculateHookOn(['Invoke']),
       HookNamespace: hexNamespace('state_basic'),
