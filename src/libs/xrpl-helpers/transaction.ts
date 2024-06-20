@@ -1,7 +1,5 @@
 import 'dotenv/config'
-import { encode } from '@transia/ripple-binary-codec'
 import { BaseResponse } from '@transia/xrpl/dist/npm/models/methods/baseMethod'
-import { getFeeEstimateXrp } from '@transia/xrpl/dist/npm/sugar'
 // import { assert } from 'chai'
 import omit from 'lodash/omit'
 import throttle from 'lodash/throttle'
@@ -47,23 +45,6 @@ export async function accountReserveFee(client: Client): Promise<number> {
 export async function ownerReserveFee(client: Client): Promise<number> {
   const { result } = await serverStateRPC(client)
   return (result as ServerStateRPCResult).state.validated_ledger?.reserve_inc
-}
-
-export async function getTransactionFee(
-  client: Client,
-  transaction: Transaction
-): Promise<string> {
-  const copyTx = JSON.parse(JSON.stringify(transaction))
-  copyTx.Fee = `0`
-  copyTx.SigningPubKey = ``
-
-  const preparedTx = await client.autofill(copyTx)
-
-  const tx_blob = encode(preparedTx)
-
-  const result = await getFeeEstimateXrp(client, tx_blob)
-
-  return result
 }
 
 async function sendLedgerAccept(client: Client): Promise<unknown> {
