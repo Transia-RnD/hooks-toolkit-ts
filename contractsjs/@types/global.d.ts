@@ -38,12 +38,6 @@ declare global {
 
   /********************************************************************************************************************* */
 
-  const util_raddr = (arg: any) => any
-  const util_accid = (arg: any) => any
-  const util_sha512h = (arg: any) => any
-  const state = (arg: any) => any
-  const state_set = (arg: any, arg: any) => any
-
   // Cleaned DA
 
   type JSResHookAccount = () => number[] | number
@@ -79,7 +73,7 @@ declare global {
   declare function hook_pos(): number
   declare function hook_skip(hash: number[] | string, flags: number): number
 
-  declare function state(key: number[] | string): number[]
+  declare function state(key: number[] | string): number[] | number
   declare function state_foreign(
     key: number[] | string,
     namespace: number[] | string,
@@ -198,6 +192,10 @@ declare global {
     sig: number[],
     pub_key: number[]
   ): number
+
+  declare function etxn_reserve(number: number)
+  declare function prepare(txn: any)
+  declare function emit(txn: any)
 }
 
 export {}

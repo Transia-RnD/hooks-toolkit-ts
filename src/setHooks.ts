@@ -20,6 +20,7 @@ export interface SetHookPayload {
   hookOnArray?: string[] | null
   hookParams?: HookParameter[] | null
   hookGrants?: HookGrant[] | null
+  fee?: string | null
 }
 
 export function createHookPayload(payload: SetHookPayload): iHook {
@@ -49,6 +50,9 @@ export function createHookPayload(payload: SetHookPayload): iHook {
   }
   if (payload.flags) {
     hook.Flags = payload.flags
+  }
+  if (payload.fee) {
+    hook.Fee = payload.fee
   }
   if (payload.hookOnArray) {
     hook.HookOn = calculateHookOn(payload.hookOnArray)

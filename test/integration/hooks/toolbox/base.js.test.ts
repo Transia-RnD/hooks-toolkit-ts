@@ -13,7 +13,7 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
-  clearAllHooksV3,
+  // clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
 describe('base', () => {
@@ -27,6 +27,7 @@ describe('base', () => {
       namespace: 'base',
       flags: SetHookFlags.hsfOverride,
       hookOnArray: ['Invoke'],
+      fee: '100',
     })
     await setHooksV3({
       client: testContext.client,
@@ -35,24 +36,23 @@ describe('base', () => {
     } as SetHookParams)
   })
   afterAll(async () => {
-    await clearAllHooksV3({
-      client: testContext.client,
-      seed: testContext.hook1.seed,
-    } as SetHookParams)
+    // await clearAllHooksV3({
+    //   client: testContext.client,
+    //   seed: testContext.hook1.seed,
+    // } as SetHookParams)
     await teardownClient(testContext)
   })
 
   it('basic hook', async () => {
     // INVOKE IN
-    const aliceWallet = testContext.alice
+    // const aliceWallet = testContext.alice
     const hookWallet = testContext.hook1
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
-      Account: aliceWallet.classicAddress,
-      Destination: hookWallet.classicAddress,
+      Account: hookWallet.classicAddress,
     }
     const result = await Xrpld.submit(testContext.client, {
-      wallet: aliceWallet,
+      wallet: hookWallet,
       tx: builtTx,
     })
     const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
