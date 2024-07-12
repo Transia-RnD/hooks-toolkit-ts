@@ -1,5 +1,5 @@
 // xrpl
-import { Invoke, SetHookFlags, TransactionMetadata } from '@transia/xrpl'
+import { Payment, SetHookFlags, TransactionMetadata } from '@transia/xrpl'
 // xrpl-helpers
 import {
   XrplIntegrationTestContext,
@@ -13,6 +13,8 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
+  xrpAddressToHex,
+  padHexString,
   // clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
@@ -26,7 +28,7 @@ describe('base', () => {
       createFile: 'base',
       namespace: 'base',
       flags: SetHookFlags.hsfOverride,
-      hookOnArray: ['Invoke'],
+      hookOnArray: ['Payment'],
       fee: '100',
     })
     await setHooksV3({
@@ -45,14 +47,17 @@ describe('base', () => {
 
   it('basic hook', async () => {
     // INVOKE IN
-    // const aliceWallet = testContext.alice
+    const aliceWallet = testContext.alice
     const hookWallet = testContext.hook1
-    const builtTx: Invoke = {
-      TransactionType: 'Invoke',
-      Account: hookWallet.classicAddress,
+    const builtTx: Payment = {
+      TransactionType: 'Payment',
+      Account: aliceWallet.classicAddress,
+      Destination: hookWallet.classicAddress,
+      Amount: '1',
+      InvoiceID: padHexString(xrpAddressToHex(hookWallet.classicAddress)),
     }
     const result = await Xrpld.submit(testContext.client, {
-      wallet: hookWallet,
+      wallet: aliceWallet,
       tx: builtTx,
     })
     const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
