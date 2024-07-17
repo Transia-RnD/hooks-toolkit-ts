@@ -107,6 +107,7 @@ declare global {
     next: number
   ): number
   declare function slot_type(index: number, flags: number): number
+  declare function slot_json(index: number): number | Record<string, any>
 
   declare function float_set(exponent: number, mantissa: number): number
   declare function float_multiply(float1: number, float2: number): number
@@ -181,7 +182,7 @@ declare global {
     arg2?: number[] | number,
     arg3?: number[] | number,
     arg4?: number[] | number
-  ): number
+  ): number | number[]
 
   declare function util_raddr(acc_id: any): number | string
 

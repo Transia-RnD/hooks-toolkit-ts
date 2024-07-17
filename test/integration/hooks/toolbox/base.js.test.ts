@@ -1,5 +1,10 @@
 // xrpl
-import { Payment, SetHookFlags, TransactionMetadata } from '@transia/xrpl'
+import {
+  Invoke,
+  Payment,
+  SetHookFlags,
+  TransactionMetadata,
+} from '@transia/xrpl'
 // xrpl-helpers
 import {
   XrplIntegrationTestContext,
@@ -18,6 +23,49 @@ import {
   // clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
+export const execInvoke = async (testContext: XrplIntegrationTestContext) => {
+  const aliceWallet = testContext.alice
+  const hookWallet = testContext.hook1
+  const builtTx: Invoke = {
+    TransactionType: 'Invoke',
+    Account: aliceWallet.classicAddress,
+    Destination: hookWallet.classicAddress,
+  }
+  const result = await Xrpld.submit(testContext.client, {
+    wallet: aliceWallet,
+    tx: builtTx,
+  })
+  const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
+    testContext.client,
+    result.meta as TransactionMetadata
+  )
+  expect(hookExecutions.executions[0].HookReturnString).toMatch(
+    'base: Finished.'
+  )
+}
+export const execPayment = async (testContext: XrplIntegrationTestContext) => {
+  const aliceWallet = testContext.alice
+  const hookWallet = testContext.hook1
+  const builtTx: Payment = {
+    TransactionType: 'Payment',
+    Account: aliceWallet.classicAddress,
+    Destination: hookWallet.classicAddress,
+    Amount: '1',
+    InvoiceID: padHexString(xrpAddressToHex(hookWallet.classicAddress)),
+  }
+  const result = await Xrpld.submit(testContext.client, {
+    wallet: aliceWallet,
+    tx: builtTx,
+  })
+  const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
+    testContext.client,
+    result.meta as TransactionMetadata
+  )
+  expect(hookExecutions.executions[0].HookReturnString).toMatch(
+    'base: Finished.'
+  )
+}
+
 describe('base', () => {
   let testContext: XrplIntegrationTestContext
 
@@ -28,8 +76,8 @@ describe('base', () => {
       createFile: 'base',
       namespace: 'base',
       flags: SetHookFlags.hsfOverride,
-      hookOnArray: ['Payment'],
-      fee: '100',
+      hookOnArray: ['Invoke', 'Payment'],
+      fee: '100000',
     })
     await setHooksV3({
       client: testContext.client,
@@ -46,26 +94,7 @@ describe('base', () => {
   })
 
   it('basic hook', async () => {
-    // INVOKE IN
-    const aliceWallet = testContext.alice
-    const hookWallet = testContext.hook1
-    const builtTx: Payment = {
-      TransactionType: 'Payment',
-      Account: aliceWallet.classicAddress,
-      Destination: hookWallet.classicAddress,
-      Amount: '1',
-      InvoiceID: padHexString(xrpAddressToHex(hookWallet.classicAddress)),
-    }
-    const result = await Xrpld.submit(testContext.client, {
-      wallet: aliceWallet,
-      tx: builtTx,
-    })
-    const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
-      testContext.client,
-      result.meta as TransactionMetadata
-    )
-    expect(hookExecutions.executions[0].HookReturnString).toMatch(
-      'base: Finished.'
-    )
+    // await execInvoke(testContext)
+    await execPayment(testContext)
   })
 })
