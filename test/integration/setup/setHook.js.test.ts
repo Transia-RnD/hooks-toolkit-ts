@@ -135,6 +135,7 @@ describe('SetHook - (noop|create|install', () => {
       HookOn: calculateHookOn(['Invoke']),
       HookNamespace: hexNamespace('base'),
       HookApiVersion: 1,
+      Fee: '1000000',
     } as iHook
 
     await setHooksV3({
