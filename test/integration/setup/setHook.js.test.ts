@@ -19,7 +19,7 @@ import {
   setHooksV3,
   hexNamespace,
   iHook,
-  readJSHookBinaryHexFromNS,
+  readHookBinaryHexFromNS,
   clearAllHooksV3,
   // StateUtility,
   // padHexString,
@@ -130,7 +130,7 @@ describe('SetHook - (noop|create|install', () => {
 
   it('sethook - create', async () => {
     const hook = {
-      CreateCode: readJSHookBinaryHexFromNS('index'),
+      CreateCode: readHookBinaryHexFromNS('index', 'bc'),
       Flags: SetHookFlags.hsfOverride,
       HookOn: calculateHookOn(['Invoke']),
       HookNamespace: hexNamespace('base'),
