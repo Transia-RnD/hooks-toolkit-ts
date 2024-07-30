@@ -19,7 +19,6 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "@transia/xahau-models": "^2.7.3-alpha.27",
     "@transia/xrpl": "^2.7.3-alpha.27",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.4.5",

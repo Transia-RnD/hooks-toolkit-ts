@@ -1,99 +1,49 @@
 const ASSERT = (x) => {
   if (!x) {
-    rollback(x.toString(), 0)
+    rollback('ASSERT.error', 0)
   }
 }
 
 const INVALID_ARGUMENT = -7
 const INVALID_FLOAT = -10024
 
-const EQ = 0b001
-const LT = 0b010
-const GT = 0b100
-const LTE = 0b011
-const GTE = 0b101
-const NEQ = 0b110
-
 const Hook = (arg) => {
-  // test invalid floats
-  {
-    ASSERT(float_compare(-1, -2, EQ) == INVALID_FLOAT)
-    ASSERT(float_compare(0, -2, EQ) == INVALID_FLOAT)
-    ASSERT(float_compare(-1, 0, EQ) == INVALID_FLOAT)
-  }
+  ASSERT(float_set(undefined, 0) === INVALID_ARGUMENT)
+  ASSERT(float_set(0, undefined) === INVALID_ARGUMENT)
+  ASSERT(float_set(2147483648, 0) === INVALID_ARGUMENT)
 
-  // test invalid flags
-  {
-    // flag 8 doesnt exist
-    ASSERT(float_compare(0, 0, 0b1000) == INVALID_ARGUMENT)
-    // flag 16 doesnt exist
-    ASSERT(float_compare(0, 0, 0b10000) == INVALID_ARGUMENT)
-    // every flag except the valid ones
-    ASSERT(float_compare(0, 0, ~0b111) == INVALID_ARGUMENT)
-    // all valid flags combined is invalid too
-    ASSERT(float_compare(0, 0, 0b111) == INVALID_ARGUMENT)
-    // no flags is also invalid
-    ASSERT(float_compare(0, 0, 0) == INVALID_ARGUMENT)
-  }
+  // zero mantissa should return canonical zero
+  ASSERT(float_set(-5, 0) === 0)
+  ASSERT(float_set(50, 0) === 0)
+  ASSERT(float_set(-50, 0) === 0)
+  ASSERT(float_set(0, 0) === 0)
 
-  // test logic
-  {
-    ASSERT(float_compare(0, 0, EQ))
-    ASSERT(float_compare(0, float_one(), LT))
-    ASSERT(float_compare(0, float_one(), GT) == 0)
-    ASSERT(float_compare(0, float_one(), GTE) == 0)
-    ASSERT(float_compare(0, float_one(), LTE))
-    ASSERT(float_compare(0, float_one(), NEQ))
+  // an exponent lower than -96 should produce an invalid float error
+  ASSERT(float_set(-97, 1) === INVALID_FLOAT)
 
-    const large_negative = 1622844335003378560 /* -154846915           */
-    const small_negative = 1352229899321148800 /* -1.15001111e-7       */
-    const small_positive = 5713898440837102138 /* 3.33411333131321e-21 */
-    const large_positive = 7749425685711506120 /* 3.234326634253e+92   */
+  // an exponent larger than +96 should produce an invalid float error
+  ASSERT(float_set(+97, 1) === INVALID_FLOAT)
 
-    // large negative < small negative
-    ASSERT(float_compare(large_negative, small_negative, LT))
-    ASSERT(float_compare(large_negative, small_negative, LTE))
-    ASSERT(float_compare(large_negative, small_negative, NEQ))
-    ASSERT(float_compare(large_negative, small_negative, GT) == 0)
-    ASSERT(float_compare(large_negative, small_negative, GTE) == 0)
-    ASSERT(float_compare(large_negative, small_negative, EQ) == 0)
-
-    // large_negative < large positive
-    ASSERT(float_compare(large_negative, large_positive, LT))
-    ASSERT(float_compare(large_negative, large_positive, LTE))
-    ASSERT(float_compare(large_negative, large_positive, NEQ))
-    ASSERT(float_compare(large_negative, large_positive, GT) == 0)
-    ASSERT(float_compare(large_negative, large_positive, GTE) == 0)
-    ASSERT(float_compare(large_negative, large_positive, EQ) == 0)
-
-    // small_negative < small_positive
-    ASSERT(float_compare(small_negative, small_positive, LT))
-    ASSERT(float_compare(small_negative, small_positive, LTE))
-    ASSERT(float_compare(small_negative, small_positive, NEQ))
-    ASSERT(float_compare(small_negative, small_positive, GT) == 0)
-    ASSERT(float_compare(small_negative, small_positive, GTE) == 0)
-    ASSERT(float_compare(small_negative, small_positive, EQ) == 0)
-
-    // small positive < large positive
-    ASSERT(float_compare(small_positive, large_positive, LT))
-    ASSERT(float_compare(small_positive, large_positive, LTE))
-    ASSERT(float_compare(small_positive, large_positive, NEQ))
-    ASSERT(float_compare(small_positive, large_positive, GT) == 0)
-    ASSERT(float_compare(small_positive, large_positive, GTE) == 0)
-    ASSERT(float_compare(small_positive, large_positive, EQ) == 0)
-
-    // small negative < 0
-    ASSERT(float_compare(small_negative, 0, LT))
-
-    // large negative < 0
-    ASSERT(float_compare(large_negative, 0, LT))
-
-    // small positive > 0
-    ASSERT(float_compare(small_positive, 0, GT))
-
-    // large positive > 0
-    ASSERT(float_compare(large_positive, 0, GT))
-  }
+  ASSERT(float_set(-5, 6541432897943971n) === 6275552114197674403n)
+  ASSERT(float_set(-83, 7906202688397446n) === 4871793800248533126n)
+  ASSERT(float_set(76, 4760131426754533n) === 7732937091994525669n)
+  ASSERT(float_set(37, -8019384286534438n) === 2421948784557120294n)
+  ASSERT(float_set(50, 5145342538007840n) === 7264947941859247392n)
+  ASSERT(float_set(-70, 4387341302202416n) === 5102462119485603888n)
+  ASSERT(float_set(-26, -1754544005819476n) === 1280776838179040340n)
+  ASSERT(float_set(36, 8261761545780560n) === 7015862781734272336n)
+  ASSERT(float_set(35, 7975622850695472n) === 6997562244529705264n)
+  ASSERT(float_set(17, -4478222822793996n) === 2058119652903740172n)
+  ASSERT(float_set(-53, 5506604247857835n) === 5409826157092453035n)
+  ASSERT(float_set(-60, 5120164869507050n) === 5283338928147728362n)
+  ASSERT(float_set(41, 5176113875683063n) === 7102849126611584759n)
+  ASSERT(float_set(-54, -3477931844992923n) === 778097067752718235n)
+  ASSERT(float_set(21, 6345031894305479n) === 6743730074440567495n)
+  ASSERT(float_set(-23, 5091583691147091n) === 5949843091820201811n)
+  ASSERT(float_set(-33, 7509684078851678n) === 5772117207113086558n)
+  ASSERT(float_set(-72, -1847771838890268n) === 452207734575939868n)
+  ASSERT(float_set(71, -9138413713437220n) === 3035557363306410532n)
+  ASSERT(float_set(28, 4933894067102586n) === 6868419726179738490n)
 
   accept('', 0)
 }
