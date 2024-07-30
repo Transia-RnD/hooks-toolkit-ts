@@ -146,6 +146,7 @@ jobs:
       - run: yarn run build
       - run: c2wasm-cli contracts build
       - run: js2wasm-cli contractsjs/toolbox/base.ts build
+      - run: js2wasm-cli contractsjs/toolbox/hookOnTT.ts build
       - run: yarn run test:integration
         env:
           C2WASM_CLI_HOST: https://hook-buildbox.xrpl.org
