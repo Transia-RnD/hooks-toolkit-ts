@@ -1,3 +1,4 @@
+import { DOESNT_EXIST } from 'jshooks-api'
 const ASSERT = (x, code) => {
   if (!x) {
     rollback(x.toString(), code)
