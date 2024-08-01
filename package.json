@@ -6,8 +6,11 @@
   "files": [
     "dist/**/*"
   ],
+  "bin": {
+    "hooks-toolkit-cli": "./bin/cli.js"
+  },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp -r src/cli/init dist/npm/src/cli",
     "test:unit": "jest --config=jest.config.unit.js",
     "test:integration": "LOG_LEVEL=error jest --config=jest.config.integration.js --runInBand",
     "lint": "eslint ./src/**/* --ext .ts",
@@ -20,6 +23,7 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@transia/xrpl": "^2.7.3-alpha.27",
+    "commander": "^12.1.0",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.4.5",
     "jshooks-api": "^1.0.2",
