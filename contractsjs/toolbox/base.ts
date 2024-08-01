@@ -1,5 +1,5 @@
 const Hook = (arg) => {
-  return accept('', 0)
+  return accept('base: Finished.', 0)
 }
 
 export { Hook }
