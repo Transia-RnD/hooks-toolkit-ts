@@ -1,19 +1,18 @@
+import {
+  DOESNT_EXIST,
+  sfLastLedgerSequence,
+  sfAmount,
+  NOT_AN_AMOUNT,
+  sfAccount,
+  KEYLET_LINE,
+  sfHighLimit,
+} from 'jshooks-api'
+
 const ASSERT = (x) => {
   if (!x) {
     rollback(x.toString(), 0)
   }
 }
-
-const DOESNT_EXIST = -5
-const NOT_AN_AMOUNT = -32
-const KEYLET_LINE = 9
-
-const sfLedgerEntry = 0x27120101
-const sfTransaction = 0x27110101
-const sfAccount = 0x80001
-const sfAmount = 0x60001
-const sfHighLimit = 0x60007
-const sfLastLedgerSequence = 0x2001b
 
 const kl_sk = [
   0x00, 0x68, 0xb4, 0x97, 0x9a, 0x36, 0xcd, 0xc7, 0xf3, 0xd3, 0xd5, 0xc3, 0x1a,

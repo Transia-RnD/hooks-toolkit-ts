@@ -1,19 +1,20 @@
+import {
+  DOESNT_EXIST,
+  INVALID_ARGUMENT,
+  INVALID_FIELD,
+  NOT_AN_OBJECT,
+  NO_FREE_SLOTS,
+  sfHashes,
+  sfLastLedgerSequence,
+  sfMemoData,
+  sfMemos,
+} from 'jshooks-api'
+
 const ASSERT = (x) => {
   if (!x) {
     rollback(x.toString(), 0)
   }
 }
-
-const DOESNT_EXIST = -5
-const NO_FREE_SLOTS = -6
-const INVALID_ARGUMENT = -7
-const INVALID_FIELD = -17
-const NOT_AN_OBJECT = -23
-
-const sfMemos = 0xf0009
-const sfMemoData = 0x7000d
-const sfLastLedgerSequence = 0x2001b
-const sfHashes = 0x130002
 
 const kl_sk = [
   0x00, 0x68, 0xb4, 0x97, 0x9a, 0x36, 0xcd, 0xc7, 0xf3, 0xd3, 0xd5, 0xc3, 0x1a,

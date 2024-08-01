@@ -4,8 +4,6 @@ const ASSERT = (x, code) => {
   }
 }
 
-const DOESNT_EXIST = -5
-
 const names = [
   '706172616d30', // 'param0'
   '706172616d31', // 'param1'

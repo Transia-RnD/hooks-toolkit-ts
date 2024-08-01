@@ -1,11 +1,10 @@
+import { COMPLEX_NOT_SUPPORTED, INVALID_ARGUMENT } from 'jshooks-api'
+
 const ASSERT = (x) => {
   if (!x) {
     rollback('ASSERT.error', 0)
   }
 }
-
-const INVALID_ARGUMENT = -7
-const COMPLEX_NOT_SUPPORTED = -39
 
 const Hook = (arg) => {
   ASSERT(float_root(undefined, 0) === INVALID_ARGUMENT)

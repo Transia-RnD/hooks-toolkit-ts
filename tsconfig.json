@@ -2,8 +2,6 @@
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
      "composite": true,
-     "module": "commonjs",
-     "moduleResolution": "node",
      "sourceMap": true,
      "strict": true,
      "pretty": true,
@@ -20,6 +18,7 @@
      "skipLibCheck": true,
      "resolveJsonModule": true,
      "preserveSymlinks": true,
+     "types": ["jshooks-api/globals"]
    },
    "include": [
      "src/**/*.ts",

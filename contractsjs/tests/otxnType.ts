@@ -1,11 +1,11 @@
+import { sfTransactionType } from 'jshooks-api'
+
 const ASSERT = (x, line) => {
   if (!x) {
     trace('line', line, false)
     rollback(x.toString(), line)
   }
 }
-
-const sfTransactionType = 0x10002
 
 const Hook = (arg) => {
   ASSERT(otxn_slot(1) === 1, 1)

@@ -1,11 +1,11 @@
+import { DOESNT_EXIST } from 'jshooks-api'
+
 const ASSERT = (x, line) => {
   if (!x) {
     trace('line', line, false)
     rollback(x.toString(), line)
   }
 }
-
-const DOESNT_EXIST = -5
 
 const kl_sk = [
   0x00, 0x68, 0xb4, 0x97, 0x9a, 0x36, 0xcd, 0xc7, 0xf3, 0xd3, 0xd5, 0xc3, 0x1a,

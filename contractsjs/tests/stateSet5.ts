@@ -1,11 +1,11 @@
+import { sfInvoiceID } from 'jshooks-api'
+
 const ASSERT = (x, line) => {
   if (!x) {
     trace('line', line, false)
     rollback(x.toString(), line)
   }
 }
-
-const sfInvoiceID = 0x50011
 
 const Hook = (arg) => {
   // get this transaction id

@@ -1,15 +1,17 @@
+import {
+  DOESNT_EXIST,
+  INVALID_ARGUMENT,
+  KEYLET_ACCOUNT,
+  TOO_BIG,
+  sfBalance,
+} from 'jshooks-api'
+
 const ASSERT = (x, line) => {
   if (!x) {
     trace('line', line, false)
     rollback(x.toString(), line)
   }
 }
-
-const INVALID_ARGUMENT = -7
-const DOESNT_EXIST = -5
-const TOO_BIG = -3
-const KEYLET_ACCOUNT = 3
-const sfBalance = 0x60002
 
 const Hook = (arg) => {
   // slot type check

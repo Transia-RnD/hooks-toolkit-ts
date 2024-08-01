@@ -1,12 +1,10 @@
+import { DOESNT_EXIST, INVALID_ARGUMENT, sfInvoiceID } from 'jshooks-api'
+
 const ASSERT = (x, code) => {
   if (!x) {
     rollback(x.toString(), code)
   }
 }
-
-const DOESNT_EXIST = -5
-const INVALID_ARGUMENT = -7
-const sfInvoiceID = 0x50011
 
 const Hook = (arg) => {
   // garbage check

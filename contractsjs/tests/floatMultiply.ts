@@ -1,12 +1,10 @@
+import { INVALID_ARGUMENT, INVALID_FLOAT, XFL_OVERFLOW } from 'jshooks-api'
+
 const ASSERT = (x) => {
   if (!x) {
     rollback(x.toString(), 0)
   }
 }
-
-const INVALID_ARGUMENT = -7
-const XFL_OVERFLOW = -30
-const INVALID_FLOAT = -10024
 
 const Hook = (arg) => {
   ASSERT(float_multiply(undefined, float_one()) === INVALID_ARGUMENT)
@@ -53,12 +51,10 @@ const Hook = (arg) => {
 
   // identity
   ASSERT(
-    float_multiply(3189548536178311168n, float_one()),
-    3189548536178311168n
+    float_multiply(3189548536178311168n, float_one()) === 3189548536178311168n
   )
   ASSERT(
-    float_multiply(float_one(), 3189548536178311168n),
-    3189548536178311168n
+    float_multiply(float_one(), 3189548536178311168n) === 3189548536178311168n
   )
 
   // random multiplications
