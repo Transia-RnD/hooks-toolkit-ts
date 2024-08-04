@@ -384,11 +384,10 @@ describe('stateForeignBasic', () => {
       tx: builtTx1,
     })
 
-    const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
+    await ExecutionUtility.getHookExecutionsFromMeta(
       testContext.client,
       result.meta as TransactionMetadata
     )
-    console.log(hookExecutions.executions[0].HookReturnString)
 
     const hook2State = await StateUtility.getHookState(
       testContext.client,

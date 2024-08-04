@@ -60,9 +60,6 @@ describe('accountSet', () => {
     const hexDomain = convertStringToHex(domain)
     const domainLenBytes = hexDomain.length / 2
 
-    console.log(hexDomain)
-    console.log(domainLenBytes)
-
     const tx1param1 = new iHookParamEntry(
       new iHookParamName('DL'),
       new iHookParamValue(uint64ToHex(BigInt(domainLenBytes)), true)

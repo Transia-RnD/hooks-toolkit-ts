@@ -119,7 +119,6 @@ describe('stateNumbers', () => {
       hexNamespace('state_numbers')
     )
     const _model = decodeModel(hookState.HookStateData, NumbersModel)
-    console.log(_model)
     expect(_model.int8).toBe(1)
     expect(_model.int16).toBe(1)
     expect(_model.int32).toBe(1)
