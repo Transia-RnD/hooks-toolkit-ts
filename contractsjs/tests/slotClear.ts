@@ -1,11 +1,11 @@
+import { DOESNT_EXIST } from 'jshooks-api'
+
 const ASSERT = (x, line) => {
   if (!x) {
     trace('line', line, false)
     rollback(x.toString(), line)
   }
 }
-
-const DOESNT_EXIST = -5
 
 const Hook = (arg) => {
   ASSERT(otxn_slot(1) === 1, 1)

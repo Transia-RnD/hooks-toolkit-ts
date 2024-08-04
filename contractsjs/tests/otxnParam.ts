@@ -1,12 +1,11 @@
+import { DOESNT_EXIST, INVALID_ARGUMENT } from 'jshooks-api'
+
 const ASSERT = (x, line) => {
   if (!x) {
     trace('line', line, false)
     rollback(x.toString(), line)
   }
 }
-
-const DOESNT_EXIST = -5
-const INVALID_ARGUMENT = -7
 
 const names = [
   '706172616d30', // 'param0'

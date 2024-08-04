@@ -1,12 +1,11 @@
+import { INVALID_ARGUMENT, NO_FREE_SLOTS } from 'jshooks-api'
+
 const ASSERT = (x, line) => {
   if (!x) {
     trace('line', line, false)
     rollback(x.toString(), line)
   }
 }
-
-const INVALID_ARGUMENT = -7
-const NO_FREE_SLOTS = -6
 
 const Hook = (arg) => {
   ASSERT(otxn_slot(256) === INVALID_ARGUMENT, 1)

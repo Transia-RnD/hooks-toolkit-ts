@@ -1,12 +1,10 @@
+import { INVALID_ARGUMENT, INVALID_FLOAT, XFL_OVERFLOW } from 'jshooks-api'
+
 const ASSERT = (x) => {
   if (!x) {
     rollback(x.toString(), 0)
   }
 }
-
-const INVALID_ARGUMENT = -7
-const XFL_OVERFLOW = -30
-const INVALID_FLOAT = -10024
 
 const Hook = (arg) => {
   // invalid argument

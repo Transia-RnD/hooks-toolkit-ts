@@ -1,3 +1,10 @@
+import {
+  DIVISION_BY_ZERO,
+  INVALID_ARGUMENT,
+  INVALID_FLOAT,
+  XFL_OVERFLOW,
+} from 'jshooks-api'
+
 const ASSERT = (x) => {
   if (!x) {
     rollback(x.toString(), 0)
@@ -50,11 +57,6 @@ function ASSERT_EQUAL(x: bigint, y: bigint): void {
     rollback('x', 0)
   }
 }
-
-const INVALID_ARGUMENT = -7
-const DIVISION_BY_ZERO = -25
-const XFL_OVERFLOW = -30
-const INVALID_FLOAT = -10024
 
 const Hook = (arg) => {
   ASSERT(float_divide(undefined, float_one()) === INVALID_ARGUMENT)

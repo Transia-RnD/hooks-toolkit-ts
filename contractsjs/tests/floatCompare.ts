@@ -1,11 +1,10 @@
+import { INVALID_ARGUMENT, INVALID_FLOAT } from 'jshooks-api'
+
 const ASSERT = (x) => {
   if (!x) {
     rollback(x.toString(), 0)
   }
 }
-
-const INVALID_ARGUMENT = -7
-const INVALID_FLOAT = -10024
 
 const EQ = 0b001
 const LT = 0b010

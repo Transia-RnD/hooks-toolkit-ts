@@ -1,13 +1,11 @@
+import { DOESNT_EXIST, NOT_AN_ARRAY, sfMemos } from 'jshooks-api'
+
 const ASSERT = (x, line) => {
   if (!x) {
     trace('line', line, false)
     rollback(x.toString(), line)
   }
 }
-
-const DOESNT_EXIST = -5
-const NOT_AN_ARRAY = -22
-const sfMemos = 0xf0009
 
 const Hook = (arg) => {
   ASSERT(otxn_slot(1) === 1, 1)

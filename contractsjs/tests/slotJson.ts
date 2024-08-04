@@ -1,18 +1,18 @@
 import { Payment } from '@transia/xrpl'
 import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
 import { LedgerEntry, RippleState } from '@transia/xrpl/dist/npm/models/ledger'
+import {
+  DOESNT_EXIST,
+  INVALID_ARGUMENT,
+  KEYLET_LINE,
+  sfAccount,
+} from 'jshooks-api'
 
 const ASSERT = (x) => {
   if (!x) {
     rollback(x.toString(), 0)
   }
 }
-
-const DOESNT_EXIST = -5
-const INVALID_ARGUMENT = -7
-const KEYLET_LINE = 9
-
-const sfAccount = 0x80001
 
 const kl_sk = [
   0x00, 0x68, 0xb4, 0x97, 0x9a, 0x36, 0xcd, 0xc7, 0xf3, 0xd3, 0xd5, 0xc3, 0x1a,

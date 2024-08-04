@@ -1,11 +1,10 @@
+import { INVALID_ARGUMENT, INVALID_FLOAT } from 'jshooks-api'
+
 const ASSERT = (x) => {
   if (!x) {
     rollback('ASSERT.error', 0)
   }
 }
-
-const INVALID_ARGUMENT = -7
-const INVALID_FLOAT = -10024
 
 const Hook = (arg) => {
   ASSERT(float_set(undefined, 0) === INVALID_ARGUMENT)

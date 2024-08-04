@@ -1,5 +1,4 @@
-const PREREQUISITE_NOT_MET = -9
-const ALREADY_SET = -8
+import { ALREADY_SET, PREREQUISITE_NOT_MET } from 'jshooks-api'
 
 const Hook = (r) => {
   if (r > 0) {

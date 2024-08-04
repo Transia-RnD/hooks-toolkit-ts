@@ -1,13 +1,11 @@
+import { DOESNT_EXIST, NOT_AN_AMOUNT, sfFee } from 'jshooks-api'
+
 const ASSERT = (x, line) => {
   if (!x) {
     trace('line', line, false)
     rollback(x.toString(), line)
   }
 }
-
-const DOESNT_EXIST = -5
-const NOT_AN_AMOUNT = -32
-const sfFee = 0x60008
 
 const Hook = (arg) => {
   ASSERT(otxn_slot(1) === 1, 1)

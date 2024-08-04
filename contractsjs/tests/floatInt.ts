@@ -1,13 +1,15 @@
+import {
+  CANT_RETURN_NEGATIVE,
+  INVALID_ARGUMENT,
+  INVALID_FLOAT,
+  TOO_BIG,
+} from 'jshooks-api'
+
 const ASSERT = (x) => {
   if (!x) {
     rollback(x.toString(), 0)
   }
 }
-
-const TOO_BIG = -3
-const INVALID_ARGUMENT = -7
-const CANT_RETURN_NEGATIVE = -33
-const INVALID_FLOAT = -10024
 
 const Hook = (arg) => {
   ASSERT(float_int(undefined, 1, 1) === INVALID_ARGUMENT)

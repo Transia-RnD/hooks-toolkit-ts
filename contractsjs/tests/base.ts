@@ -1,10 +1,9 @@
+import { DOESNT_EXIST } from 'jshooks-api'
 const ASSERT = (x, code) => {
   if (!x) {
     rollback(x.toString(), code)
   }
 }
-
-const DOESNT_EXIST = -5
 
 const names = [
   '706172616d30', // 'param0'

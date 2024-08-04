@@ -1,11 +1,11 @@
+import { INVALID_ARGUMENT, sfInvoiceID } from 'jshooks-api'
+
 const ASSERT = (x, line) => {
   if (!x) {
     trace('line', line, false)
     rollback(x.toString(), line)
   }
 }
-const sfInvoiceID = 327697
-const INVALID_ARGUMENT = -7
 const a = [
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
   1, 1, 1, 1, 1, 1,
