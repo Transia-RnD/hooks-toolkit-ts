@@ -238,7 +238,7 @@ export async function appTransaction(
     delayMs: number
   }
 ): Promise<TxResponse> {
-  if (process.env.RIPPLED_ENV === 'standalone') {
+  if (process.env.XRPLD_ENV === 'standalone') {
     return await testTransaction(client, transaction, wallet, retry)
   } else {
     return await prodTransactionAndWait(client, transaction, wallet, retry)
@@ -250,7 +250,7 @@ export async function appBatchTransaction(
   client: Client,
   batches: any[]
 ): Promise<SubmitResponse[]> {
-  if (process.env.RIPPLED_ENV === 'standalone') {
+  if (process.env.XRPLD_ENV === 'standalone') {
     const txResponses: SubmitResponse[] = []
     await ledgerAccept(client)
     for (let i = 0; i < batches.length; i++) {

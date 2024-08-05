@@ -151,7 +151,7 @@ jobs:
         env:
           C2WASM_CLI_HOST: https://hook-buildbox.xrpl.org
           JS2WASM_CLI_HOST: https://hook-buildbox.xrpl.org
-          RIPPLED_ENV: standalone
+          XRPLD_ENV: standalone
       
       - name: Stop docker container
         if: always()
