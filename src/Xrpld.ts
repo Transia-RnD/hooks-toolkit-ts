@@ -14,6 +14,7 @@ import {
 } from './libs/xrpl-helpers/transaction'
 import { SmartContractParams } from './types'
 import { appLogger } from './libs/logger'
+import { addListeners, ISelect, removeListeners } from './libs/debug'
 
 export class Xrpld {
   // TX V3
@@ -23,6 +24,13 @@ export class Xrpld {
     }
     const builtTx = params.tx as Transaction
     appLogger.debug(JSON.stringify(builtTx))
+    if (params.debugStream) {
+      const selectedAccount: ISelect | null = {
+        label: 'sfAccount',
+        value: builtTx.Account,
+      }
+      addListeners(selectedAccount)
+    }
 
     // @ts-expect-error - invoke is tx
     validate(builtTx)
@@ -31,6 +39,9 @@ export class Xrpld {
       count: 1,
       delayMs: 1000,
     })
+    if (params.debugStream) {
+      removeListeners()
+    }
     // @ts-expect-error - this is defined
     const txResult = txResponse?.result?.meta?.TransactionResult
     if (txResult === 'tecHOOK_REJECTED') {

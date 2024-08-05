@@ -32,5 +32,5 @@ export type SetHookParams = {
 export interface SmartContractParams {
   wallet: Wallet
   tx: Transaction
-  batches?: SmartContractParams[]
+  debugStream?: boolean
 }
