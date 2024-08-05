@@ -17,6 +17,7 @@ import {
   serverUrl,
   close,
   accountSet,
+  accountClear,
   // Main
   Xrpld,
   SetHookParams,
@@ -147,5 +148,11 @@ describe('callback', () => {
       client: testContext.client,
       seed: testContext.alice.seed,
     } as SetHookParams)
+
+    await accountClear(
+      testContext.client,
+      testContext.bob,
+      AccountSetAsfFlags.asfRequireDest
+    )
   })
 })

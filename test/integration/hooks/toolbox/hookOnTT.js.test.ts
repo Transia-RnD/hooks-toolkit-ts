@@ -1,13 +1,14 @@
 // xrpl
 import { Invoke, Payment, SetHookFlags, xrpToDrops } from '@transia/xrpl'
-// src
+// xrpl-helpers
 import {
-  // Testing
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
   serverUrl,
-  // Main
+} from '../../../../src/libs/xrpl-helpers'
+// src
+import {
   Xrpld,
   SetHookParams,
   createHookPayload,
@@ -34,11 +35,12 @@ describe('hookOnTT', () => {
 
   it('invoke on tt - success', async () => {
     const hook = createHookPayload({
-      version: 0,
-      createFile: 'hook_on_tt',
-      namespace: 'hook_on_tt',
+      version: 1,
+      createFile: 'hookOnTT',
+      namespace: 'hookOnTT',
       flags: SetHookFlags.hsfOverride,
       hookOnArray: ['Invoke'],
+      fee: '1000000',
     })
     await setHooksV3({
       client: testContext.client,
@@ -62,11 +64,12 @@ describe('hookOnTT', () => {
 
   it('invoke on tt - invalid', async () => {
     const hook = createHookPayload({
-      version: 0,
-      createFile: 'hook_on_tt',
-      namespace: 'hook_on_tt',
+      version: 1,
+      createFile: 'hookOnTT',
+      namespace: 'hookOnTT',
       flags: SetHookFlags.hsfOverride,
       hookOnArray: ['Invoke', 'Payment'],
+      fee: '1000000',
     })
     await setHooksV3({
       client: testContext.client,
@@ -91,7 +94,7 @@ describe('hookOnTT', () => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         expect(error.message).toEqual(
-          '8000000000000025: hook_on_tt: HookOn field is incorrectly set.'
+          '8000000000000025: hookOnTT.ts: HookOn field is incorrectly set.'
         )
       }
     }
