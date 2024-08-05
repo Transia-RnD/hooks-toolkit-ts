@@ -40,6 +40,7 @@ describe('hookOnTT', () => {
       namespace: 'hookOnTT',
       flags: SetHookFlags.hsfOverride,
       hookOnArray: ['Invoke'],
+      fee: '1000000',
     })
     await setHooksV3({
       client: testContext.client,
@@ -68,6 +69,7 @@ describe('hookOnTT', () => {
       namespace: 'hookOnTT',
       flags: SetHookFlags.hsfOverride,
       hookOnArray: ['Invoke', 'Payment'],
+      fee: '1000000',
     })
     await setHooksV3({
       client: testContext.client,

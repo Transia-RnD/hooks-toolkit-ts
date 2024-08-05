@@ -144,9 +144,9 @@ jobs:
 
       - run: npm i -g @transia/hooks-toolkit-cli
       - run: yarn run build
-      - run: hooks-toolkit-cli compile-c contracts build
-      - run: hooks-toolkit-cli compile-js contractsjs/toolbox/base.ts build
-      - run: hooks-toolkit-cli compile-js contractsjs/toolbox/hookOnTT.ts build
+      - run: hooks-toolkit-cli compile-c contracts-c build
+      - run: hooks-toolkit-cli compile-js contracts-js/toolbox/base.ts build
+      - run: hooks-toolkit-cli compile-js contracts-js/toolbox/hookOnTT.ts build
       - run: yarn run test:integration
         env:
           HOOKS_COMPILE_HOST: https://hook-buildbox.xrpl.org
