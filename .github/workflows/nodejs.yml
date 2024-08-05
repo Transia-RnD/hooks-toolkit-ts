@@ -142,15 +142,14 @@ jobs:
         if: steps.cache-nodemodules.outputs.cache-hit != 'true'
         run: yarn install
 
-      - run: npm i -g c2wasm-cli js2wasm-cli
+      - run: npm i -g hooks-toolkit-cli
       - run: yarn run build
-      - run: c2wasm-cli contracts build
-      - run: js2wasm-cli contractsjs/toolbox/base.ts build
-      - run: js2wasm-cli contractsjs/toolbox/hookOnTT.ts build
+      - run: hooks-toolkit-cli compile-c contracts build
+      - run: hooks-toolkit-cli compile-js contractsjs/toolbox/base.ts build
+      - run: hooks-toolkit-cli compile-js contractsjs/toolbox/hookOnTT.ts build
       - run: yarn run test:integration
         env:
-          C2WASM_CLI_HOST: https://hook-buildbox.xrpl.org
-          JS2WASM_CLI_HOST: https://hook-buildbox.xrpl.org
+          HOOKS_COMPILE_HOST: https://hook-buildbox.xrpl.org
           XRPLD_ENV: standalone
       
       - name: Stop docker container
