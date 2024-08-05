@@ -142,7 +142,7 @@ jobs:
         if: steps.cache-nodemodules.outputs.cache-hit != 'true'
         run: yarn install
 
-      - run: npm i -g hooks-toolkit-cli
+      - run: npm i -g @transia/hooks-toolkit-cli
       - run: yarn run build
       - run: hooks-toolkit-cli compile-c contracts build
       - run: hooks-toolkit-cli compile-js contractsjs/toolbox/base.ts build
