@@ -63,7 +63,7 @@ function encodeField(
     case 'uint8':
       return uint8ToHex(fieldValue as UInt8)
     case 'uint16':
-      return uint32ToHex(fieldValue as UInt16)
+      return uint16ToHex(fieldValue as UInt16)
     case 'uint32':
       return uint32ToHex(fieldValue as UInt32)
     case 'uint64':
@@ -101,6 +101,13 @@ export function uint8ToHex(value: UInt8): string {
     throw Error(`Integer ${value} is out of range for uint8 (0-255)`)
   }
   return value.toString(16).padStart(2, '0').toUpperCase()
+}
+
+export function uint16ToHex(value: UInt32): string {
+  if (value < 0 || value > 2 ** 16 - 1) {
+    throw Error(`Integer ${value} is out of range for uint16 (0-4294967295)`)
+  }
+  return value.toString(16).padStart(4, '0').toUpperCase()
 }
 
 export function uint32ToHex(value: UInt32): string {
