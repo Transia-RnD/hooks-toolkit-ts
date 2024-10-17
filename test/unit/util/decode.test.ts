@@ -153,12 +153,12 @@ describe('decode', () => {
       expect(hexToCurrency(testHex)).toBe(expectedResult)
     })
     test('4 character currency', () => {
-      const testHex = '0000000000000000000000004150504C00000000'
+      const testHex = '4150504C00000000000000000000000000000000'
       const expectedResult = 'APPL'
       expect(hexToCurrency(testHex)).toBe(expectedResult)
     })
     test('12 character currency', () => {
-      const testHex = '00000000000000004D79436F6F6C53796D626F6C'
+      const testHex = '4D79436F6F6C53796D626F6C0000000000000000'
       const expectedResult = 'MyCoolSymbol'
       expect(hexToCurrency(testHex)).toBe(expectedResult)
     })
@@ -247,7 +247,7 @@ describe('decode', () => {
         }
       }
 
-      const sampleEncoded = '0000000000000000000000004150504C00000000'
+      const sampleEncoded = '4150504C00000000000000000000000000000000'
       const sampleModelDecoded = decodeModel(sampleEncoded, SampleModel)
       const currencyExpected = 'APPL'
       expect(sampleModelDecoded.currency).toBe(currencyExpected)
