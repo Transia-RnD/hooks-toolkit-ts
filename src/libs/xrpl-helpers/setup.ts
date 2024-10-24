@@ -1,4 +1,4 @@
-import { Client, Wallet } from '@transia/xrpl'
+import { Client, dropsToXrp, Wallet } from '@transia/xrpl'
 
 import serverUrl from './serverUrl'
 import {
@@ -21,8 +21,13 @@ import {
   HOOK4_WALLET,
   HOOK5_WALLET,
 } from './constants'
-import { fundSystem } from '../xrpl-helpers'
-import { IC } from './tools'
+import {
+  fundSystem,
+  hasGovernance,
+  initGovernTable,
+  setGovernTable,
+} from '../xrpl-helpers'
+import { IC, burn, balance } from './tools'
 import { clearAllHooksV3 } from '../../setHooks'
 import { SetHookParams } from '../../types'
 
@@ -87,7 +92,8 @@ export async function teardownHook(
 }
 
 export async function setupClient(
-  server = serverUrl
+  server = serverUrl,
+  isGovernance = false
 ): Promise<XrplIntegrationTestContext> {
   const currency = 'USD'
   const context: XrplIntegrationTestContext = {
@@ -116,8 +122,22 @@ export async function setupClient(
     .then(async () => {
       context.client.networkID = await context.client.getNetworkID()
       await fundSystem(context.client, context.master, context.ic)
-      // await initGovernTable(context.client, context.alice, context.master)
-      // await setGovernTable(context.client, context.alice, context.elsa)
+      if (
+        isGovernance &&
+        !(await hasGovernance(context.client, context.master.classicAddress))
+      ) {
+        const masterBalance = await balance(
+          context.client,
+          context.master.classicAddress
+        )
+        await burn(
+          context.client,
+          context.master,
+          Number(dropsToXrp(masterBalance)) - 600000000
+        )
+        await initGovernTable(context.client, context.alice, context.master)
+        await setGovernTable(context.client, context.alice, context.elsa)
+      }
       return context
     })
     .catch(async (error: unknown) => {

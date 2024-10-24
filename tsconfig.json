@@ -1,7 +1,6 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-     "jsx": "react",
      "composite": true,
      "module": "commonjs",
      "moduleResolution": "node",
@@ -18,7 +17,7 @@
      "removeComments": true,
      "preserveConstEnums": true,
      "esModuleInterop": true,
-     "skipLibCheck": false,
+     "skipLibCheck": true,
      "resolveJsonModule": true,
      "preserveSymlinks": true,
    },
@@ -34,6 +33,6 @@
      "**/*.spec.ts",
      "build",
      "dist",
-     "example"
+     "example",
    ]
 }

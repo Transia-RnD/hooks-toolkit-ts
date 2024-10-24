@@ -425,6 +425,25 @@ export async function trust(
   }
 }
 
+export async function burn(
+  ctx: Client,
+  account: Wallet,
+  amount: number
+): Promise<void> {
+  const builtTx: AccountSet = {
+    TransactionType: 'AccountSet',
+    Account: account.classicAddress as string,
+    Fee: xrpToDrops(String(amount)),
+    NetworkID: ctx.networkID,
+  }
+  const response = await appTransaction(ctx, builtTx, account, {
+    hardFail: true,
+    count: 1,
+    delayMs: 1000,
+  })
+  appLogger.debug(JSON.stringify(response))
+}
+
 export async function accountSet(
   ctx: Client,
   account: Wallet,

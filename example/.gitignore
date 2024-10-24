@@ -1,9 +1,0 @@
-.DS_Store
-build
-# config.json
-node_modules
-/dist
-yarn-error.log
-
-# xrpld-cli (Cluster or Standalone)
-xrpld

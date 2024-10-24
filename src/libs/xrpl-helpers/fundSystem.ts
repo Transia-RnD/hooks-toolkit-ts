@@ -15,6 +15,8 @@ import { appLogger } from '../logger'
 import { Xrpld } from '../../Xrpld'
 import { setHooksV3 } from '../../setHooks'
 import { SetHookParams } from '../../types'
+import { StateUtility } from '../../keylet-utils'
+import { padHexString } from '../../utils'
 
 /**
  * This function will fund a new wallet on the Hooks Local Ledger.
@@ -121,7 +123,30 @@ export async function fundSystem(
 /**
  * This function will fund a new wallet on the Hooks Local Ledger.
  *
- * @returns {Wallet}
+ * @returns {boolean}
+ */
+export async function hasGovernance(
+  client: Client,
+  master: string
+): Promise<boolean> {
+  try {
+    await StateUtility.getHookState(
+      client,
+      master,
+      padHexString('4D43'),
+      '0000000000000000000000000000000000000000000000000000000000000000'
+    )
+    return true
+  } catch (error: any) {
+    appLogger.error(error)
+    return false
+  }
+}
+
+/**
+ * This function will fund a new wallet on the Hooks Local Ledger.
+ *
+ * @returns {void}
  */
 export async function initGovernTable(
   client: Client,

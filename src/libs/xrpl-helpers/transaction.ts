@@ -1,7 +1,5 @@
 import 'dotenv/config'
-import { encode } from '@transia/ripple-binary-codec'
 import { BaseResponse } from '@transia/xrpl/dist/npm/models/methods/baseMethod'
-import { getFeeEstimateXrp } from '@transia/xrpl/dist/npm/sugar'
 // import { assert } from 'chai'
 import omit from 'lodash/omit'
 import throttle from 'lodash/throttle'
@@ -47,23 +45,6 @@ export async function accountReserveFee(client: Client): Promise<number> {
 export async function ownerReserveFee(client: Client): Promise<number> {
   const { result } = await serverStateRPC(client)
   return (result as ServerStateRPCResult).state.validated_ledger?.reserve_inc
-}
-
-export async function getTransactionFee(
-  client: Client,
-  transaction: Transaction
-): Promise<string> {
-  const copyTx = JSON.parse(JSON.stringify(transaction))
-  copyTx.Fee = `0`
-  copyTx.SigningPubKey = ``
-
-  const preparedTx = await client.autofill(copyTx)
-
-  const tx_blob = encode(preparedTx)
-
-  const result = await getFeeEstimateXrp(client, tx_blob)
-
-  return result
 }
 
 async function sendLedgerAccept(client: Client): Promise<unknown> {
@@ -193,8 +174,10 @@ export async function submitTransaction({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     appLogger.debug(error)
-    appLogger.debug(JSON.stringify(error.data.decoded))
-    appLogger.debug(JSON.stringify(error.data.tx))
+    if (error.data) {
+      appLogger.debug(JSON.stringify(error.data.decoded))
+      appLogger.debug(JSON.stringify(error.data.tx))
+    }
 
     if (error instanceof TimeoutError || error instanceof NotConnectedError) {
       // retry
@@ -257,7 +240,7 @@ export async function appTransaction(
     delayMs: number
   }
 ): Promise<TxResponse> {
-  if (process.env.RIPPLED_ENV === 'standalone') {
+  if (process.env.XRPLD_ENV === 'standalone') {
     return await testTransaction(client, transaction, wallet, retry)
   } else {
     return await prodTransactionAndWait(client, transaction, wallet, retry)
@@ -269,7 +252,7 @@ export async function appBatchTransaction(
   client: Client,
   batches: any[]
 ): Promise<SubmitResponse[]> {
-  if (process.env.RIPPLED_ENV === 'standalone') {
+  if (process.env.XRPLD_ENV === 'standalone') {
     const txResponses: SubmitResponse[] = []
     await ledgerAccept(client)
     for (let i = 0; i < batches.length; i++) {
@@ -403,7 +386,11 @@ export async function prodTransactionAndWait(
     appLogger.error('The response was: ', JSON.stringify(response))
   }
 
-  if (retry?.hardFail && txResult !== 'tecHOOK_REJECTED') {
+  if (
+    retry?.hardFail &&
+    txResult !== 'tesSUCCESS' &&
+    txResult !== 'tecHOOK_REJECTED'
+  ) {
     throw Error((response.result.meta as TransactionMetadata).TransactionResult)
   }
 
