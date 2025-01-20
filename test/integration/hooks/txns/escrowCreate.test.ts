@@ -1,10 +1,5 @@
 // xrpl
-import {
-  Invoke,
-  SetHookFlags,
-  TransactionMetadata,
-  convertStringToHex,
-} from '@transia/xrpl'
+import { Invoke, SetHookFlags, TransactionMetadata } from '@transia/xrpl'
 import {
   // Testing
   XrplIntegrationTestContext,
@@ -23,18 +18,21 @@ import {
   iHookParamName,
   iHookParamValue,
   // Binary Model
-  uint64ToHex,
+  uint32ToHex,
+  // Utils
+  xrpAddressToHex,
+  floatToLEXfl,
 } from '../../../../dist/npm/src'
 
-describe('accountSet', () => {
+describe('claimReward', () => {
   let testContext: XrplIntegrationTestContext
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
     const hook = createHookPayload({
       version: 0,
-      createFile: 'txn_account_set',
-      namespace: 'txn_account_set',
+      createFile: 'txn_escrow_create',
+      namespace: 'txn_escrow_create',
       flags: SetHookFlags.hsfOverride,
       hookOnArray: ['Invoke'],
     })
@@ -52,28 +50,43 @@ describe('accountSet', () => {
     await teardownClient(testContext)
   })
 
-  it('txn trust hook', async () => {
+  it('txn claim reward', async () => {
     const aliceWallet = testContext.alice
     const hookWallet = testContext.hook1
 
-    const domain = 'https://example.com/test?name=blob'
-    const hexDomain = convertStringToHex(domain)
-    const domainLenBytes = hexDomain.length / 2
-
     const tx1param1 = new iHookParamEntry(
-      new iHookParamName('DL'),
-      new iHookParamValue(uint64ToHex(BigInt(domainLenBytes)), true)
+      new iHookParamName('DST'),
+      new iHookParamValue(xrpAddressToHex(testContext.bob.classicAddress), true)
     )
     const tx1param2 = new iHookParamEntry(
-      new iHookParamName('D'),
-      new iHookParamValue(hexDomain, true)
+      new iHookParamName('AMT'),
+      new iHookParamValue(floatToLEXfl('10'), true)
+    )
+    const CLOSE_TIME: number = (
+      await testContext.client.request({
+        command: 'ledger',
+        ledger_index: 'validated',
+      })
+    ).result.ledger.close_time
+    const tx1param3 = new iHookParamEntry(
+      new iHookParamName('CA'),
+      new iHookParamValue(uint32ToHex(CLOSE_TIME + 20), true)
+    )
+    const tx1param4 = new iHookParamEntry(
+      new iHookParamName('FA'),
+      new iHookParamValue(uint32ToHex(CLOSE_TIME + 10), true)
     )
     // INVOKE IN
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
       Account: aliceWallet.classicAddress,
       Destination: hookWallet.classicAddress,
-      HookParameters: [tx1param1.toXrpl(), tx1param2.toXrpl()],
+      HookParameters: [
+        tx1param1.toXrpl(),
+        tx1param2.toXrpl(),
+        tx1param3.toXrpl(),
+        tx1param4.toXrpl(),
+      ],
     }
     const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
@@ -84,7 +97,7 @@ describe('accountSet', () => {
       result.meta as TransactionMetadata
     )
     expect(hookExecutions.executions[0].HookReturnString).toMatch(
-      'txn_account_set.c: Tx emitted success.'
+      'txn_escrow_create.c: Tx emitted success.'
     )
     await close(testContext.client)
   })

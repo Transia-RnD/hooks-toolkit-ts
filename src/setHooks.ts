@@ -20,6 +20,7 @@ export interface SetHookPayload {
   hookOnArray?: string[] | null
   hookParams?: HookParameter[] | null
   hookGrants?: HookGrant[] | null
+  fee?: string | null
 }
 
 export function createHookPayload(payload: SetHookPayload): iHook {
@@ -31,13 +32,27 @@ export function createHookPayload(payload: SetHookPayload): iHook {
     hook.HookHash = payload.hookHash
   }
   if (payload.createFile && typeof payload.createFile === 'string') {
-    hook.CreateCode = readHookBinaryHexFromNS(payload.createFile)
+    switch (payload.version) {
+      case 0:
+        hook.CreateCode = readHookBinaryHexFromNS(payload.createFile, 'wasm')
+        break
+      case 1:
+        hook.CreateCode = readHookBinaryHexFromNS(payload.createFile, 'bc')
+        break
+
+      default:
+        hook.CreateCode = readHookBinaryHexFromNS(payload.createFile, 'wasm')
+        break
+    }
   }
   if (payload.namespace) {
     hook.HookNamespace = hexNamespace(payload.namespace)
   }
   if (payload.flags) {
     hook.Flags = payload.flags
+  }
+  if (payload.fee) {
+    hook.Fee = payload.fee
   }
   if (payload.hookOnArray) {
     hook.HookOn = calculateHookOn(payload.hookOnArray)

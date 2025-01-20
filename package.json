@@ -1,6 +1,6 @@
 {
   "name": "@transia/hooks-toolkit",
-  "version": "1.0.16",
+  "version": "2.0.0-alpha.4",
   "description": "A toolkit for interacting with smart contracts (hooks) on the XRP Ledger.",
   "main": "dist/npm/src/index.js",
   "files": [
@@ -9,8 +9,6 @@
   ],
   "scripts": {
     "build": "tsc",
-    "build:hooks": "c2wasm-cli contracts build",
-    "build:hook": "c2wasm-cli",
     "test:unit": "jest --config=jest.config.unit.js",
     "test:integration": "LOG_LEVEL=error jest --config=jest.config.integration.js --runInBand",
     "lint": "eslint ./src/**/* --ext .ts",
@@ -22,9 +20,11 @@
   },
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "@transia/xrpl": "^2.7.3-alpha.27",
-    "c2wasm-cli": "^1.0.6",
+    "@transia/xrpl": "^2.7.3-alpha.28",
     "crypto-js": "^4.1.1",
+    "dotenv": "^16.4.5",
+    "jshooks-api": "^1.0.5",
+    "reconnecting-websocket": "^4.4.0",
     "winston": "^3.10.0"
   },
   "devDependencies": {
@@ -45,6 +45,6 @@
   },
   "engines": {
     "node": ">=16.0.0",
-    "npm": ">=7.0.0 < 9.0.0"
+    "npm": ">=7.0.0"
   }
 }

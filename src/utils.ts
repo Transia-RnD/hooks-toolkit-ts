@@ -207,9 +207,9 @@ function reduceFlags(flags: GlobalFlags, flagEnum: any): number {
   }, 0)
 }
 
-export function readHookBinaryHexFromNS(filename: string): string {
+export function readHookBinaryHexFromNS(filename: string, ext: string): string {
   const buildPath = process.cwd() + '/' + 'build'
-  return wasmToHex(path.resolve(__dirname, `${buildPath}/${filename}.wasm`))
+  return wasmToHex(path.resolve(__dirname, `${buildPath}/${filename}.${ext}`))
 }
 
 export function wasmToHex(path: string): string {

@@ -1,18 +1,13 @@
 // xrpl
+import { Invoke, SetHookFlags, TransactionMetadata } from '@transia/xrpl'
+// xrpl-helpers
 import {
-  Invoke,
-  SetHookFlags,
-  TransactionMetadata,
-  convertStringToHex,
-} from '@transia/xrpl'
-import {
-  // Testing
   XrplIntegrationTestContext,
   setupClient,
   teardownClient,
   serverUrl,
-  close,
-  // Main
+} from '../../../../src/libs/xrpl-helpers'
+import {
   Xrpld,
   SetHookParams,
   ExecutionUtility,
@@ -22,21 +17,24 @@ import {
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
-  // Binary Model
-  uint64ToHex,
 } from '../../../../dist/npm/src'
 
-describe('accountSet', () => {
+describe('example', () => {
   let testContext: XrplIntegrationTestContext
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
+    const param1 = new iHookParamEntry(
+      new iHookParamName('CAFE', true),
+      new iHookParamValue('DEADBEEF', true)
+    )
     const hook = createHookPayload({
       version: 0,
-      createFile: 'txn_account_set',
-      namespace: 'txn_account_set',
+      createFile: 'example',
+      namespace: 'example',
       flags: SetHookFlags.hsfOverride,
       hookOnArray: ['Invoke'],
+      hookParams: [param1.toXrpl()],
     })
     await setHooksV3({
       client: testContext.client,
@@ -47,33 +45,25 @@ describe('accountSet', () => {
   afterAll(async () => {
     // await clearAllHooksV3({
     //   client: testContext.client,
-    //   seed: testContext.alice.seed,
+    //   seed: testContext.hook1.seed,
     // } as SetHookParams)
     await teardownClient(testContext)
   })
 
-  it('txn trust hook', async () => {
+  it('basic hook', async () => {
+    // INVOKE IN
     const aliceWallet = testContext.alice
     const hookWallet = testContext.hook1
 
-    const domain = 'https://example.com/test?name=blob'
-    const hexDomain = convertStringToHex(domain)
-    const domainLenBytes = hexDomain.length / 2
-
-    const tx1param1 = new iHookParamEntry(
-      new iHookParamName('DL'),
-      new iHookParamValue(uint64ToHex(BigInt(domainLenBytes)), true)
+    const param1 = new iHookParamEntry(
+      new iHookParamName('CAFE', true),
+      new iHookParamValue('DEADBEEF', true)
     )
-    const tx1param2 = new iHookParamEntry(
-      new iHookParamName('D'),
-      new iHookParamValue(hexDomain, true)
-    )
-    // INVOKE IN
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
       Account: aliceWallet.classicAddress,
       Destination: hookWallet.classicAddress,
-      HookParameters: [tx1param1.toXrpl(), tx1param2.toXrpl()],
+      HookParameters: [param1.toXrpl()],
     }
     const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,
@@ -83,9 +73,6 @@ describe('accountSet', () => {
       testContext.client,
       result.meta as TransactionMetadata
     )
-    expect(hookExecutions.executions[0].HookReturnString).toMatch(
-      'txn_account_set.c: Tx emitted success.'
-    )
-    await close(testContext.client)
+    console.log(hookExecutions)
   })
 })

@@ -19,6 +19,7 @@ export type iHook = {
   HookApiVersion?: number
   HookParameters?: HookParameter[]
   HookGrants?: HookGrant[]
+  Fee?: string
 }
 
 export type SetHookParams = {
@@ -31,5 +32,5 @@ export type SetHookParams = {
 export interface SmartContractParams {
   wallet: Wallet
   tx: Transaction
-  batches?: SmartContractParams[]
+  debugStream?: boolean
 }

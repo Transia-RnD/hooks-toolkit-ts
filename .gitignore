@@ -6,7 +6,10 @@ node_modules
 yarn-error.log
 debug.log
 
-xrpld
+xrpl
 xahau
 
 playground.ts
+playground.js
+**/tmp
+**/dist
