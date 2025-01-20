@@ -133,10 +133,12 @@ export function floatToXfl(fl: any) {
 
 export function floatToBEXfl(fl: string): string {
   const xfl = floatToXfl(fl)
+  if (xfl === 0n) return '0000000000000000'
   return xfl.toString(16).toUpperCase()
 }
 export function floatToLEXfl(fl: string): string {
   const xfl = floatToXfl(fl)
+  if (xfl === 0n) return '0000000000000000'
   return flipBeLe(xfl as bigint)
 }
 
