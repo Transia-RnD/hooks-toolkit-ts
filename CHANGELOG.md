@@ -32,11 +32,13 @@
 
 ### Added:
 - `params.debugStream` debug stream option when submitting hooks. Debug will stream to the console and create a debug.log file in the root of the repo.
-- `@transia/hooks-toolkit-cli` we now use the hooks-toolkit-cli to build all wasm hooks
+- `@transia/hooks-cli` we now use the hooks-cli to build all wasm hooks
 
 ### Updated:
 - `RIPPLED_ENV -> XRPLD_ENV` we updated the env name for selecting the txn submission type
 - `C2WASM_CLI_HOST -> HOOKS_COMPILE_HOST` we now use the HOOKS_COMPILE_HOST for all wasm builds
+
+### Replaces `src/libs/binary-models` -> `@transia/binary-models`
 
 ### Updated:
 - xrpl.js: ^2.7.3-alpha.26 -> ^2.7.3-alpha.28

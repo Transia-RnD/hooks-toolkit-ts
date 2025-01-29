@@ -1,7 +1,7 @@
 {
   "name": "@transia/hooks-toolkit",
-  "version": "2.0.0-alpha.4",
-  "description": "A toolkit for interacting with smart contracts (hooks) on the XRP Ledger.",
+  "version": "2.0.0",
+  "description": "A toolkit for interacting with smart contracts (hooks) on the Xahau Ledger.",
   "main": "dist/npm/src/index.js",
   "files": [
     "dist/**/*",
@@ -11,6 +11,7 @@
     "build": "tsc",
     "test:unit": "jest --config=jest.config.unit.js",
     "test:integration-c": "LOG_LEVEL=error jest --config=jest.config.integration-c.js --runInBand",
+    "test:integration-js": "LOG_LEVEL=error jest --config=jest.config.integration-js.js --runInBand",
     "lint": "eslint ./src/**/* --ext .ts",
     "format": "npx prettier --write ./src"
   },
