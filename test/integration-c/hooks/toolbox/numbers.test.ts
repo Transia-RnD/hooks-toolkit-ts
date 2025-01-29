@@ -17,11 +17,7 @@ import {
   iHookParamName,
   iHookParamValue,
 } from '../../../../dist/npm/src'
-import {
-  uint32ToHex,
-  uint64ToHex,
-  uint8ToHex,
-} from '../../../../dist/npm/src/libs/binary-models'
+import { uint32ToHex, uint64ToHex, uint8ToHex } from '@transia/binary-models'
 
 describe('numbers', () => {
   let testContext: XrplIntegrationTestContext

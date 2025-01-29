@@ -18,15 +18,48 @@ import {
   iHookParamValue,
   padHexString,
   StateUtility,
-  // Binary Models
-  TestModel,
-  decodeModel,
-  xrpAddressToHex,
   // Utils
   hexNamespace,
 } from '../../../../dist/npm/src'
+import {
+  BaseModel,
+  decodeModel,
+  Metadata,
+  UInt64,
+  VarString,
+  xrpAddressToHex,
+} from '@transia/binary-models'
 
 // StateAdvanced: ACCEPT: success
+
+export class TestModel extends BaseModel {
+  updatedTime: UInt64
+  updatedBy: VarString
+  message: VarString
+
+  constructor(updatedTime: UInt64, updatedBy: VarString, message: VarString) {
+    super()
+    this.updatedTime = updatedTime
+    this.updatedBy = updatedBy
+    this.message = message
+  }
+
+  getMetadata(): Metadata {
+    return [
+      { field: 'updatedTime', type: 'uint64' },
+      { field: 'updatedBy', type: 'varString', maxStringLength: 31 },
+      { field: 'message', type: 'varString', maxStringLength: 31 },
+    ]
+  }
+
+  toJSON() {
+    return {
+      updatedTime: this.updatedTime,
+      updatedBy: this.updatedBy,
+      message: this.message,
+    }
+  }
+}
 
 describe('StateAdvanced', () => {
   let testContext: XrplIntegrationTestContext

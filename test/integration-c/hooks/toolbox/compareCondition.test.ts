@@ -18,7 +18,7 @@ import {
   iHookParamValue,
   generateHash,
 } from '../../../../dist/npm/src'
-import { uint64ToHex } from '../../../../dist/npm/src/libs/binary-models'
+import { uint64ToHex } from '@transia/binary-models'
 
 describe('compareCondition', () => {
   let testContext: XrplIntegrationTestContext

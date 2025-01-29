@@ -17,7 +17,10 @@ import {
   iHookParamName,
   iHookParamValue,
   iHookParamEntry,
-  // Binary Model
+  // Utils
+  hexNamespace,
+} from '../../../../dist/npm/src'
+import {
   BaseModel,
   Metadata,
   UInt8,
@@ -26,9 +29,7 @@ import {
   UInt64,
   xrpAddressToHex,
   decodeModel,
-  // Utils
-  hexNamespace,
-} from '../../../../dist/npm/src'
+} from '@transia/binary-models'
 
 // StateNumbers: ACCEPT: success
 
