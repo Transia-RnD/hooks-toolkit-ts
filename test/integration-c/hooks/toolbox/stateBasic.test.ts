@@ -17,9 +17,9 @@ import {
   padHexString,
   StateUtility,
   // Utils
-  flipHex,
   hexNamespace,
 } from '../../../../dist/npm/src'
+import { flipHex } from '@transia/binary-models'
 
 // StateBasic: ACCEPT: success
 

@@ -6,7 +6,7 @@
 
 ## Compile Hooks
 
-Run this command to locally compile an XRPL Hook source file (inside ./contracts) from .c to .wasm code:
+Run this command to locally compile an XAHL Hook source file (inside ./contracts) from .c to .wasm code:
 
 `$ hooks-cli compile-c contracts build`
 

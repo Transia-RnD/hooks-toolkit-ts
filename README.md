@@ -21,13 +21,13 @@ yarn add @transia/hooks-toolkit
 
 ## Set Hook
 
-The `setHooksV3` function in the SDK is used to set hooks on the XRPL. It takes in a `SetHookParams` object as a parameter, which includes the client, seed, and hooks to be set.
+The `setHooksV3` function in the SDK is used to set hooks on Xahau. It takes in a `SetHookParams` object as a parameter, which includes the client, seed, and hooks to be set.
 
 ### Setting Hooks with setHooksV3
 
-To set a hook on the XRPL using the `setHooksV3` function, you need to provide the following parameters:
+To set a hook on Xahau using the `setHooksV3` function, you need to provide the following parameters:
 
-- `client`: The XRPL client object.
+- `client`: Xahau client object.
 - `seed`: The seed of the account that will set the hook.
 - `hooks`: An array of hook objects to be set.
 
@@ -68,9 +68,9 @@ Note that the `setHooksV3` function is an asynchronous function and returns a Pr
 
 ### Deleting Hooks with clearAllHooksV3
 
-To delete all hooks on the XRPL using the `clearAllHooksV3` function, you need to provide the following parameters:
+To delete all hooks on Xahau using the `clearAllHooksV3` function, you need to provide the following parameters:
 
-- `client`: The XRPL client object.
+- `client`: Xahau client object.
 - `seed`: The seed of the account that will remove the hook.
 
 Here is an example of deleting all hooks using the `clearAllHooksV3` function:
@@ -88,9 +88,9 @@ await clearAllHooksV3({
 
 ### Deleting a single hook with setHooksV3
 
-To delete a single hook and state on the XRPL using the `setHooksV3` function, you need to provide the following parameters:
+To delete a single hook and state on Xahau using the `setHooksV3` function, you need to provide the following parameters:
 
-- `client`: The XRPL client object.
+- `client`: Xahau client object.
 - `seed`: The seed of the account that will delete the hook.
 - `hooks`: An array of hook objects to be deleted.
 
@@ -125,7 +125,7 @@ export const metadata = {
 
 ## Hook Payload
 
-The `createHookPayload` function in the SDK is used to create a payload for a SetHook transaction in the XRPL. It takes in several parameters to customize the hook payload.
+The `createHookPayload` function in the SDK is used to create a payload for a SetHook transaction in Xahau. It takes in several parameters to customize the hook payload.
 
 ### Hook API Version
 
@@ -230,8 +230,8 @@ import {
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
-  floatToLEXfl
 } from '@transia/hooks-toolkit'
+import { floatToLEXfl } from '@transia/binary-models'
 
 const param1 = new iHookParamEntry(
   new iHookParamName('TEST'),
@@ -303,17 +303,17 @@ export function createHookPayload(payload: SetHookPayload): iHook
 
 ### Return Value
 
-- Returns a `HookPayload` object that represents the hook payload for a SetHook transaction in the XRPL.
+- Returns a `HookPayload` object that represents the hook payload for a SetHook transaction in Xahau.
 
 ## State Utility
 
-The `StateUtility` class in the SDK provides utility functions for working with hook states in the XRPL. It includes functions to retrieve hook states, hook definitions, and hook state directories.
+The `StateUtility` class in the SDK provides utility functions for working with hook states in Xahau. It includes functions to retrieve hook states, hook definitions, and hook state directories.
 
 ### Retrieving Hook State
 
-The `getHookState` function is used to retrieve the state of a hook in the XRPL. It takes in the following parameters:
+The `getHookState` function is used to retrieve the state of a hook in Xahau. It takes in the following parameters:
 
-- `client`: The XRPL client object.
+- `client`: Xahau client object.
 - `account`: The account that owns the hook.
 - `key`: The key of the hook state.
 - `namespace`: The namespace of the hook state.
@@ -344,9 +344,9 @@ console.log(hookState)
 
 ### Retrieving Hook Definition
 
-The `getHookDefinition` function is used to retrieve the definition of a hook in the XRPL. It takes in the following parameters:
+The `getHookDefinition` function is used to retrieve the definition of a hook in Xahau. It takes in the following parameters:
 
-- `client`: The XRPL client object.
+- `client`: Xahau client object.
 - `hash`: The hash of the hook definition.
 
 Here is an example of retrieving the definition of a hook:
@@ -373,9 +373,9 @@ console.log(hookDefinition)
 
 ### Retrieving Hook State Directory
 
-The `getHookStateDir` function is used to retrieve the directory of hook states for a specific account and namespace in the XRPL. It takes in the following parameters:
+The `getHookStateDir` function is used to retrieve the directory of hook states for a specific account and namespace in Xahau. It takes in the following parameters:
 
-- `client`: The XRPL client object.
+- `client`: Xahau client object.
 - `account`: The account that owns the hook states.
 - `namespace`: The namespace of the hook states.
 
@@ -404,13 +404,13 @@ console.log(hookStateDir)
 
 ## Execution Utility
 
-The `ExecutionUtility` class in the SDK provides utility functions for working with hook executions and emitted transactions in the XRPL.
+The `ExecutionUtility` class in the SDK provides utility functions for working with hook executions and emitted transactions in Xahau.
 
 ### Getting Hook Executions from Transaction Metadata
 
 The `getHookExecutionsFromMeta` function is used to retrieve hook executions from transaction metadata. It takes in the following parameters:
 
-- `client`: The XRPL client object.
+- `client`: Xahau client object.
 - `meta`: The transaction metadata object.
 
 Here is an example of using the `getHookExecutionsFromMeta` function:
@@ -439,7 +439,7 @@ const hookExecutions = await ExecutionUtility.getHookExecutionsFromMeta(
 
 The `getHookExecutionsFromTx` function is used to retrieve hook executions from a transaction hash. It takes in the following parameters:
 
-- `client`: The XRPL client object.
+- `client`: Xahau client object.
 - `hash`: The transaction hash.
 
 Here is an example of using the `getHookExecutionsFromTx` function:
@@ -467,7 +467,7 @@ const hookExecutions = await ExecutionUtility.getHookExecutionsFromTx(
 
 The `getHookEmittedTxsFromMeta` function is used to retrieve hook emitted transactions from transaction metadata. It takes in the following parameters:
 
-- `client`: The XRPL client object.
+- `client`: Xahau client object.
 - `meta`: The transaction metadata object.
 
 Here is an example of using the `getHookEmittedTxsFromMeta` function:
@@ -494,13 +494,13 @@ const hookEmittedTxs = await ExecutionUtility.getHookEmittedTxsFromMeta(
 
 ## Submit Tx
 
-The `Xrpld.submit` function in the SDK is used to submit a transaction to the XRPL. It takes in a `SubmitTxParams` object as a parameter, which includes the client, wallet, and transaction to be submitted.
+The `Xrpld.submit` function in the SDK is used to submit a transaction to Xahau. It takes in a `SubmitTxParams` object as a parameter, which includes the client, wallet, and transaction to be submitted.
 
 ## Submitting a Transaction with submitTx
 
-To submit a transaction to the XRPL using the `Xrpld.submit` function, you need to provide the following parameters:
+To submit a transaction to Xahau using the `Xrpld.submit` function, you need to provide the following parameters:
 
-- `client`: The XRPL client object.
+- `client`: Xahau client object.
 - `wallet`: The wallet object that holds the account information for the transaction.
 - `tx`: The transaction object to be submitted.
 

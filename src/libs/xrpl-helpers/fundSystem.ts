@@ -1,7 +1,7 @@
 import { AccountSetAsfFlags, Client, Invoke, Wallet } from '@transia/xrpl'
 import {
   Account,
-  ICXRP,
+  ICXAH,
   IC,
   fund,
   trust,
@@ -54,7 +54,7 @@ export async function fundSystem(
     appLogger.debug(
       `SETUP GW: ${await balance(client, gw.wallet.classicAddress)}`
     )
-    await fund(client, wallet, new ICXRP(10000000), gw.wallet.classicAddress)
+    await fund(client, wallet, new ICXAH(10000000), gw.wallet.classicAddress)
     await accountSet(client, gw.wallet, AccountSetAsfFlags.asfDefaultRipple)
     await sell(client, USD.set(20000), gw.wallet, 0.8)
   }
@@ -115,7 +115,7 @@ export async function fundSystem(
   appLogger.debug(`TRUSTING: ${needsLines.length}`)
   appLogger.debug(`PAYING: ${needsIC.length}`)
 
-  await fund(client, wallet, new ICXRP(20000), ...needsFunding)
+  await fund(client, wallet, new ICXAH(20000), ...needsFunding)
   await trust(client, USD.set(100000), ...needsLines)
   await pay(client, USD.set(50000), gw.wallet, ...needsIC)
 }

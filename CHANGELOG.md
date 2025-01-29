@@ -35,8 +35,9 @@
 - `@transia/hooks-cli` we now use the hooks-cli to build all wasm hooks
 
 ### Updated:
-- `RIPPLED_ENV -> XRPLD_ENV` we updated the env name for selecting the txn submission type
+- `RIPPLED_ENV -> XAHAU_ENV` we updated the env name for selecting the txn submission type
 - `C2WASM_CLI_HOST -> HOOKS_COMPILE_HOST` we now use the HOOKS_COMPILE_HOST for all wasm builds
+- `ICXRP -> ICXAH` we now use the ICXAH for all issued currency tools
 
 ### Replaces `src/libs/binary-models` -> `@transia/binary-models`
 

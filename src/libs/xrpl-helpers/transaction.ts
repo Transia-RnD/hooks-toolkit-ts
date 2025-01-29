@@ -240,7 +240,7 @@ export async function appTransaction(
     delayMs: number
   }
 ): Promise<TxResponse> {
-  if (process.env.XRPLD_ENV === 'standalone') {
+  if (process.env.XAHAU_ENV === 'standalone') {
     return await testTransaction(client, transaction, wallet, retry)
   } else {
     return await prodTransactionAndWait(client, transaction, wallet, retry)
@@ -252,7 +252,7 @@ export async function appBatchTransaction(
   client: Client,
   batches: any[]
 ): Promise<SubmitResponse[]> {
-  if (process.env.XRPLD_ENV === 'standalone') {
+  if (process.env.XAHAU_ENV === 'standalone') {
     const txResponses: SubmitResponse[] = []
     await ledgerAccept(client)
     for (let i = 0; i < batches.length; i++) {
@@ -287,7 +287,7 @@ export async function appBatchTransaction(
 /**
  * Sends a test transaction for integration testing.
  *
- * @param client - The XRPL client
+ * @param client - The Xahau client
  * @param transaction - The transaction object to send.
  * @param wallet - The wallet to send the transaction from.
  * @param retry - As of Sep 2022, xrpl.js does not track requests sent in parallel. Our sequence numbers can get off from

@@ -104,7 +104,7 @@ describe('filterOnToken', () => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         expect(error.message).toEqual(
-          'filter_on_token: Ignoring XRP Transaction'
+          'filter_on_token: Ignoring XAH Transaction'
         )
       }
     }

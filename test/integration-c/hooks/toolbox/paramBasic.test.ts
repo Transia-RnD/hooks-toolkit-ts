@@ -22,8 +22,8 @@ import {
   iHookParamEntry,
   iHookParamName,
   iHookParamValue,
-  floatToLEXfl,
 } from '../../../../dist/npm/src'
+import { floatToLEXfl } from '@transia/binary-models'
 
 // HookOnTT: ACCEPT: success
 

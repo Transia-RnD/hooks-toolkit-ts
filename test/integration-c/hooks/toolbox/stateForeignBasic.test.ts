@@ -31,8 +31,8 @@ import {
   // Utils
   hexNamespace,
   padHexString,
-  flipHex,
 } from '../../../../dist/npm/src'
+import { flipHex } from '@transia/binary-models'
 
 // StateForeignBasic: ROLLBACK: invalid account
 // StateForeignBasic: ROLLBACK: no grant hash

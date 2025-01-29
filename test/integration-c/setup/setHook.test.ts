@@ -20,12 +20,12 @@ import {
   clearAllHooksV3,
   StateUtility,
   padHexString,
-  flipHex,
 } from '../../../dist/npm/src'
 import {
   HookDefinition as LeHookDefinition,
   Hook as LeHook,
 } from '@transia/xrpl/dist/npm/models/ledger'
+import { flipHex } from '@transia/binary-models'
 
 // TEST WITH DELTA/DEFAULT PARAMS - HookHash
 // The hook parameters on the hook definition are not always the hook parameters.

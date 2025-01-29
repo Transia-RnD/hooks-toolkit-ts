@@ -111,9 +111,9 @@ export class Account {
   }
 }
 
-export class ICXRP {
+export class ICXAH {
   issuer: string | undefined
-  currency = 'XRP'
+  currency = 'XAH'
   value: number
   amount: string
 
@@ -269,7 +269,7 @@ export async function limit(
 export async function fund(
   ctx: Client,
   wallet: Wallet,
-  uicx: IC | ICXRP,
+  uicx: IC | ICXAH,
   ...accts: string[]
 ): Promise<void> {
   for (const acct of accts) {
@@ -298,7 +298,7 @@ export async function fund(
 
 export async function pay(
   ctx: Client,
-  uicx: IC | ICXRP,
+  uicx: IC | ICXAH,
   signer: Wallet,
   ...accts: string[]
 ): Promise<void> {
@@ -328,7 +328,7 @@ export async function pay(
 
 export async function sell(
   ctx: Client,
-  uicx: IC | ICXRP,
+  uicx: IC | ICXAH,
   signer: Wallet,
   rate: number
 ): Promise<void> {
@@ -364,7 +364,7 @@ export async function sell(
 
 export async function buy(
   ctx: Client,
-  uicx: IC | ICXRP,
+  uicx: IC | ICXAH,
   signer: Wallet,
   rate: number
 ): Promise<void> {
@@ -399,7 +399,7 @@ export async function buy(
 
 export async function trust(
   ctx: Client,
-  uicx: IC | ICXRP,
+  uicx: IC | ICXAH,
   ...accts: Wallet[]
 ): Promise<void> {
   for (const acct of accts) {

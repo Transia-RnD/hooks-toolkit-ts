@@ -148,7 +148,7 @@ jobs:
       - run: yarn run test:integration-c
         env:
           HOOKS_COMPILE_HOST: https://hook-buildbox.xrpl.org
-          XRPLD_ENV: standalone
+          XAHAU_ENV: standalone
 
       - name: Stop docker container
         if: always()

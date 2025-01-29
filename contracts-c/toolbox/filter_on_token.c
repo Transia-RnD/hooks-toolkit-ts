@@ -15,7 +15,7 @@ int64_t hook(uint32_t reserved) {
     unsigned char amount_buffer[48];
     int64_t amount_len = otxn_field(SBUF(amount_buffer), sfAmount);
     if (amount_len == 8) {
-        DONE("filter_on_token: Ignoring XRP Transaction");
+        DONE("filter_on_token: Ignoring XAH Transaction");
     }
 
     int64_t oslot = otxn_slot(0);
