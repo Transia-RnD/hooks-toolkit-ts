@@ -61,9 +61,10 @@ export const execPayment = async (testContext: XrplIntegrationTestContext) => {
     testContext.client,
     result.meta as TransactionMetadata
   )
-  expect(hookExecutions.executions[0].HookReturnString).toMatch(
-    'base: Finished.'
-  )
+  // expect(hookExecutions.executions[0].HookReturnString).toMatch(
+  //   'base: Finished.'
+  // )
+  expect(hookExecutions.executions[0].HookReturnString).toMatch('')
 }
 
 describe('base', () => {

@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "test:unit": "jest --config=jest.config.unit.js",
-    "test:integration": "LOG_LEVEL=error jest --config=jest.config.integration.js --runInBand",
+    "test:integration-c": "LOG_LEVEL=error jest --config=jest.config.integration-c.js --runInBand",
     "lint": "eslint ./src/**/* --ext .ts",
     "format": "npx prettier --write ./src"
   },

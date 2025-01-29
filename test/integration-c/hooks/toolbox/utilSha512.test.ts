@@ -99,7 +99,7 @@ describe('utilSha512', () => {
         tx: builtTx,
       })
     } catch (error: any) {
-      expect(error.message).toEqual('35: util_sha512: Hashes do not match')
+      expect(error.message).toEqual('util_sha512: Hashes do not match')
     }
   })
 
@@ -175,7 +175,7 @@ describe('utilSha512', () => {
         tx: builtTx,
       })
     } catch (error: any) {
-      expect(error.message).toEqual('35: util_sha512: Hashes do not match')
+      expect(error.message).toEqual('util_sha512: Hashes do not match')
     }
   })
 

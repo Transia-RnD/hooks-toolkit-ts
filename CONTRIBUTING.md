@@ -2,21 +2,17 @@
 
 ## Global Prerequsits
 
-`$ npm i -g hooks-toolkit-cli`
+`$ npm i -g @transia/hooks-cli`
 
 ## Compile Hooks
 
 Run this command to locally compile an XRPL Hook source file (inside ./contracts) from .c to .wasm code:
 
-`$ hooks-toolkit-cli compile-c contracts build`
+`$ hooks-cli compile-c contracts build`
 
 You can also build a single hook with;
 
-`$ hooks-toolkit-cli compile-c contracts/toolbox/base.c build`
-
-## Debug the test env
-
-`tail -f xahau/log/debug.log | grep HookTrace`
+`$ hooks-cli compile-c contracts/toolbox/base.c build`
 
 ## Test the Hook Library
 
@@ -41,6 +37,10 @@ Run Integration tests
 Run single Integration test
 
 `$ yarn run test:integration test/integration/toolbox/base.test.ts`
+
+## Debug the test env
+
+`xrpld-netgen logs:standalone`
 
 ## Adding a new Hook
 

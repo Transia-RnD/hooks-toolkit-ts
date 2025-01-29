@@ -100,7 +100,7 @@ jobs:
 
       - run: yarn run test:unit
 
-  integration:
+  integration-c:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -145,13 +145,11 @@ jobs:
       - run: npm i -g @transia/hooks-toolkit-cli
       - run: yarn run build
       - run: hooks-toolkit-cli compile-c contracts-c build
-      - run: hooks-toolkit-cli compile-js contracts-js/toolbox/base.ts build
-      - run: hooks-toolkit-cli compile-js contracts-js/toolbox/hookOnTT.ts build
-      - run: yarn run test:integration
+      - run: yarn run test:integration-c
         env:
           HOOKS_COMPILE_HOST: https://hook-buildbox.xrpl.org
           XRPLD_ENV: standalone
-      
+
       - name: Stop docker container
         if: always()
         run: docker stop rippled-service

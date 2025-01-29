@@ -3,6 +3,11 @@
  */
 #include "hookapi.h"
 
+#define FLIP_ENDIAN(n) ((uint32_t) (((n & 0xFFU) << 24U) | \
+                                   ((n & 0xFF00U) << 8U) | \
+                                 ((n & 0xFF0000U) >> 8U) | \
+                                ((n & 0xFF000000U) >> 24U)))
+
 // clang-format off
 uint8_t txn[305] =
 {
