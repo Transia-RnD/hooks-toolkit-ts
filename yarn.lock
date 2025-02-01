@@ -689,10 +689,10 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
-"@transia/binary-models@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@transia/binary-models/-/binary-models-1.0.3.tgz#a575d4c987b10f44d30ed2318150206410d752a9"
-  integrity sha512-4cjHzjJsHAiGr7nDOTHcxYWGs/yPMS3njYgTHQaDAspeZk8FBzMaqfEk5wLN+Q7dhFgyR7G+l5Wm4eMtWFs2Xg==
+"@transia/binary-models@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@transia/binary-models/-/binary-models-1.1.0.tgz#48c9f4d0be8296e024467db82e0621f6f871da1a"
+  integrity sha512-DJbbeCTVFPzbRL4tGIaUZgbs9NclPVWl0MM66LpVcYwPaJe4nitglKqzMWLFUWOvPF7zYSgQpt1UOBGcbV4qRg==
   dependencies:
     "@xrplf/isomorphic" "^1.0.1"
     ripple-address-codec "^5.0.0"
