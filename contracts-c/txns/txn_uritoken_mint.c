@@ -87,7 +87,6 @@ int64_t hook(uint32_t reserved) {
     uint64_t uri_len = otxn_param(SBUF(uri), "URI", 3);
 
     size_t padding;
-    uint8_t buf_raw[MAX_URI_LEN];
     ENCODE_VL(padding, URI_OUT, uri_len);
 
     // TXN: PREPARE: Init
