@@ -12,7 +12,7 @@ int64_t hook(uint32_t reserved) {
     // HOOK ON: TT
     if (otxn_type() != ttINVOKE)
     {
-        rollback(SBUF("hook_on_tt: HookOn field is incorrectly set."), INVALID_TXN);
+        rollback(SBUF("hook_on_tt: HookOn field is incorrectly set."), __LINE__);
     }
 
     // Your code here...

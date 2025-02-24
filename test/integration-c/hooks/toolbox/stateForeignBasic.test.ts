@@ -131,7 +131,7 @@ describe('stateForeignBasic', () => {
       })
     } catch (error: any) {
       expect(error.message).toEqual(
-        'state_foreign_basic: Could not get foreign state'
+        '22: state_foreign_basic: Could not get foreign state'
       )
     }
   })
@@ -208,7 +208,7 @@ describe('stateForeignBasic', () => {
       })
     } catch (error: any) {
       expect(error.message).toEqual(
-        'state_foreign_basic: Could not get foreign state'
+        '22: state_foreign_basic: Could not get foreign state'
       )
     }
   })
@@ -302,7 +302,7 @@ describe('stateForeignBasic', () => {
       })
     } catch (error: any) {
       expect(error.message).toEqual(
-        'state_foreign_basic: Could not set foreign state'
+        '27: state_foreign_basic: Could not set foreign state'
       )
     }
   })
