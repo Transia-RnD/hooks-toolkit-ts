@@ -50,10 +50,9 @@ export async function fundSystem(
 
   // FUND GW
   const gw = userWallets[0]
-  if ((await balance(client, gw.wallet.classicAddress)) == 0) {
-    appLogger.debug(
-      `SETUP GW: ${await balance(client, gw.wallet.classicAddress)}`
-    )
+  const gwNativeBalance = await balance(client, gw.wallet.classicAddress)
+  if (gwNativeBalance == 0) {
+    appLogger.debug(`SETUP GW: ${gwNativeBalance}`)
     await fund(client, wallet, new ICXAH(10000000), gw.wallet.classicAddress)
     await accountSet(client, gw.wallet, AccountSetAsfFlags.asfDefaultRipple)
     await sell(client, USD.set(20000), gw.wallet, 0.8)
@@ -65,49 +64,34 @@ export async function fundSystem(
 
   for (let i = 1; i < userWallets.length; i++) {
     const wallet = userWallets[i]
+    const address = wallet.wallet.classicAddress
 
-    if ((await balance(client, wallet.wallet.classicAddress)) < 10000000000) {
-      appLogger.debug(
-        `${wallet.wallet.classicAddress} NEEDS FUNDING: ${await balance(
-          client,
-          wallet.wallet.classicAddress
-        )}`
-      )
-      needsFunding.push(wallet.wallet.classicAddress)
+    const nativeBalance = await balance(client, address)
+    if (nativeBalance < 10000000000) {
+      appLogger.debug(`${address} NEEDS FUNDING: ${nativeBalance}`)
+      needsFunding.push(address)
     }
 
-    if ((await limit(client, wallet.wallet.classicAddress, USD)) < 100000) {
-      appLogger.debug(
-        `${wallet.wallet.classicAddress} NEEDS TRUST: ${await balance(
-          client,
-          wallet.wallet.classicAddress
-        )}`
-      )
+    const usdLimit = await limit(client, address, USD)
+    if (usdLimit < 100000) {
+      appLogger.debug(`${address} NEEDS TRUST: ${usdLimit}`)
       needsLines.push(wallet.wallet)
     }
 
-    if ((await balance(client, wallet.wallet.classicAddress, USD)) < 10000) {
-      appLogger.debug(
-        `${wallet.wallet.classicAddress} NEEDS IC: ${await balance(
-          client,
-          wallet.wallet.classicAddress
-        )}`
-      )
-      needsIC.push(wallet.wallet.classicAddress)
+    const usdBalance = await balance(client, address, USD)
+    if (usdBalance < 10000) {
+      appLogger.debug(`${address} NEEDS IC: ${usdBalance}`)
+      needsIC.push(address)
     }
   }
 
   for (let i = 0; i < hookWallets.length; i++) {
     const wallet = hookWallets[i]
-
-    if ((await balance(client, wallet.wallet.classicAddress)) < 10000000000) {
-      appLogger.debug(
-        `${wallet.wallet.classicAddress} NEEDS FUNDING: ${await balance(
-          client,
-          wallet.wallet.classicAddress
-        )}`
-      )
-      needsFunding.push(wallet.wallet.classicAddress)
+    const address = wallet.wallet.classicAddress
+    const nativeBalance = await balance(client, address)
+    if (nativeBalance < 10000000000) {
+      appLogger.debug(`${address} NEEDS FUNDING: ${nativeBalance}`)
+      needsFunding.push(address)
     }
   }
 
