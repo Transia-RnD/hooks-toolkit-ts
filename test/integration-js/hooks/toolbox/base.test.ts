@@ -18,10 +18,11 @@ import {
   ExecutionUtility,
   createHookPayload,
   setHooksV3,
-  xrpAddressToHex,
   padHexString,
   // clearAllHooksV3,
 } from '../../../../dist/npm/src'
+
+import { xrpAddressToHex } from '@transia/binary-models'
 
 export const execInvoke = async (testContext: XrplIntegrationTestContext) => {
   const aliceWallet = testContext.alice

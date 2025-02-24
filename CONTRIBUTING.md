@@ -24,7 +24,7 @@ Before you can run the integration tests you must have a standalone rippled serv
 
 - Full env with explorer:
 
-- - `$ xrpld-netgen up:standalone --version=2024.7.17-jshooks+933`
+- - `$ xrpld-netgen up:standalone --version=2025.2.24-HEAD+1366`
 
 - Docker standalone only:
 
