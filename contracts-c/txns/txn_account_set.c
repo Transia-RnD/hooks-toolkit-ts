@@ -97,11 +97,11 @@ int64_t hook(uint32_t reserved) {
 
     // TXN PREPARE: FirstLedgerSequence
     uint32_t fls = (uint32_t)ledger_seq() + 1;
-    *((uint32_t *)(FLS_OUT)) = FLIP_ENDIAN(fls);
+    *((uint32_t *)(FLS_OUT)) = FLIP_ENDIAN_32(fls);
 
     // TXN PREPARE: LastLedgerSequense
     uint32_t lls = fls + 4;
-    *((uint32_t *)(LLS_OUT)) = FLIP_ENDIAN(lls);
+    *((uint32_t *)(LLS_OUT)) = FLIP_ENDIAN_32(lls);
 
     VL_TO_BUF(DOMAIN_OUT, d_buffer);
 

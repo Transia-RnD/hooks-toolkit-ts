@@ -3,11 +3,6 @@
  */
 #include "hookapi.h"
 
-#define FLIP_ENDIAN(n) ((uint32_t) (((n & 0xFFU) << 24U) | \
-                                   ((n & 0xFF00U) << 8U) | \
-                                 ((n & 0xFF0000U) >> 8U) | \
-                                ((n & 0xFF000000U) >> 24U)))
-
 // clang-format off
 uint8_t txn[305] =
 {
@@ -85,11 +80,11 @@ int64_t hook(uint32_t reserved)
 
     // TXN PREPARE: FirstLedgerSequence
     uint32_t fls = (uint32_t)ledger_seq() + 1;
-    *((uint32_t *)(FLS_OUT)) = FLIP_ENDIAN(fls);
+    *((uint32_t *)(FLS_OUT)) = FLIP_ENDIAN_32(fls);
 
     // TXN PREPARE: LastLedgerSequense
     uint32_t lls = fls + 4;
-    *((uint32_t *)(LLS_OUT)) = FLIP_ENDIAN(lls);
+    *((uint32_t *)(LLS_OUT)) = FLIP_ENDIAN_32(lls);
 
     // TXN PREPARE: Amount
     uint64_t drops = 1000000;
