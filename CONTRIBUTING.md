@@ -4,21 +4,23 @@
 
 `$ npm i -g @transia/hooks-cli`
 
-## Compile Hooks
+## Compile C Hooks
 
 Run this command to locally compile an XAHL Hook source file (inside ./contracts) from .c to .wasm code:
 
-`$ hooks-cli compile-c contracts build`
+`$ hooks-cli compile-c contracts-c build`
 
 You can also build a single hook with;
 
-`$ hooks-cli compile-c contracts/toolbox/base.c build`
+`$ hooks-cli compile-c contracts-c/toolbox/base.c build`
+
+## Compile JS Hooks
+
+You can ONLY build a single js hook at a time;
+
+`$ hooks-cli compile-js contracts-js/toolbox/base.ts build`
 
 ## Test the Hook Library
-
-Run Unit tests
-
-`$ yarn run test:unit`
 
 Before you can run the integration tests you must have a standalone rippled server running.
 
@@ -30,22 +32,18 @@ Before you can run the integration tests you must have a standalone rippled serv
 
 - - `$ docker run -p 5005:5005 -p 6006:6006 -it transia/xahaud:latest`
 
-Run Integration tests
+Run C Hooks Integration tests
 
-`$ yarn run test:integration`
+`$ yarn run test:integration-c`
 
-Run single Integration test
+Run single C Hooks Integration test
 
-`$ yarn run test:integration test/integration/toolbox/base.test.ts`
+`$ yarn run test:integration-c test/integration-c/toolbox/base.test.ts`
 
-## Debug the test env
+Run JS Hooks Integration tests
 
-`xrpld-netgen logs:standalone`
+`$ yarn run test:integration-js`
 
-## Adding a new Hook
+Run single JS Hooks Integration test
 
-1. Add the hook.c file into the `contracts` directory
-4. Build the hooks `$ yarn run build:hooks`
-3. Copy the hook `base.test.ts` template into the correct folder. (audited/toolbox)
-4. Test the hook using:
-`$ yarn run test:integration test/integration/audited/myHook.test.ts`
+`$ yarn run test:integration-js test/integration-js/toolbox/base.test.ts`
