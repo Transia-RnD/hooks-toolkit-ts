@@ -1,15 +1,8 @@
 const ASSERT = (x) => {
-  if (!x) {
-    rollback(x.toString(), 0)
-  }
+  if (!x) rollback(x.toString(), 0)
 }
 
-// #define TOO_SMALL -4
-// #define TOO_BIG -3
-// #define OUT_OF_BOUNDS -1
-// #define MEM_OVERLAP -43
-// #define PARSE_ERROR -18
-// #define DOESNT_EXIST -5
+const DOESNT_EXIST = -5
 
 const sto = [
   0x11, 0x00, 0x61, 0x22, 0x00, 0x00, 0x00, 0x00, 0x24, 0x04, 0x1f, 0x94, 0xd9,
@@ -21,85 +14,52 @@ const sto = [
   0xf2, 0xd3, 0x6f, 0x9e, 0xb8, 0xc7, 0x34, 0xaf, 0x6c,
 ]
 
-const INVALID_ARGUMENT = -7
-
 // test_sto_erase
 const Hook = (arg) => {
-  trace('Hook: ', 0, false)
+  // erase field 22
+  {
+    const buf = sto_erase(sto, 0x20002)
+    ASSERT(buf.length === sto.length - 5)
 
-  // Test out of bounds check
-  ASSERT(sto_erase(1000000, 32, 0, 32, 1) == OUT_OF_BOUNDS)
-  ASSERT(sto_erase(0, 1000000, 0, 32, 1) == OUT_OF_BOUNDS)
-  ASSERT(sto_erase(0, 32, 1000000, 32, 1) == OUT_OF_BOUNDS)
-  ASSERT(sto_erase(0, 32, 64, 1000000, 1) == OUT_OF_BOUNDS)
+    ASSERT(buf[0] === sto[0] && buf[1] === sto[1] && buf[2] === sto[2])
+    for (let i = 3; i < sto.length - 5; i++) {
+      ASSERT(sto[i + 5] === buf[i])
+    }
+  }
 
-  // // Test size check
-  // {
-  //     // write buffer too small
-  //     ASSERT(sto_erase(0,1, 0,2, 1) == TOO_SMALL);
-  //     ASSERT(sto_erase(0, 32000, 0, 17000,  1) == TOO_BIG);
-  // }
+  // test front erasure
+  {
+    const buf = sto_erase(sto, 0x10001)
+    ASSERT(buf.length === sto.length - 3)
 
-  // uint8_t buf[1024];
+    for (let i = 3; i < sto.length - 3; i++) {
+      ASSERT(sto[i] === buf[i - 3])
+    }
+  }
 
-  // // Test overlapping memory
-  // ASSERT(sto_erase(buf, 1024, buf+1, 512, 1) == MEM_OVERLAP);
-  // ASSERT(sto_erase(buf+1, 1024, buf, 512, 1) == MEM_OVERLAP);
+  // test back erasure
+  {
+    const buf = sto_erase(sto, 0x80001)
+    ASSERT(buf.length === sto.length - 22)
 
-  // // erase field 22
-  // {
-  //     ASSERT(sto_erase(
-  //                 buf, sizeof(buf),
-  //                 sto, sizeof(sto), 0x20002U) ==
-  //             sizeof(sto) - 5);
+    for (let i = 0; i < sto.length - 22; i++) {
+      ASSERT(sto[i] === buf[i])
+    }
+  }
 
-  //     ASSERT(buf[0] == sto[0] && buf[1] == sto[1] && buf[2] == sto[2]);
-  //     for (int i = 3; GUARD(sizeof(sto) + 1),  i < sizeof(sto) - 5;  ++i)
-  //         ASSERT(sto[i+5] == buf[i]);
-  // }
+  // test not found
+  {
+    const buf = sto_erase(sto, 0x80002)
+    // TODO: https://github.com/Xahau/xahaud/issues/459
+    // ASSERT(buf === DOESNT_EXIST)
+  }
 
-  // // test front erasure
-  // {
-  //     ASSERT(sto_erase(
-  //                 buf, sizeof(buf),
-  //                 sto, sizeof(sto), 0x10001U) ==
-  //             sizeof(sto) - 3);
+  // test total erasure
+  {
+    const rep = [0x22, 0x10, 0x20, 0x30, 0x40]
+    const buf = sto_erase(rep, 0x20002)
+    ASSERT(buf.length === 0)
+  }
 
-  //     for (int i = 3; GUARD(sizeof(sto) + 1),  i < sizeof(sto) - 3;  ++i)
-  //         ASSERT(sto[i] == buf[i-3]);
-  // }
-
-  // // test back erasure
-  // {
-  //     ASSERT(sto_erase(
-  //                 buf, sizeof(buf),
-  //                 sto, sizeof(sto), 0x80001U) ==
-  //             sizeof(sto) - 22);
-
-  //     for (int i = 0; GUARD(sizeof(sto) - 21),  i < sizeof(sto)-22;  ++i)
-  //         ASSERT(sto[i] == buf[i]);
-  // }
-
-  // // test not found
-  // {
-  //     ASSERT(sto_erase(
-  //                 buf, sizeof(buf),
-  //                 sto, sizeof(sto), 0x80002U) ==
-  //             DOESNT_EXIST);
-
-  //     for (int i = 0; GUARD(sizeof(sto) +1),  i < sizeof(sto);  ++i)
-  //         ASSERT(sto[i] == buf[i]);
-  // }
-
-  // // test total erasure
-  // {
-  //     uint8_t rep[] = {0x22,0x10,0x20,0x30,0x40U};
-  //     ASSERT(sto_erase(buf, sizeof(buf), rep, sizeof(rep), 0x20002U) ==
-  //             0);
-
-  // }
-
-  return accept(0, 0)
+  accept('success', 0)
 }
-
-export { Hook }
