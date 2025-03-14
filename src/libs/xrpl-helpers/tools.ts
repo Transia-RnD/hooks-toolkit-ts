@@ -13,6 +13,7 @@ import {
   OfferCreateFlags,
   RandomRequest,
   SubmittableTransaction,
+  ECDSA,
 } from 'xahau'
 import { IssuedCurrencyAmount } from 'xahau/dist/npm/models/common'
 import { RippleState } from 'xahau/dist/npm/models/ledger'
@@ -49,7 +50,7 @@ export class Account {
 
   constructor(name?: string, seed?: string) {
     if (seed) {
-      this.wallet = Wallet.fromSeed(seed)
+      this.wallet = Wallet.fromSeed(seed, { algorithm: ECDSA.secp256k1 })
     }
 
     this.name = name as string

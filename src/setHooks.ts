@@ -90,7 +90,7 @@ export async function setHooksV3({ client, seed, hooks }: SetHookParams) {
 }
 
 export async function clearAllHooksV3({ client, seed }: SetHookParams) {
-  const HOOK_ACCOUNT = Wallet.fromSeed(seed)
+  const HOOK_ACCOUNT = Wallet.fromSeed(seed, { algorithm: ECDSA.secp256k1 })
   const hook = {
     CreateCode: '',
     Flags: SetHookFlags.hsfOverride | SetHookFlags.hsfNSDelete,
@@ -126,7 +126,7 @@ export async function clearAllHooksV3({ client, seed }: SetHookParams) {
 }
 
 export async function clearHookStateV3({ client, seed, hooks }: SetHookParams) {
-  const HOOK_ACCOUNT = Wallet.fromSeed(seed)
+  const HOOK_ACCOUNT = Wallet.fromSeed(seed, { algorithm: ECDSA.secp256k1 })
   const tx: SetHook = {
     TransactionType: `SetHook`,
     Account: HOOK_ACCOUNT.classicAddress,

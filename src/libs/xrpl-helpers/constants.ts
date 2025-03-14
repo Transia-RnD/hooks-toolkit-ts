@@ -75,16 +75,28 @@ export const JUDY_WALLET = Wallet.fromSeed('shaiav41HpCvyHQhbSJDWS2pAqD77', {
 
 // wallet secret == "hook1"
 // rBpVrkKc8QnxsCGsngMJgmDKqxJKoWHfKt
-export const HOOK1_WALLET = Wallet.fromSeed('ssM2MJpZchJhEWYCP1wMqpD9MWbcd')
+export const HOOK1_WALLET = Wallet.fromSeed('ssM2MJpZchJhEWYCP1wMqpD9MWbcd', {
+  algorithm: ECDSA.secp256k1,
+})
+console.log(HOOK1_WALLET)
+
 // wallet secret == "hook2"
 // rpeWVvqpm2EPzfFiWrV421AMHKUQBk5aDt
-export const HOOK2_WALLET = Wallet.fromSeed('ss7Ec7bReBqsYpLY2cVsyJsgeLJLq')
+export const HOOK2_WALLET = Wallet.fromSeed('ss7Ec7bReBqsYpLY2cVsyJsgeLJLq', {
+  algorithm: ECDSA.secp256k1,
+})
 // wallet secret == "hook3"
 // raNiq8ztgmvSXuKrD8iEn2QL6MEf72wSXz
-export const HOOK3_WALLET = Wallet.fromSeed('shgqrTAn8TkqKSfVHhDU4kMthzHeJ')
+export const HOOK3_WALLET = Wallet.fromSeed('shgqrTAn8TkqKSfVHhDU4kMthzHeJ', {
+  algorithm: ECDSA.secp256k1,
+})
 // wallet secret == "hook4"
 // rHbizjpTJsqKh4WBcJnJr99uP6H1chRcTd
-export const HOOK4_WALLET = Wallet.fromSeed('snZ1P5gkmuJYUi2LDtSSzYQnxcdp8')
+export const HOOK4_WALLET = Wallet.fromSeed('snZ1P5gkmuJYUi2LDtSSzYQnxcdp8', {
+  algorithm: ECDSA.secp256k1,
+})
 // wallet secret == "hook5"
 // rUPJACGdNu2rNRiWYpjTbr9BGYz8caXEQG
-export const HOOK5_WALLET = Wallet.fromSeed('ssUcdBBRiCendP9TenSr2tfKhFw7Z')
+export const HOOK5_WALLET = Wallet.fromSeed('ssUcdBBRiCendP9TenSr2tfKhFw7Z', {
+  algorithm: ECDSA.secp256k1,
+})
