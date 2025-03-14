@@ -18,7 +18,10 @@ import { addListeners, ISelect, removeListeners } from './libs/debug'
 
 export class Xrpld {
   // TX V3
-  static async submit(client: Client, params: SmartContractParams) {
+  static async submit(
+    client: Client,
+    params: SmartContractParams
+  ): Promise<any> {
     if (!params.tx) {
       throw Error('Missing tx parameter')
     }
@@ -59,7 +62,10 @@ export class Xrpld {
     return txResponse?.result
   }
   // TX V3
-  static async submitBatch(client: Client, batches: SmartContractParams[]) {
+  static async submitBatch(
+    client: Client,
+    batches: SmartContractParams[]
+  ): Promise<any> {
     if (!batches.length) {
       throw Error('Missing batch txns')
     }
