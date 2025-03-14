@@ -1,6 +1,3 @@
-/**
- *
- */
 #include "hookapi.h"
 
 int64_t hook(uint32_t reserved) {

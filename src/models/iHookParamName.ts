@@ -1,4 +1,4 @@
-import { convertHexToString, convertStringToHex } from '@transia/xrpl'
+import { convertHexToString, convertStringToHex } from 'xahau'
 
 export class iHookParamName {
   value: string

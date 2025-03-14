@@ -6,7 +6,7 @@ import {
   SetHookFlags,
   AccountSetAsfFlags,
   TransactionMetadata,
-} from '@transia/xrpl'
+} from 'xahau'
 // src
 import {
   // Testing
@@ -24,7 +24,7 @@ import {
   iHookParamName,
   iHookParamValue,
 } from '../../../../dist/npm/src'
-import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
+import { IssuedCurrencyAmount } from 'xahau/dist/npm/models/common'
 
 describe('tsh', () => {
   let testContext: XrplIntegrationTestContext

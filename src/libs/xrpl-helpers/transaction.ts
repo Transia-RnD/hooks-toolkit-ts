@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { BaseResponse } from '@transia/xrpl/dist/npm/models/methods/baseMethod'
+import { BaseResponse } from 'xahau/dist/npm/models/methods/baseMethod'
 // import { assert } from 'chai'
 import omit from 'lodash/omit'
 import throttle from 'lodash/throttle'
@@ -13,8 +13,10 @@ import {
   unixTimeToRippleTime,
   TxResponse,
   TransactionMetadata,
-} from '@transia/xrpl'
-import { hashSignedTx } from '@transia/xrpl/dist/npm/utils/hashes'
+  SubmittableTransaction,
+  ServerStateRequest,
+} from 'xahau'
+import { hashSignedTx } from 'xahau/dist/npm/utils/hashes'
 import { appLogger } from '../logger'
 
 interface ServerStateRPCResult {
@@ -31,7 +33,7 @@ export function generateRandomDestinationTag(): number {
 }
 
 export async function serverStateRPC(client: Client): Promise<BaseResponse> {
-  const request = {
+  const request: ServerStateRequest = {
     command: 'server_state',
   }
   return await client.request(request)
@@ -144,7 +146,7 @@ export async function submitTransaction({
   retry = { count: 5, delayMs: 1000 },
 }: {
   client: Client
-  transaction: Transaction
+  transaction: SubmittableTransaction
   wallet: Wallet
   retry?: {
     count: number
@@ -210,6 +212,7 @@ export async function verifySubmittedTransaction(
   })
 
   // assert(data.result)
+  // @ts-expect-error - this is defined
   return data
   // assert.deepEqual(
   //   omit(data.result, [
@@ -232,7 +235,7 @@ export async function verifySubmittedTransaction(
 // eslint-disable-next-line max-params -- Test function, many params are needed
 export async function appTransaction(
   client: Client,
-  transaction: Transaction,
+  transaction: SubmittableTransaction,
   wallet: Wallet,
   retry?: {
     hardFail: boolean | true
@@ -299,7 +302,7 @@ export async function appBatchTransaction(
 // eslint-disable-next-line max-params -- Test function, many params are needed
 export async function testTransaction(
   client: Client,
-  transaction: Transaction,
+  transaction: SubmittableTransaction,
   wallet: Wallet,
   retry?: {
     hardFail: boolean | true
@@ -355,7 +358,7 @@ export async function testTransaction(
 
 export async function prodTransactionAndWait(
   client: Client,
-  transaction: Transaction,
+  transaction: SubmittableTransaction,
   wallet: Wallet,
   retry?: {
     hardFail: boolean | true

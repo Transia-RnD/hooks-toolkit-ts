@@ -4,7 +4,7 @@ import {
   SetHookFlags,
   TransactionMetadata,
   convertStringToHex,
-} from '@transia/xrpl'
+} from 'xahau'
 import {
   // Testing
   XrplIntegrationTestContext,
@@ -23,7 +23,7 @@ import {
   iHookParamName,
   iHookParamValue,
 } from '../../../../dist/npm/src'
-import { uint64ToHex } from 'jshooks-api'
+import { uint64ToHex } from '@transia/binary-models'
 
 describe('accountSet', () => {
   let testContext: XrplIntegrationTestContext

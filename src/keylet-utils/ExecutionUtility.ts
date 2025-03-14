@@ -1,15 +1,7 @@
-import {
-  Client,
-  Transaction,
-  TransactionMetadata,
-  TxRequest,
-} from '@transia/xrpl'
+import { Client, Transaction, TransactionMetadata, TxRequest } from 'xahau'
 import { iHookExecutions } from '../models/iHookExecutions'
 import { iHookEmittedTxs } from '../models/iHookEmittedTxs'
-import {
-  CreatedNode,
-  Node,
-} from '@transia/xrpl/dist/npm/models/transactions/metadata'
+import { CreatedNode, Node } from 'xahau/dist/npm/models/transactions/metadata'
 
 function isCreatedNode(node: Node): node is CreatedNode {
   return Object.prototype.hasOwnProperty.call(node, `CreatedNode`)

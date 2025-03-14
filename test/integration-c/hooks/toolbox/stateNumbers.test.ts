@@ -1,5 +1,5 @@
 // xrpl
-import { Invoke, SetHookFlags } from '@transia/xrpl'
+import { Invoke, SetHookFlags } from 'xahau'
 // src
 import {
   // Testing

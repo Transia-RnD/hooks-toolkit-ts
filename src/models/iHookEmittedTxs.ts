@@ -1,4 +1,4 @@
-import { Transaction } from '@transia/xrpl'
+import { Transaction } from 'xahau'
 
 export class iHookEmittedTxs {
   txs: Transaction[]

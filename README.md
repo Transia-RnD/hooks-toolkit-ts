@@ -40,7 +40,7 @@ Here is an example of setting a hook using the `setHooksV3` function:
 ```ts
 import {
   SetHookFlags
-} from '@transia/xrpl'
+} from 'xahau'
 import {
   setHooksV3,
   createHookPayload,
@@ -99,7 +99,7 @@ Here is an example of deleting a single hook for the hook in position 2 using th
 ```ts
 import {
   SetHookFlags
-} from '@transia/xrpl'
+} from 'xahau'
 import {
   SetHookParams,
   createHookPayload,
@@ -416,7 +416,7 @@ The `getHookExecutionsFromMeta` function is used to retrieve hook executions fro
 Here is an example of using the `getHookExecutionsFromMeta` function:
 
 ```ts
-import { TransactionMetadata } from '@transia/xrpl'
+import { TransactionMetadata } from 'xahau'
 import {
   serverUrl,
   setupClient,
@@ -473,7 +473,7 @@ The `getHookEmittedTxsFromMeta` function is used to retrieve hook emitted transa
 Here is an example of using the `getHookEmittedTxsFromMeta` function:
 
 ```ts
-import { TransactionMetadata } from '@transia/xrpl'
+import { TransactionMetadata } from 'xahau'
 import {
   serverUrl,
   setupClient,

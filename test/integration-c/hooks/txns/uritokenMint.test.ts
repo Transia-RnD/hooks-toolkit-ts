@@ -4,7 +4,7 @@ import {
   SetHookFlags,
   TransactionMetadata,
   convertStringToHex,
-} from '@transia/xrpl'
+} from 'xahau'
 // xrpl-helpers
 import {
   XrplIntegrationTestContext,

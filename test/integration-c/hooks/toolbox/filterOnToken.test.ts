@@ -1,11 +1,6 @@
 // xrpl
-import {
-  Payment,
-  SetHookFlags,
-  TransactionMetadata,
-  xrpToDrops,
-} from '@transia/xrpl'
-import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
+import { Payment, SetHookFlags, TransactionMetadata, xahToDrops } from 'xahau'
+import { IssuedCurrencyAmount } from 'xahau/dist/npm/models/common'
 // src
 import {
   // Testing
@@ -95,7 +90,7 @@ describe('filterOnToken', () => {
         TransactionType: 'Payment',
         Account: bobWallet.classicAddress,
         Destination: hookWallet.classicAddress,
-        Amount: xrpToDrops(1),
+        Amount: xahToDrops(1),
       }
       await Xrpld.submit(testContext.client, {
         wallet: bobWallet,

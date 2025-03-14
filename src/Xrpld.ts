@@ -3,10 +3,10 @@ Contains the operations that can are performed by the application.
 */
 import {
   Client,
-  Transaction,
+  SubmittableTransaction,
   TransactionMetadata,
   validate,
-} from '@transia/xrpl'
+} from 'xahau'
 import { ExecutionUtility } from './keylet-utils'
 import {
   appBatchTransaction,
@@ -18,11 +18,14 @@ import { addListeners, ISelect, removeListeners } from './libs/debug'
 
 export class Xrpld {
   // TX V3
-  static async submit(client: Client, params: SmartContractParams) {
+  static async submit(
+    client: Client,
+    params: SmartContractParams
+  ): Promise<any> {
     if (!params.tx) {
       throw Error('Missing tx parameter')
     }
-    const builtTx = params.tx as Transaction
+    const builtTx = params.tx as SubmittableTransaction
     appLogger.debug(JSON.stringify(builtTx))
     if (params.debugStream) {
       const selectedAccount: ISelect | null = {
@@ -59,7 +62,10 @@ export class Xrpld {
     return txResponse?.result
   }
   // TX V3
-  static async submitBatch(client: Client, batches: SmartContractParams[]) {
+  static async submitBatch(
+    client: Client,
+    batches: SmartContractParams[]
+  ): Promise<any> {
     if (!batches.length) {
       throw Error('Missing batch txns')
     }

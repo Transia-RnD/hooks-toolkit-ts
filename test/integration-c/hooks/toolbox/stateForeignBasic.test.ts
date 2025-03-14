@@ -4,9 +4,9 @@ import {
   LedgerEntryRequest,
   SetHookFlags,
   TransactionMetadata,
-} from '@transia/xrpl'
-import { Hook as LeHook } from '@transia/xrpl/dist/npm/models/ledger'
-import { AccountID, UInt64 } from '@transia/ripple-binary-codec/dist/types'
+} from 'xahau'
+import { Hook as LeHook } from 'xahau/dist/npm/models/ledger'
+import { AccountID, UInt64 } from 'xahau-binary-codec/dist/types'
 // src
 import {
   // Testing

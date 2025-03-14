@@ -3,8 +3,8 @@ import {
   LedgerEntryRequest,
   SetHookFlags,
   calculateHookOn,
-} from '@transia/xrpl'
-import { AccountID, UInt64 } from '@transia/ripple-binary-codec/dist/types'
+} from 'xahau'
+import { AccountID, UInt64 } from 'xahau-binary-codec/dist/types'
 // src
 import {
   serverUrl,
@@ -24,7 +24,7 @@ import {
 import {
   HookDefinition as LeHookDefinition,
   Hook as LeHook,
-} from '@transia/xrpl/dist/npm/models/ledger'
+} from 'xahau/dist/npm/models/ledger'
 import { flipHex } from '@transia/binary-models'
 
 // TEST WITH DELTA/DEFAULT PARAMS - HookHash
@@ -65,7 +65,7 @@ describe('SetHook - End to End', () => {
     const leHook = hookRes.result.node as LeHook
     expect(leHook.Hooks.length).toBe(1)
     expect(leHook.Hooks[0].Hook.HookHash).toEqual(
-      '47B8554938E4E6017EBD663C4388681B33E3059F8ADA912959247ED5335784E5'
+      '955705F019B60A9E5C31D7E5963D2E45D2589F8A287EFEA6E5101912FC000E92'
     )
     const hookDefRequest: LedgerEntryRequest = {
       command: 'ledger_entry',
@@ -153,7 +153,7 @@ describe('SetHook - (noop|create|install', () => {
     const leHook = hookRes.result.node as LeHook
     expect(leHook.Hooks.length).toBe(1)
     expect(leHook.Hooks[0].Hook.HookHash).toEqual(
-      'BFE035098EF245B5E356B5C1ADBA55CA8119F3C779C367715703C4B3664A4052'
+      '2500852196A87009FA4FDA3723728CE5853458ABD8C5BE4E5AB1BC93149523F5'
     )
     const hookDefRequest: LedgerEntryRequest = {
       command: 'ledger_entry',
@@ -195,7 +195,7 @@ describe('SetHook - (noop|create|install', () => {
     const leHook1 = hook1Res.result.node as LeHook
     expect(leHook1.Hooks.length).toBe(1)
     expect(leHook1.Hooks[0].Hook.HookHash).toEqual(
-      'BFE035098EF245B5E356B5C1ADBA55CA8119F3C779C367715703C4B3664A4052'
+      '2500852196A87009FA4FDA3723728CE5853458ABD8C5BE4E5AB1BC93149523F5'
     )
 
     const hook2 = {

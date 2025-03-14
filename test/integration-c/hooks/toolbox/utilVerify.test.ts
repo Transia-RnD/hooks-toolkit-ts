@@ -1,7 +1,7 @@
 // xrpl
-import { Invoke, SetHookFlags, TransactionMetadata } from '@transia/xrpl'
-import { AccountID } from '@transia/ripple-binary-codec/dist/types'
-import { sign } from '@transia/ripple-keypairs'
+import { Invoke, SetHookFlags, TransactionMetadata } from 'xahau'
+import { AccountID } from 'xahau-binary-codec/dist/types'
+import { sign } from 'xahau-keypairs'
 // src
 import {
   // Testing

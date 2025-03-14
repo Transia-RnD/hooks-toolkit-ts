@@ -6,6 +6,7 @@ import {
   setupClient,
   teardownClient,
   serverUrl,
+  close,
 } from '../../../../src/libs/xrpl-helpers'
 import {
   Xrpld,
@@ -14,7 +15,7 @@ import {
   createHookPayload,
   setHooksV3,
   padHexString,
-  // clearAllHooksV3,
+  clearAllHooksV3,
 } from '../../../../dist/npm/src'
 
 import { xrpAddressToHex } from '@transia/binary-models'
@@ -70,11 +71,11 @@ describe('base', () => {
     testContext = await setupClient(serverUrl)
     const hook = createHookPayload({
       version: 1,
-      createFile: 'base',
-      namespace: 'base',
+      createFile: 'redirect',
+      namespace: 'redirect',
       flags: SetHookFlags.hsfOverride,
       hookOnArray: ['Invoke', 'Payment'],
-      fee: '100000',
+      fee: '100',
     })
     await setHooksV3({
       client: testContext.client,
@@ -83,15 +84,16 @@ describe('base', () => {
     } as SetHookParams)
   })
   afterAll(async () => {
-    // await clearAllHooksV3({
-    //   client: testContext.client,
-    //   seed: testContext.hook1.seed,
-    // } as SetHookParams)
+    await clearAllHooksV3({
+      client: testContext.client,
+      seed: testContext.hook1.seed,
+    } as SetHookParams)
     await teardownClient(testContext)
   })
 
   it('basic hook', async () => {
     // await execInvoke(testContext)
     await execPayment(testContext)
+    await close(testContext.client)
   })
 })

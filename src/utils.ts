@@ -1,10 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { SHA256 } from 'crypto-js'
-import {
-  TRANSACTION_TYPES,
-  TRANSACTION_TYPE_MAP,
-} from '@transia/ripple-binary-codec'
+import { TRANSACTION_TYPES, TRANSACTION_TYPE_MAP } from 'xahau-binary-codec'
 import { createHash } from 'crypto'
 
 export function readHookBinaryHexFromNS(filename: string, ext: string): string {

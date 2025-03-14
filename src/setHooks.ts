@@ -4,9 +4,10 @@ import {
   hexHookParameters,
   SetHook,
   SetHookFlags,
-} from '@transia/xrpl'
+  ECDSA,
+} from 'xahau'
 import { SetHookParams, iHook } from './types'
-import { HookGrant, HookParameter } from '@transia/xrpl/dist/npm/models/common'
+import { HookGrant, HookParameter } from 'xahau/dist/npm/models/common/xahau'
 import { readHookBinaryHexFromNS, hexNamespace } from './utils'
 import { appTransaction } from './libs/xrpl-helpers/transaction'
 import { appLogger } from './libs/logger'
@@ -68,7 +69,7 @@ export function createHookPayload(payload: SetHookPayload): iHook {
 }
 
 export async function setHooksV3({ client, seed, hooks }: SetHookParams) {
-  const HOOK_ACCOUNT = Wallet.fromSeed(seed)
+  const HOOK_ACCOUNT = Wallet.fromSeed(seed, { algorithm: ECDSA.secp256k1 })
   const tx: SetHook = {
     TransactionType: `SetHook`,
     Account: HOOK_ACCOUNT.address,
@@ -89,7 +90,7 @@ export async function setHooksV3({ client, seed, hooks }: SetHookParams) {
 }
 
 export async function clearAllHooksV3({ client, seed }: SetHookParams) {
-  const HOOK_ACCOUNT = Wallet.fromSeed(seed)
+  const HOOK_ACCOUNT = Wallet.fromSeed(seed, { algorithm: ECDSA.secp256k1 })
   const hook = {
     CreateCode: '',
     Flags: SetHookFlags.hsfOverride | SetHookFlags.hsfNSDelete,
@@ -125,7 +126,7 @@ export async function clearAllHooksV3({ client, seed }: SetHookParams) {
 }
 
 export async function clearHookStateV3({ client, seed, hooks }: SetHookParams) {
-  const HOOK_ACCOUNT = Wallet.fromSeed(seed)
+  const HOOK_ACCOUNT = Wallet.fromSeed(seed, { algorithm: ECDSA.secp256k1 })
   const tx: SetHook = {
     TransactionType: `SetHook`,
     Account: HOOK_ACCOUNT.classicAddress,

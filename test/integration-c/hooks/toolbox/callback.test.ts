@@ -3,11 +3,10 @@ import {
   AccountSetAsfFlags,
   Invoke,
   LedgerRequest,
-  LedgerResponse,
   SetHookFlags,
   Transaction,
   TransactionMetadata,
-} from '@transia/xrpl'
+} from 'xahau'
 // src
 import {
   // Testing
@@ -26,6 +25,7 @@ import {
   clearAllHooksV3,
   ExecutionUtility,
 } from '../../../../dist/npm/src'
+import { LedgerResponseExpanded } from 'xahau/src/models/methods/ledger'
 
 describe('callback', () => {
   let testContext: XrplIntegrationTestContext
@@ -132,7 +132,7 @@ describe('callback', () => {
       ledger_index: await testContext.client.getLedgerIndex(),
       expand: true,
       transactions: true,
-    } as unknown as LedgerRequest)) as LedgerResponse
+    } as unknown as LedgerRequest)) as LedgerResponseExpanded
     const txns = response.result.ledger.transactions as Transaction[]
     // @ts-expect-error -- has value
     expect((txns[0].metaData as TransactionMetadata).TransactionResult).toEqual(

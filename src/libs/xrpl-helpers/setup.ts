@@ -1,4 +1,4 @@
-import { Client, dropsToXrp, Wallet } from '@transia/xrpl'
+import { Client, dropsToXah, Wallet } from 'xahau'
 
 import serverUrl from './serverUrl'
 import {
@@ -120,7 +120,7 @@ export async function setupClient(
   }
   return connectWithRetry(context.client)
     .then(async () => {
-      context.client.networkID = await context.client.getNetworkID()
+      context.client.networkID = await context.client.networkID
       await fundSystem(context.client, context.master, context.ic)
       if (
         isGovernance &&
@@ -133,7 +133,7 @@ export async function setupClient(
         await burn(
           context.client,
           context.master,
-          Number(dropsToXrp(masterBalance)) - 600000000
+          Number(dropsToXah(masterBalance)) - 600000000
         )
         await initGovernTable(context.client, context.alice, context.master)
         await setGovernTable(context.client, context.alice, context.elsa)

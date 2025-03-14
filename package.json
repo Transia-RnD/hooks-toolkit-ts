@@ -22,12 +22,13 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@transia/binary-models": "^1.1.0",
-    "@transia/xrpl": "^2.7.3-alpha.28",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.4.5",
     "jshooks-api": "^1.0.5",
+    "lodash": "^4.17.21",
     "reconnecting-websocket": "^4.4.0",
-    "winston": "^3.10.0"
+    "winston": "^3.10.0",
+    "xahau": "^4.0.0"
   },
   "devDependencies": {
     "@tsconfig/node16": "^16.1.0",
