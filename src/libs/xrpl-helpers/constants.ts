@@ -78,7 +78,6 @@ export const JUDY_WALLET = Wallet.fromSeed('shaiav41HpCvyHQhbSJDWS2pAqD77', {
 export const HOOK1_WALLET = Wallet.fromSeed('ssM2MJpZchJhEWYCP1wMqpD9MWbcd', {
   algorithm: ECDSA.secp256k1,
 })
-console.log(HOOK1_WALLET)
 
 // wallet secret == "hook2"
 // rpeWVvqpm2EPzfFiWrV421AMHKUQBk5aDt
