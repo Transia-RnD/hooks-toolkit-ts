@@ -102,9 +102,10 @@ jobs:
         if: steps.cache-nodemodules.outputs.cache-hit != 'true'
         run: yarn install
 
-      - run: npm i -g @transia/hooks-cli
+      - run: npm i -g @xahau/hooks-cli
       - run: yarn run build
-      - run: hooks-cli compile-c contracts-c build
+      - run: hooks-cli compile-c contracts-c/toolbox build
+      - run: hooks-cli compile-c contracts-c/txns build
       - run: yarn run test:integration-c
         env:
           HOOKS_COMPILE_HOST: https://hook-buildbox.xrpl.org
