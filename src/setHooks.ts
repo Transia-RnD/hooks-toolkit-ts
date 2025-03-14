@@ -4,9 +4,9 @@ import {
   hexHookParameters,
   SetHook,
   SetHookFlags,
-} from '@transia/xrpl'
+} from 'xahau'
 import { SetHookParams, iHook } from './types'
-import { HookGrant, HookParameter } from '@transia/xrpl/dist/npm/models/common'
+import { HookGrant, HookParameter } from 'xahau/dist/npm/models/common/xahau'
 import { readHookBinaryHexFromNS, hexNamespace } from './utils'
 import { appTransaction } from './libs/xrpl-helpers/transaction'
 import { appLogger } from './libs/logger'

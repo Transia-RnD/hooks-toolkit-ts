@@ -1,4 +1,4 @@
-import { AccountSetAsfFlags, Client, Invoke, Wallet } from '@transia/xrpl'
+import { AccountSetAsfFlags, Client, Invoke, Wallet } from 'xahau'
 import {
   Account,
   ICXAH,

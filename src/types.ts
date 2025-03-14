@@ -2,13 +2,8 @@ import {
   Hook,
   HookGrant,
   HookParameter,
-} from '@transia/xrpl/dist/npm/models/common'
-import {
-  Client,
-  SetHookFlagsInterface,
-  Transaction,
-  Wallet,
-} from '@transia/xrpl'
+} from 'xahau/dist/npm/models/common/xahau'
+import { Client, SetHookFlagsInterface, Transaction, Wallet } from 'xahau'
 
 export type iHook = {
   HookHash?: string

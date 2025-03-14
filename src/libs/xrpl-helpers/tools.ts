@@ -5,17 +5,17 @@ import {
   TrustSet,
   AccountSet,
   AccountSetAsfFlags,
-  xrpToDrops,
+  xahToDrops,
   LedgerEntryRequest,
   AccountInfoRequest,
   convertStringToHex,
-  Transaction,
   OfferCreate,
   OfferCreateFlags,
-} from '@transia/xrpl'
-import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
-import { RippleState } from '@transia/xrpl/dist/npm/models/ledger'
-import { BaseRequest } from '@transia/xrpl/dist/npm/models/methods/baseMethod'
+  RandomRequest,
+  SubmittableTransaction,
+} from 'xahau'
+import { IssuedCurrencyAmount } from 'xahau/dist/npm/models/common'
+import { RippleState } from 'xahau/dist/npm/models/ledger'
 import { appTransaction } from './transaction'
 import { appLogger } from '../logger'
 import {
@@ -38,7 +38,9 @@ import {
   NOT_ACTIVE_WALLET,
 } from './constants'
 
-const LEDGER_ACCEPT_REQUEST = { command: 'ledger_accept' } as BaseRequest
+const LEDGER_ACCEPT_REQUEST = {
+  command: 'ledger_accept',
+} as unknown as RandomRequest
 
 export class Account {
   name: string
@@ -119,7 +121,7 @@ export class ICXAH {
 
   constructor(value: number) {
     this.value = value
-    this.amount = xrpToDrops(value)
+    this.amount = xahToDrops(value)
   }
 }
 
@@ -343,7 +345,7 @@ export async function sell(
       TransactionType: 'OfferCreate',
       Account: signer.classicAddress,
       TakerGets: takerGets,
-      TakerPays: xrpToDrops(String(rate * uicx.value)),
+      TakerPays: xahToDrops(String(rate * uicx.value)),
       Flags: OfferCreateFlags.tfSell,
       NetworkID: ctx.networkID,
     }
@@ -378,7 +380,7 @@ export async function buy(
     const builtTx: OfferCreate = {
       TransactionType: 'OfferCreate',
       Account: signer.classicAddress,
-      TakerGets: xrpToDrops(String(rate * uicx.value)),
+      TakerGets: xahToDrops(String(rate * uicx.value)),
       TakerPays: takerPays,
       NetworkID: ctx.networkID,
     }
@@ -433,7 +435,7 @@ export async function burn(
   const builtTx: AccountSet = {
     TransactionType: 'AccountSet',
     Account: account.classicAddress as string,
-    Fee: xrpToDrops(String(amount)),
+    Fee: xahToDrops(String(amount)),
     NetworkID: ctx.networkID,
   }
   const response = await appTransaction(ctx, builtTx, account, {
@@ -490,18 +492,23 @@ export async function rpcTx(
   account: Wallet,
   json: Record<string, unknown>
 ): Promise<void> {
-  await appTransaction(ctx, json as unknown as Transaction, account, {
-    hardFail: true,
-    count: 1,
-    delayMs: 1000,
-  })
+  await appTransaction(
+    ctx,
+    json as unknown as SubmittableTransaction,
+    account,
+    {
+      hardFail: true,
+      count: 1,
+      delayMs: 1000,
+    }
+  )
 }
 
 export async function rpc(
   ctx: Client,
   json: Record<string, unknown>
 ): Promise<void> {
-  ctx.request(json as BaseRequest)
+  ctx.request(json as RandomRequest)
 }
 
 export async function close(ctx: Client): Promise<void> {

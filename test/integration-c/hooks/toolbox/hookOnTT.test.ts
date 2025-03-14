@@ -1,5 +1,5 @@
 // xrpl
-import { Invoke, Payment, SetHookFlags, xrpToDrops } from '@transia/xrpl'
+import { Invoke, Payment, SetHookFlags, xahToDrops } from 'xahau'
 // src
 import {
   // Testing
@@ -81,7 +81,7 @@ describe('hookOnTT', () => {
         TransactionType: 'Payment',
         Account: bobWallet.classicAddress,
         Destination: hookWallet.classicAddress,
-        Amount: xrpToDrops(1),
+        Amount: xahToDrops(1),
       }
       await Xrpld.submit(testContext.client, {
         wallet: bobWallet,

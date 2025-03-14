@@ -3,8 +3,8 @@ import {
   LedgerEntryRequest,
   SetHookFlags,
   calculateHookOn,
-} from '@transia/xrpl'
-// import { AccountID, UInt64 } from '@transia/ripple-binary-codec/dist/types'
+} from 'xahau'
+// import { AccountID, UInt64 } from 'xahau-binary-codec/dist/types'
 // xrpl-helpers
 import {
   serverUrl,
@@ -28,7 +28,7 @@ import { flipHex } from '@transia/binary-models'
 import {
   HookDefinition as LeHookDefinition,
   Hook as LeHook,
-} from '@transia/xrpl/dist/npm/models/ledger'
+} from 'xahau/dist/npm/models/ledger'
 
 // describe('SetHook - End to End', () => {
 //   let testContext: XrplIntegrationTestContext

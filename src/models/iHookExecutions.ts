@@ -1,5 +1,5 @@
-import { convertHexToString } from '@transia/xrpl'
-import { HookExecution } from '@transia/xrpl/dist/npm/models/transactions/metadata'
+import { convertHexToString } from 'xahau'
+import { HookExecution } from 'xahau/dist/npm/models/transactions/metadata'
 
 export interface iHookExecution {
   HookAccount: string

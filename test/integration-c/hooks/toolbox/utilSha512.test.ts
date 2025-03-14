@@ -1,12 +1,7 @@
 // xrpl
-import {
-  Payment,
-  SetHookFlags,
-  TransactionMetadata,
-  xrpToDrops,
-} from '@transia/xrpl'
-import { AccountID, Amount } from '@transia/ripple-binary-codec/dist/types'
-import { IssuedCurrencyAmount } from '@transia/xrpl/dist/npm/models/common'
+import { Payment, SetHookFlags, TransactionMetadata, xahToDrops } from 'xahau'
+import { AccountID, Amount } from 'xahau-binary-codec/dist/types'
+import { IssuedCurrencyAmount } from 'xahau/dist/npm/models/common'
 // src
 import {
   // Testing
@@ -83,7 +78,7 @@ describe('utilSha512', () => {
       )
       const param2 = new iHookParamEntry(
         new iHookParamName('HAM'),
-        new iHookParamValue(Amount.from(xrpToDrops(10)).toHex(), true)
+        new iHookParamValue(Amount.from(xahToDrops(10)).toHex(), true)
       )
       const hookWallet = testContext.hook1
       const bobWallet = testContext.bob
@@ -91,7 +86,7 @@ describe('utilSha512', () => {
         TransactionType: 'Payment',
         Account: hookWallet.classicAddress,
         Destination: bobWallet.classicAddress,
-        Amount: xrpToDrops(11),
+        Amount: xahToDrops(11),
         HookParameters: [param1.toXrpl(), param2.toXrpl()],
       }
       await Xrpld.submit(testContext.client, {
@@ -112,7 +107,7 @@ describe('utilSha512', () => {
     )
     const param2 = new iHookParamEntry(
       new iHookParamName('HAM'),
-      new iHookParamValue(Amount.from(xrpToDrops(10)).toHex(), true)
+      new iHookParamValue(Amount.from(xahToDrops(10)).toHex(), true)
     )
     const hookWallet = testContext.hook1
     const bobWallet = testContext.bob
@@ -120,7 +115,7 @@ describe('utilSha512', () => {
       TransactionType: 'Payment',
       Account: hookWallet.classicAddress,
       Destination: bobWallet.classicAddress,
-      Amount: xrpToDrops(10),
+      Amount: xahToDrops(10),
       HookParameters: [param1.toXrpl(), param2.toXrpl()],
     }
     const result = await Xrpld.submit(testContext.client, {

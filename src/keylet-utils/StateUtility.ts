@@ -1,13 +1,13 @@
-import { Client, LedgerEntryRequest } from '@transia/xrpl'
+import { Client, LedgerEntryRequest } from 'xahau'
 import {
   Hook as LeHook,
   HookDefinition as LeHookDefinition,
   HookState as LeHookState,
-} from '@transia/xrpl/dist/npm/models/ledger'
+} from 'xahau/dist/npm/models/ledger'
 import {
   AccountNamespaceRequest,
   AccountNamespaceResponse,
-} from '@transia/xrpl/dist/npm/models/methods/accountNamespace'
+} from 'xahau/dist/npm/models/methods/accountNamespace'
 
 export class StateUtility {
   static async getHook(client: Client, account: string): Promise<LeHook> {
@@ -42,7 +42,8 @@ export class StateUtility {
   static async getHookStateDir(
     client: Client,
     account: string,
-    namespace: string
+    namespace: string,
+    limit = 200
   ): Promise<LeHookState[]> {
     if (!client.isConnected()) {
       throw new Error('xrpl Client is not connected')
@@ -51,6 +52,7 @@ export class StateUtility {
       command: 'account_namespace',
       account: account,
       namespace_id: namespace,
+      limit: limit,
     }
     const response = (await client.request(request)) as AccountNamespaceResponse
     return response.result.namespace_entries as LeHookState[]

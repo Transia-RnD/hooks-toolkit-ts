@@ -1,4 +1,4 @@
-import { Wallet } from '@transia/xrpl'
+import { Wallet } from 'xahau'
 
 // **DO NOT EDIT THESE SEEDS**
 // They match the seeds in the rippled source test env.

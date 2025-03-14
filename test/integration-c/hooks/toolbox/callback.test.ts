@@ -7,7 +7,7 @@ import {
   SetHookFlags,
   Transaction,
   TransactionMetadata,
-} from '@transia/xrpl'
+} from 'xahau'
 // src
 import {
   // Testing

@@ -1,6 +1,6 @@
 // xrpl
-import { Invoke, SetHookFlags } from '@transia/xrpl'
-import { AccountID, UInt64 } from '@transia/ripple-binary-codec/dist/types'
+import { Invoke, SetHookFlags } from 'xahau'
+import { AccountID, UInt64 } from 'xahau-binary-codec/dist/types'
 // src
 import {
   // Testing

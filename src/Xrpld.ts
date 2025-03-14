@@ -3,10 +3,10 @@ Contains the operations that can are performed by the application.
 */
 import {
   Client,
-  Transaction,
+  SubmittableTransaction,
   TransactionMetadata,
   validate,
-} from '@transia/xrpl'
+} from 'xahau'
 import { ExecutionUtility } from './keylet-utils'
 import {
   appBatchTransaction,
@@ -22,7 +22,7 @@ export class Xrpld {
     if (!params.tx) {
       throw Error('Missing tx parameter')
     }
-    const builtTx = params.tx as Transaction
+    const builtTx = params.tx as SubmittableTransaction
     appLogger.debug(JSON.stringify(builtTx))
     if (params.debugStream) {
       const selectedAccount: ISelect | null = {
