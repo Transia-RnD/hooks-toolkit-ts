@@ -1,4 +1,4 @@
-import { Wallet } from 'xahau'
+import { ECDSA, Wallet } from 'xahau'
 
 // **DO NOT EDIT THESE SEEDS**
 // They match the seeds in the rippled source test env.
@@ -6,7 +6,9 @@ import { Wallet } from 'xahau'
 
 // wallet secret == "mastersecret"
 // rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh
-export const MASTER_WALLET = Wallet.fromSeed('snoPBrXtMeMyMHUVTgbuqAfg1SUTb')
+export const MASTER_WALLET = Wallet.fromSeed('snoPBrXtMeMyMHUVTgbuqAfg1SUTb', {
+  algorithm: ECDSA.secp256k1,
+})
 // wallet secret == "gw"
 // rExKpRKXNz25UAjbckCRtQsJFcSfjL9Er3
 export const GW_WALLET = Wallet.fromSeed('safmpBLsy2paxybRMpvXqFqSrV5HG')
