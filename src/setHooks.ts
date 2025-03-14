@@ -4,6 +4,7 @@ import {
   hexHookParameters,
   SetHook,
   SetHookFlags,
+  ECDSA,
 } from 'xahau'
 import { SetHookParams, iHook } from './types'
 import { HookGrant, HookParameter } from 'xahau/dist/npm/models/common/xahau'
@@ -68,7 +69,7 @@ export function createHookPayload(payload: SetHookPayload): iHook {
 }
 
 export async function setHooksV3({ client, seed, hooks }: SetHookParams) {
-  const HOOK_ACCOUNT = Wallet.fromSeed(seed)
+  const HOOK_ACCOUNT = Wallet.fromSeed(seed, { algorithm: ECDSA.secp256k1 })
   const tx: SetHook = {
     TransactionType: `SetHook`,
     Account: HOOK_ACCOUNT.address,
