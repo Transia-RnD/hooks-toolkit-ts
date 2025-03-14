@@ -25,6 +25,7 @@
     "crypto-js": "^4.1.1",
     "dotenv": "^16.4.5",
     "jshooks-api": "^1.0.5",
+    "lodash": "^4.17.21",
     "reconnecting-websocket": "^4.4.0",
     "winston": "^3.10.0",
     "xahau": "^4.0.0"
