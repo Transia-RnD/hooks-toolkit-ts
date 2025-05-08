@@ -37,6 +37,7 @@ export function hexHookFunctions(data: HookFunction[]): HookFunction[] {
     hookFunctions.push({
       HookFunction: {
         FunctionName: hookFName,
+        FunctionParameters: hookFunction.HookFunction.FunctionParameters,
       },
     })
   }

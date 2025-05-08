@@ -29,7 +29,8 @@
     "lodash": "^4.17.21",
     "reconnecting-websocket": "^4.4.0",
     "winston": "^3.10.0",
-    "xahau": "^4.0.0"
+    "xahau": "npm:@tequ/xahau@4.0.0-beta.1",
+    "xahau-binary-codec": "npm:@tequ/xahau-binary-codec@2.1.0-beta.1"
   },
   "devDependencies": {
     "@tsconfig/node16": "^16.1.0",

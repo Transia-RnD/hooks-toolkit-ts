@@ -1,5 +1,10 @@
 // xrpl
-import { Invoke, SetHookFlags, TransactionMetadata } from 'xahau'
+import {
+  convertStringToHex,
+  Invoke,
+  SetHookFlags,
+  TransactionMetadata,
+} from 'xahau'
 import {
   // Testing
   XrplIntegrationTestContext,
@@ -15,6 +20,10 @@ import {
   // clearAllHooksV3,
   iHookFunctionEntry,
   iHookFunctionName,
+  iFunctionParamTypeEntry,
+  iFunctionParamName,
+  iFunctionParamType,
+  iFunctionParamTypeEntries,
 } from '../../../../dist/npm/src'
 
 describe('base', () => {
@@ -22,7 +31,15 @@ describe('base', () => {
 
   beforeAll(async () => {
     testContext = await setupClient(serverUrl)
-    const hook1Func1 = new iHookFunctionEntry(new iHookFunctionName('func_one'))
+    const hook1Func1Param1 = new iFunctionParamTypeEntry(
+      new iFunctionParamName('amount'),
+      new iFunctionParamType('UINT8')
+    )
+    const hook1Func1Params = new iFunctionParamTypeEntries([hook1Func1Param1])
+    const hook1Func1 = new iHookFunctionEntry(
+      new iHookFunctionName('func_one'),
+      hook1Func1Params
+    )
     const hook1Func2 = new iHookFunctionEntry(new iHookFunctionName('func_two'))
     const hook = createHookPayload({
       version: 3,
@@ -52,10 +69,12 @@ describe('base', () => {
     // INVOKE IN
     const aliceWallet = testContext.alice
     const hookWallet = testContext.hook1
+
     const builtTx: Invoke = {
       TransactionType: 'Invoke',
       Account: aliceWallet.classicAddress,
       Destination: hookWallet.classicAddress,
+      FunctionName: convertStringToHex('func_one'),
     }
     const result = await Xrpld.submit(testContext.client, {
       wallet: aliceWallet,

@@ -18,8 +18,8 @@ import {
 } from 'xahau'
 import { hashSignedTx } from 'xahau/dist/npm/utils/hashes'
 import { appLogger } from '../logger'
-import { sign } from 'xahau-keypairs'
-import { encode, encodeForSigning, XrplDefinitions } from 'xahau-binary-codec'
+// import { sign } from 'xahau-keypairs'
+// import { encode, encodeForSigning, XrplDefinitions } from 'xahau-binary-codec'
 
 interface ServerStateRPCResult {
   state: {
@@ -157,21 +157,27 @@ export async function submitTransaction({
 }): Promise<SubmitResponse> {
   let response: SubmitResponse
   try {
-    transaction.SigningPubKey = wallet.publicKey
+    // transaction.SigningPubKey = wallet.publicKey
+    // const liveDefinitions = await client.request({
+    //   command: 'server_definitions',
+    // })
+    // const _liveDefinitions = JSON.parse(JSON.stringify(liveDefinitions.result))
+    // const definitions = new XrplDefinitions(_liveDefinitions)
+
+    // const preparedTx = await client.autofill(transaction)
+    // console.log(JSON.stringify(preparedTx, null, 2))
+    // const encoded = encodeForSigning(preparedTx, definitions)
+    // const signed = sign(encoded, wallet.privateKey)
+    // preparedTx.TxnSignature = signed
+    // const txBlob = encode(preparedTx, definitions)
+    // response = await client.request({
+    //   command: 'submit',
+    //   tx_blob: txBlob,
+    // })
+
     const preparedTx = await client.autofill(transaction)
-    const liveDefinitions = await client.request({
-      command: 'server_definitions',
-    })
-    const _liveDefinitions = JSON.parse(JSON.stringify(liveDefinitions.result))
-    const definitions = new XrplDefinitions(_liveDefinitions)
-    const encoded = encodeForSigning(preparedTx, definitions)
-    const signed = sign(encoded, wallet.privateKey)
-    preparedTx.TxnSignature = signed
-    const txBlob = encode(preparedTx, definitions)
-    response = await client.request({
-      command: 'submit',
-      tx_blob: txBlob,
-    })
+
+    response = await client.submit(preparedTx, { wallet })
 
     // Retry if another transaction finished before this one
     while (
@@ -366,7 +372,11 @@ export async function testTransaction(
   // check that the transaction is on the ledger
   const signedTx = omit(response.result.tx_json, 'hash')
   await ledgerAccept(client)
-  return await verifySubmittedTransaction(client, signedTx as Transaction)
+  return await verifySubmittedTransaction(
+    client,
+    signedTx as Transaction,
+    response.result.tx_json.hash
+  )
   // return response
 }
 
