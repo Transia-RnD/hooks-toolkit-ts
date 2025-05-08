@@ -9,6 +9,39 @@ import { HookGrant, HookParameter } from 'xahau/dist/npm/models/common/xahau'
 import { readHookBinaryHexFromNS, hexNamespace } from './utils'
 import { appTransaction } from './libs/xrpl-helpers/transaction'
 import { appLogger } from './libs/logger'
+import { HookFunction } from './models/tmp'
+
+function isHex(value: string): boolean {
+  return /^[0-9A-F]+$/iu.test(value)
+}
+
+function hexValue(value: string): string {
+  return Buffer.from(value, 'utf8').toString('hex').toUpperCase()
+}
+
+/**
+ * Calculate the hex of the hook parameters
+ *
+ * @param data - the hook parameters
+ * @returns the hex of the hook parameters
+ */
+export function hexHookFunctions(data: HookFunction[]): HookFunction[] {
+  const hookFunctions: HookFunction[] = []
+  for (const hookFunction of data) {
+    let hookFName = hookFunction.HookFunction.FunctionName
+
+    if (!isHex(hookFName)) {
+      hookFName = hexValue(hookFName)
+    }
+
+    hookFunctions.push({
+      HookFunction: {
+        FunctionName: hookFName,
+      },
+    })
+  }
+  return hookFunctions
+}
 
 export interface SetHookPayload {
   version?: number | null
@@ -20,6 +53,7 @@ export interface SetHookPayload {
   hookParams?: HookParameter[] | null
   hookGrants?: HookGrant[] | null
   fee?: string | null
+  functions?: HookFunction[] | null
 }
 
 export function createHookPayload(payload: SetHookPayload): iHook {
@@ -62,10 +96,13 @@ export function createHookPayload(payload: SetHookPayload): iHook {
   if (payload.hookGrants) {
     hook.HookGrants = payload.hookGrants
   }
+  if (payload.functions) {
+    // @ts-expect-error -- TODO: Fix this type error
+    hook.HookFunctions = hexHookFunctions(payload.functions)
+  }
   // DA: validate
   return hook
 }
-
 
 export async function setHooksV3({ client, wallet, hooks }: SetHookParams) {
   const tx: SetHook = {
@@ -86,7 +123,6 @@ export async function setHooksV3({ client, wallet, hooks }: SetHookParams) {
 
   appLogger.debug(`\n3. SetHook Success...`)
 }
-
 
 export async function clearAllHooksV3({ client, wallet }: SetHookParams) {
   const hook = {
