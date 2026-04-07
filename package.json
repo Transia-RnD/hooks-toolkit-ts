@@ -28,7 +28,7 @@
     "lodash": "^4.17.21",
     "reconnecting-websocket": "^4.4.0",
     "winston": "^3.10.0",
-    "xahau": "^4.0.0"
+    "xahau": "^4.0.3"
   },
   "peerDependencies": {
     "xahau": "^4.0.0"
